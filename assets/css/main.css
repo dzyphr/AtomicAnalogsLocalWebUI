@@ -61,13 +61,26 @@ div{
 }
 .individualMarketOrderContainer{
 	border: 1px solid white;
-        box-shadow: 0 1px 2px 0 white, 0 1px 2px 0 white;
+        box-shadow: 0 1px 4px 0 white, 0 1px 4px 0 white;
 	display: grid;
-        grid-template-columns:repeat(6, 1fr);
+        grid-template-columns:repeat(6, 1fr); /*double the amount of orders*/
         font-size: 40%;
 justify-content: center;
 align-items: center;
+	
 }
+
+.individualMarketOrderContainer:hover{
+	background-color: #262626;
+	box-shadow: 0 1px 3px 0 white, 0 1px 3px 0 white;
+}
+
+.individualMarketOrderContainer:active{
+        background-color: #373a3f;
+	box-shadow: 0 1px 0px 0 white, 0 0px 0px 0 white;
+}
+
+
 
 .marketWidgetsContainer{
 	display: grid;
