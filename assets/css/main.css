@@ -1,0 +1,174 @@
+body{
+	background-color: black;
+}
+div{
+	border-radius: 40px;
+	padding: 0 auto;
+	margin: 1%;
+	text-align: center;
+}
+.bodydiv{
+	border: 1px solid white;
+	box-shadow: 0 4px 6px 0 white, 0 4px 6px 0 white;
+}
+.grid-container{
+	border: 2px solid white;
+	box-shadow: 0 2px 3px 0 white, 0 2px 3px 0 white;
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	grid-gap: 20px;
+	padding: 10px;
+}
+.login-grid-container{
+        border: 2px solid white;
+        box-shadow: 0 2px 3px 0 white, 0 2px 3px 0 white;
+        display: grid;
+        grid-template-columns:repeat(4, 1fr); 
+        grid-gap: 2%;
+}
+.initialize-grid-container{
+        border: 2px solid white;
+        box-shadow: 0 2px 3px 0 white, 0 2px 3px 0 white;
+        display: grid;
+	grid-template-rows: repeat(1, 1fr);
+        grid-gap: 0%;
+}
+.api-grid-container{
+	border: 2px solid white;
+        box-shadow: 0 2px 3px 0 white, 0 2px 3px 0 white;
+        display: grid;
+        grid-template-columns:repeat(3, 1fr); 
+        grid-gap: 2%;
+}
+.market-grid-container{
+	border: 2px solid white;
+        box-shadow: 0 2px 3px 0 white, 0 2px 3px 0 white;
+        display: grid;
+	grid-template-rows: repeat(1, 1fr);
+        grid-gap: 0%;
+}
+.marketOrderInfoContainer{
+	border: 2px solid white;
+        box-shadow: 0 2px 3px 0 white, 0 2px 3px 0 white;
+        display: grid;
+        grid-template-rows: repeat(4, 1fr);
+        grid-gap: 0%;
+}
+.marketOrderInfoHeaderContainer{
+	display: grid;
+        grid-template-columns:repeat(6, 1fr);
+	font-size: 60%;
+}
+.individualMarketOrderContainer{
+	border: 1px solid white;
+        box-shadow: 0 1px 2px 0 white, 0 1px 2px 0 white;
+	display: grid;
+        grid-template-columns:repeat(6, 1fr);
+        font-size: 40%;
+justify-content: center;
+align-items: center;
+}
+
+.marketWidgetsContainer{
+	display: grid;
+        grid-template-columns:1fr 5fr
+}
+.marketCoinSelectorContainer{
+	border: 2px solid white;
+        box-shadow: 0 2px 3px 0 white, 0 2px 3px 0 white;
+        display: grid;
+        grid-template-rows: repeat(4, 1fr);
+        grid-gap: 0%;
+}
+.ergoAccountSetupBox{
+	display: flex;
+justify-content: center;
+flex-direction: column;
+align-items: center;
+}
+
+.apiSetupPromptContainer{
+	display: flex;
+justify-content: center;
+flex-direction: column;
+align-items: center;
+
+}
+.submitAPISetupContainer{
+	display: flex;
+justify-content: center;
+flex-direction: column;
+align-items: center;
+font-size: 75%;
+}
+.apiURLInputContainer{
+	display: flex;
+justify-content: center;
+flex-direction: column;
+align-items: center;
+}
+ .loginPanel{
+}
+.initializeAccountPanel{
+}
+
+.logo{
+	width: 10%;
+	height:auto;
+}
+/*title*/
+h1{
+	font-family:  Arial, Helvetica, sans-serif;
+	color: white;
+	text-align: center;
+}
+h2{
+	font-family:  Arial, Helvetica, sans-serif;
+        color: white;
+        text-align: center;
+}
+/*subtitle*/
+p{
+	font-family:  Arial, Helvetica, sans-serif;
+	text-align: center;
+	color: white;
+}
+.checkboxholder{
+	display: flex;
+}
+.checkboxErgoTestnet{
+/*margin-top: 50%;
+  margin-bottom: 50%;*/
+	display: flex;
+justify-content: center;
+flex-direction: column;
+align-items: center;
+  text-align: center;
+}
+.checkboxSepolia{
+	display: flex;
+justify-content: center;
+flex-direction: column;
+align-items: center;
+  text-align: center;
+
+	text-align: center;
+}
+.ergoTestnetCheckboxImage{
+	width: 50%;
+        height:auto;
+}
+.sepoliaCheckboxImage{
+	width: 33%;
+        height:auto;
+}
+.loginbuttonbox{
+	margin-top: 50%;
+  margin-bottom: 50%;
+}
+.accountNameSetupBox{
+	margin: 0;
+}
+.apiSetupPromptContainer{
+	font-size: 80%;
+}

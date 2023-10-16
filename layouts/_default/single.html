@@ -1,0 +1,23 @@
+{{ $styles := resources.Get "css/main.css" | minify }}
+<link rel="stylesheet" type="text/css" href="{{ $styles.Permalink }}" media="screen"/>
+{{ $buttonstyles := resources.Get "css/buttons.css" | minify }}
+<link rel="stylesheet" type="text/css" href="{{ $buttonstyles.Permalink }}" media="screen"/>
+{{ $dropdownstyles := resources.Get "css/dropdowns.css" | minify }}
+<link rel="stylesheet" type="text/css" href="{{ $dropdownstyles.Permalink }}" media="screen"/>
+{{ $checkboxstyles := resources.Get "css/checkboxes.css" | minify }}
+<link rel="stylesheet" type="text/css" href="{{ $checkboxstyles.Permalink }}" media="screen"/>
+{{ $inputboxstyles := resources.Get "css/inputboxes.css" | minify }}
+<link rel="stylesheet" type="text/css" href="{{ $inputboxstyles.Permalink }}" media="screen"/>
+
+{{ partial "header.html" . }}
+ <body>
+  <div class="bodydiv">
+   <a href="/">
+   {{ $logo := resources.Get "images/atomicanalogslogo1-colorinverted.png" }}
+   <img src="{{ $logo.Permalink }}" class="logo">
+   </a>
+   <h1>{{ .Title }}</h1>
+   {{ .Content }}
+  </div>
+ </body>
+{{ partial "footer.html" . }}

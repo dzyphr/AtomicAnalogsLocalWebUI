@@ -1,0 +1,146 @@
+{{ $styles := resources.Get "css/main.css" | minify }}
+<link rel="stylesheet" type="text/css" href="{{ $styles.Permalink }}" media="screen"/>
+{{ $buttonstyles := resources.Get "css/buttons.css" | minify }}
+<link rel="stylesheet" type="text/css" href="{{ $buttonstyles.Permalink }}" media="screen"/>
+{{ $dropdownstyles := resources.Get "css/dropdowns.css" | minify }}
+<link rel="stylesheet" type="text/css" href="{{ $dropdownstyles.Permalink }}" media="screen"/>
+{{ $checkboxstyles := resources.Get "css/checkboxes.css" | minify }}
+<link rel="stylesheet" type="text/css" href="{{ $checkboxstyles.Permalink }}" media="screen"/>
+{{ $inputboxstyles := resources.Get "css/inputboxes.css" | minify }}
+<link rel="stylesheet" type="text/css" href="{{ $inputboxstyles.Permalink }}" media="screen"/>
+
+{{ partial "header.html" . }}
+ <body>
+  <div class="bodydiv">
+   <a href="/">
+   {{ $logo := resources.Get "images/atomicanalogslogo1-colorinverted.png" }}
+   <img src="{{ $logo.Permalink }}" class="logo">
+   </a>
+   <h1>{{ .Title }}</h1>
+   {{ .Content }}
+   <div class="market-grid-container">
+     <div class="api-grid-container">
+        <div class="apiSetupPromptContainer" >
+		<h1>
+		{{ .Params.apiSetupPrompt }}
+		</h1>
+        </div>
+        <div class="apiURLInputContainer">
+		<div class="webflow-style-input" class="marketAPIInput">
+               	  <input class="marketapisetup" type="marketapisetup" placeholder="Swap Market API URL"></input>
+	        </div>
+        </div>
+        <div class="submitAPISetupContainer">
+		<h1>{{ .Params.submitapibuttonprompt }}</h1>
+		<form action="/">
+                  <button class="button1" class="submitAPISetupButton" >  {{ .Params.submitAPISetupButton }}</button>
+	        </form>
+        </div>
+     </div>
+     <div class="marketWidgetsContainer">
+       <div class="marketCoinSelectorContainer">
+	 <div class="checkboxErgoTestnet" >
+           {{ $ergo := resources.Get "images/ErgoTestnetTransparentWhite.png" }}
+           <img src="{{ $ergo.Permalink }}" class="ergoTestnetCheckboxImage">
+           <div class="checkbox-wrapper-59">
+             <label class="switch"><input type="checkbox"><span class="slider"></span></label>
+           </div>
+         </div>
+	 <div class="checkboxSepolia" >
+           {{ $sepolia := resources.Get "images/Sepolia-Ethereum-Logo-PNG-tranparentBG.png" }}
+           <img src="{{ $sepolia.Permalink }}" class="sepoliaCheckboxImage">
+           <div class="checkbox-wrapper-59">
+             <label class="switch"><input type="checkbox"><span class="slider"></span></label>
+           </div>
+       	 </div>
+       </div>
+     <div class="marketOrderInfoContainer">
+	   <div class="marketOrderInfoHeaderContainer">
+		     <h1>Market Domain</h1>
+		     <h1>Offering Coin</h1>
+		     <h1>Accepting Coin</h1>
+		     <h1>Minimum Vol</h1>
+		     <h1>Maximum Vol</h1>
+		     <h1>Offer Price</h1>
+	   </div>
+	   <div>
+		   <div class="individualMarketOrderContainer">
+	             <div>
+		     <h1>AtomicAnalogs</h1>
+		     </div>
+		     <div>
+		     {{ $ergo := resources.Get "images/ErgoTestnetTransparentWhite.png" }}
+	             <img src="{{ $ergo.Permalink }}" class="ergoTestnetCheckboxImage">
+		     </div>
+		     <div>
+		     {{ $sepolia := resources.Get "images/Sepolia-Ethereum-Logo-PNG-tranparentBG.png" }}
+                     <img src="{{ $sepolia.Permalink }}" class="sepoliaCheckboxImage">
+		     </div>
+		     <div>
+			     <h1> 1 ERG </h1>
+		     </div>
+		     <div>
+                             <h1> 50 ERG </h1>
+                     </div>
+		     <div>
+			     <h1> 1740ERG = 1ETH <h1>
+			     <h2> 0.90$ERG - 1,544ETH</h2>
+		     </div>
+		   </div>
+           </div>
+	   <div>
+		   <div class="individualMarketOrderContainer">
+                     <div>
+                     <h1>AtomicAnalogs</h1>
+                     </div>
+                     <div>
+                     {{ $ergo := resources.Get "images/ErgoTestnetTransparentWhite.png" }}
+                     <img src="{{ $ergo.Permalink }}" class="ergoTestnetCheckboxImage">
+                     </div>
+                     <div>
+                     {{ $sepolia := resources.Get "images/Sepolia-Ethereum-Logo-PNG-tranparentBG.png" }}
+                     <img src="{{ $sepolia.Permalink }}" class="sepoliaCheckboxImage">
+                     </div>
+                     <div>
+                             <h1> 1 ERG </h1>
+                     </div>
+                     <div>
+                             <h1> 50 ERG </h1>
+                     </div>
+                     <div>
+                             <h1> 1740ERG = 1ETH <h1>
+                             <h2> 0.90$ERG - 1,544ETH</h2>
+                     </div>
+                   </div>
+           </div>
+	   <div>
+		   <div class="individualMarketOrderContainer">
+                     <div>
+                     <h1>AtomicAnalogs</h1>
+                     </div>
+                     <div>
+                     {{ $ergo := resources.Get "images/ErgoTestnetTransparentWhite.png" }}
+                     <img src="{{ $ergo.Permalink }}" class="ergoTestnetCheckboxImage">
+                     </div>
+                     <div>
+                     {{ $sepolia := resources.Get "images/Sepolia-Ethereum-Logo-PNG-tranparentBG.png" }}
+                     <img src="{{ $sepolia.Permalink }}" class="sepoliaCheckboxImage">
+                     </div>
+                     <div>
+                             <h1> 1 ERG </h1>
+                     </div>
+                     <div>
+                             <h1> 50 ERG </h1>
+                     </div>
+                     <div>
+                             <h1> 1740ERG = 1ETH <h1>
+                             <h2> 0.90$ERG - 1,544ETH</h2>
+                     </div>
+                   </div>
+           </div>
+       </div>
+     </div>
+   </div>
+  </div>
+ </body>
+{{ partial "footer.html" . }}

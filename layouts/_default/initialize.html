@@ -1,0 +1,70 @@
+{{ $styles := resources.Get "css/main.css" | minify }}
+<link rel="stylesheet" type="text/css" href="{{ $styles.Permalink }}" media="screen"/>
+{{ $buttonstyles := resources.Get "css/buttons.css" | minify }}
+<link rel="stylesheet" type="text/css" href="{{ $buttonstyles.Permalink }}" media="screen"/>
+{{ $dropdownstyles := resources.Get "css/dropdowns.css" | minify }}
+<link rel="stylesheet" type="text/css" href="{{ $dropdownstyles.Permalink }}" media="screen"/>
+{{ $checkboxstyles := resources.Get "css/checkboxes.css" | minify }}
+<link rel="stylesheet" type="text/css" href="{{ $checkboxstyles.Permalink }}" media="screen"/>
+{{ $inputboxstyles := resources.Get "css/inputboxes.css" | minify }}
+<link rel="stylesheet" type="text/css" href="{{ $inputboxstyles.Permalink }}" media="screen"/>
+
+{{ partial "header.html" . }}
+ <body>
+  <div class="bodydiv">
+   {{ $logo := resources.Get "images/atomicanalogslogo1-colorinverted.png" }}
+   <a href="/">
+   <img src="{{ $logo.Permalink }}" class="logo">
+   </a>
+   <h1>{{ .Title }}</h1>
+   {{ .Content }}
+   <div class="initialize-grid-container">
+     <div class="chainSelector">
+       <nav class="chainSelectorNav">
+         <menu>
+           <menuitem id="chainSelector">
+           <a>Select Chain</a>
+           <menu>
+             <menuitem>
+             <a>Ergo Testnet</a>
+             </menuitem>
+             <menuitem>
+             <a>Sepolia</a>
+             </menuitem>
+           </menu>
+           </menuitem>
+         </menu>
+       </nav>
+     </div>
+     <div class="webflow-style-input">
+       <input class="accountName" type="accountName" placeholder="Account Name"></input>
+     </div>
+     <div class="ergoAccountSetupBox">
+       <div class="webflow-style-input">
+         <input class="nodeurlsetup" type="nodeurlsetup" placeholder="Ergo TestNet Node URL"></input>
+       </div>
+       <div class="webflow-style-input">
+         <input class="mnemonicsetup" type="menmonicsetup" placeholder="Ergo Mnemonic Phrase"></input>
+       </div>
+       <div class="webflow-style-input">
+         <input class="mnemonicPassSetup" type="menmonicPassSetup" placeholder="Ergo Mnemonic Password"></input>
+       </div>
+       <div class="webflow-style-input">
+         <input class="ErgoEIP3SecretSetup" type="ErgoEIP3SecretSetup" placeholder="Ergo EIP3 (Address Index)"></input>
+       </div>
+       <div class="webflow-style-input">
+         <input class="ErgoPubkeySetup" type="ErgoPubkeySetup" placeholder="Ergo PublicKey Address"></input>
+       </div>
+       <div class="webflow-style-input">
+         <input class="ErgoExplorerAPISetup" type="ErgoExplorerAPISetup" placeholder="Ergo Explorer API URL"></input>
+       </div>
+       <div>
+       <form action="/market">
+         <button class="button1" class="accountSetupButton" >  {{ .Params.accountSetupButton }}</button>
+       </form>       
+       </div>
+     </div>
+   </div>
+  </div>
+ </body>
+{{ partial "footer.html" . }}

@@ -1,0 +1,62 @@
+{{ $styles := resources.Get "css/main.css" | minify }}
+<link rel="stylesheet" type="text/css" href="{{ $styles.Permalink }}" media="screen"/>
+{{ $buttonstyles := resources.Get "css/buttons.css" | minify }}
+<link rel="stylesheet" type="text/css" href="{{ $buttonstyles.Permalink }}" media="screen"/>
+{{ $dropdownstyles := resources.Get "css/dropdowns.css" | minify }}
+<link rel="stylesheet" type="text/css" href="{{ $dropdownstyles.Permalink }}" media="screen"/>
+{{ $checkboxstyles := resources.Get "css/checkboxes.css" | minify }}
+<link rel="stylesheet" type="text/css" href="{{ $checkboxstyles.Permalink }}" media="screen"/>
+{{ partial "header.html" . }}
+ <body>
+   <div class="bodydiv">
+     {{ $logo := resources.Get "images/atomicanalogslogo1-colorinverted.png" }}
+     <a href="/">
+     <img src="{{ $logo.Permalink }}" class="logo">
+     </a>
+     <h1>{{ .Title }}</h1>
+       {{ .Content }}
+     <div class="login-grid-container">
+       <div class="checkboxErgoTestnet" >
+         {{ $ergo := resources.Get "images/ErgoTestnetTransparentWhite.png" }}
+         <img src="{{ $ergo.Permalink }}" class="ergoTestnetCheckboxImage">
+         <div class="checkbox-wrapper-59">
+           <label class="switch"><input type="checkbox"><span class="slider"></span></label>
+         </div>
+       </div>
+       <div class="checkboxSepolia" >
+	 {{ $sepolia := resources.Get "images/Sepolia-Ethereum-Logo-PNG-tranparentBG.png" }}
+         <img src="{{ $sepolia.Permalink }}" class="sepoliaCheckboxImage">
+         <div class="checkbox-wrapper-59">
+           <label class="switch"><input type="checkbox"><span class="slider"></span></label>
+         </div>
+       </div>
+       <div class="accountmenu">
+         <nav>
+           <menu>
+             <menuitem id="accountSelector">
+	     <a>Select Accounts</a>
+             <menu>
+               <menuitem>
+	       <a>Account1</a>
+               </menuitem>
+	       <menuitem>
+               <a>Account2</a>
+               </menuitem>
+             </menu>
+             </menuitem>
+           </menu>
+         </nav>
+       </div>
+       <div class="loginbuttonbox">
+	 <h1>
+	   {{ .Params.Loginprompt }}
+	 </h1>
+         <form action="/market">
+           <button class="button1" class="login-button-functional" >  {{ .Params.Loginbutton }}</button>
+         </form>
+       </div>
+     </div>
+   </div>
+ </body>
+{{ partial "footer.html" . }}
+
