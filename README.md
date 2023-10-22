@@ -9,6 +9,8 @@
 ## Actively Seeking Contributions and Feedback
 
 
+![Demo](https://raw.githubusercontent.com/dzyphr/AtomicAnalogsLocalWebUI/main/assets/images/DemoScreenShot1.png "Demo ScreenShot")
+
 ## Key Features
 
 * Locally hosted for security
