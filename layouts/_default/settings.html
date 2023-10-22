@@ -26,10 +26,25 @@
 	   </h1>
 	   </div>
 	   <div>
-           <button type="button" class="button1" class="deletelocalstoragbuttone" onclick="deleteLocalstorage()">  
+           <button type="button" class="button1" class="deletelocalstoragbutton" onclick="deleteLocalstorage()">  
 		   {{ .Params.Delete }}
 	   </button>
 	   </div>
+   </div>
+   <div class="saveElGamalKeybuttonbox">
+           <div>
+           <h1>
+             {{ .Params.ElGamalPubKeyPrompt }}
+           </h1>
+           </div>
+	   <div class="webflow-style-input" class="marketAPIInput">
+                  <input class="ElGamalKeyEntry" id="ElGamalKeyEntry" placeholder=""></input>
+           </div>
+           <div>
+           <button type="button" class="button1" clas="saveElGamalKeyButton" onclick="saveElGamalKey()">
+                   {{ .Params.Save }}
+           </button>
+           </div>
    </div>
   </div>
  </body>

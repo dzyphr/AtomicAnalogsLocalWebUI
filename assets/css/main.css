@@ -16,6 +16,7 @@ align-items: center;
 	box-shadow: 0 4px 6px 0 white, 0 4px 6px 0 white;
 }
 .grid-container{
+	width: 75%;
 	border: 2px solid white;
 	box-shadow: 0 2px 3px 0 white, 0 2px 3px 0 white;
 	display: grid;
@@ -31,6 +32,7 @@ align-items: center;
         grid-gap: 2%;
 }
 .initialize-grid-container{
+	width: 55%;
         border: 2px solid white;
         box-shadow: 0 2px 3px 0 white, 0 2px 3px 0 white;
         display: grid;
@@ -57,6 +59,18 @@ align-items: center;
         display: grid;
         grid-template-rows: repeat(4, 1fr);
         grid-gap: 0%;
+}
+.swapClaimWindow{
+	border: 2px solid white;
+        box-shadow: 0 2px 3px 0 white, 0 2px 3px 0 white;
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        grid-gap: 0%;
+	justify-content: center;
+	align-items: center;
+	font-size: 75%;
+/*	display: none;*/
+	visibility: hidden;
 }
 .marketOrderInfoHeaderContainer{
 	display: grid;
@@ -188,6 +202,19 @@ align-items: center;
 }
 .apiSetupPromptContainer{
 	font-size: 80%;
+}
+
+.saveElGamalKeybuttonbox{
+	display: flex;
+justify-content: center;
+flex-direction: row;
+align-items: center;
+  text-align: center;
+  border: 1px solid white;
+  max-width: 100%;
+  border-radius: 10px;
+        box-shadow: 0 1px 2px 0 white, 0 1px 2px 0 white;
+        font-size: 75%;
 }
 
 .deletelocalstoragebuttonbox{

@@ -6,4 +6,5 @@ layout = 'market'
 apisetupprompt = 'Enter market API URL to connect:'
 submitAPISetupButton = 'Connect'
 submitapibuttonprompt = 'Add Market API:'
+swapButton = "swap"
 +++
