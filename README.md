@@ -8,7 +8,6 @@
 ## NOTE: Project is in Alpha / Testnet Phase 
 ## Actively Seeking Contributions and Feedback
 
-## Atomic Swap Implementation Detail
 
 ## Key Features
 
@@ -31,6 +30,7 @@
 
 To clone and build this application, you'll need:
 [Git](https://git-scm.com)
+and
 [Hugo](https://gohugo.io/)
 
  Keep in mind if this id Alpha software that will have lots bugs in it still.
