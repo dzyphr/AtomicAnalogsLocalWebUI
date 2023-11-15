@@ -1,3 +1,4 @@
+loadElGamalKeys()
 
 function uuidv4() {
   return "10000000-1000-4000-8000-100000000000".replace(/[018]/g, c =>
@@ -216,6 +217,23 @@ function showSwapClaimWindow(event, CoinA, CoinB, CoinA_Price, CoinB_Price, Orde
 	}
 }
 
+function loadElGamalKeys()
+{
+	//use a local get request to load ElGamal Pubs saved in the main .env file for AtomicAPI
+	getJSON("http://localhost:3031/v0.0.1/ElGamalPubs").then((jsonData) => {
+		const jsonobj = JSON.parse(jsonData.replace(/\\/g, '').replace(/\\n/g, '\n'));
+		const ElGamalKey_Key = "ElGamalPubKey";
+		const existingElGamalKeys = JSON.parse(localStorage.getItem(ElGamalKey_Key)) || [];
+		Object.keys(jsonobj).forEach(function(key) {
+			if (jsonobj[key] in existingElGamalKeys == false)
+			{
+				existingElGamalKeys.push(jsonobj[key])
+			}
+		});
+		localStorage.setItem(ElGamalKey_Key, JSON.stringify(existingElGamalKeys));
+	});
+}
+
 function saveElGamalKey()
 {
 	const ElGamalKeyEntry = document.getElementById("ElGamalKeyEntry");
@@ -245,6 +263,7 @@ function claimSwap(event, OrderTypeUUID, coinAmount)
                         {
 				if (key == OrderTypeUUID)
 				{
+					console.log("ElGamalKey:", getElGamalKey());
 					const CoinA = jsonobj[key]["CoinA"];
 					const CoinB = jsonobj[key]["CoinB"];
 					console.log("CoinA", CoinA, "CoinB", CoinB);
@@ -292,6 +311,8 @@ function claimSwap(event, OrderTypeUUID, coinAmount)
 													 
 								};
 								console.log(cleanresp);
+								//here the responder can check the price of initiator's contract
+								//and proceed accordingly
 								postJSONgetText(postmod, data4).then(respText => 
 								{
 									const cleanresp = respText
