@@ -1,0 +1,39 @@
+{{ $modalstyles := resources.Get "css/modals.css" | minify }}
+<link rel="stylesheet" type="text/css" href="{{ $modalstyles.Permalink }}" media="screen"/>
+<dialog id="dialog">
+	<div class="swapiddiv" id="swapiddiv">
+	  <h1>Swap ID: </h1>
+	</div>
+	<p>
+	  Attempting to respond to this swap offer...
+	</p>
+	<div class="swapresponsestatusdiv" id="swapresponsestatusdiv">
+	  <h1>Swap Contract Uploaded</h1>
+	  <h2>
+	    <a href="https://sepolia.etherscan.io/address/0x9315c50af6375d5c25d1b07e555c252a0b1a9164" >
+	      Sepolia Etherscan Contract Address
+	    </a>
+	  </h2>
+	</div>
+	<p>Waiting for finalization from <code>Atomic Analogs</code> swap market</p>
+	<div class="autoclaimdiv" id="autoclaimdiv">
+	  <h1>AutoClaim minimum?</h1>
+	  <div class="checkbox-wrapper-59">
+            <label class="switch"><input type="checkbox"><span class="slider"></span></label>
+          </div>
+	  <div class="webflow-style-input">
+            <input class="autoclaimval" type="autoclaimval" placeholder="Minimum Ergo for Autoclaim"></input>
+          </div>
+	</div>
+	<div class="swapfinalizeddiv" id="swapfinalizeddiv">
+	  <h1>Swap finalized!</h1>
+	  <h2>
+	    <a href="https://testnet.ergoplatform.com/en/addresses/4eLrCZQhWhmxtBcmgm9QMy5orRRr9DMKLXF3bauMoiM8U2gGEMaBCyjnZDRHHSR6MLDWvZbe8HYxiMbWLw2iXp3jkG6jja6PT1uzWBV7MydrH2ZRXJG6pYtkKw6iiUjY6Hx7kaE2wNoSWYtvdqoCsX5SsBjigStgyxCgQEDQL23Lmse3b8ogBV16hQBUUzWCV54wFgPEzpJAwpPJfhHXbX1XFbXV6upVWaHeWHHBLp8nQAUpggUTPSxBjS4dVDarcMvSG5VpNkz4FyRzyomPhyQ7KiLTgQ7WUQ2GELgg4DsE3cx6p3kPw7qM6LHK7EGZ3kWFh1756ev91J3VZY75cLnyEUA2LFLJkR5YBpE4dmZ75BQkLwD5Z8HM7RmuEwF4FMLvw5HVQb1CufCBEyUtdVMN1Fktz3UaGsmPuL6bcM79E3TND7sULzcvtcrUkWuXaXC9tC1pHLXXmBU" >
+	      Ergo Testnet Script Address
+	    </a>
+	  </h2>
+	  <h2>Value Recieved: 30 Erg</h2>
+	</div>
+	<!-- p>Claim Swap?</p -->
+	<button onclick="window.dialog.close();" aria-label="close" class="x">❌</button>
+</dialog>

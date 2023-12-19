@@ -8,7 +8,7 @@
 <link rel="stylesheet" type="text/css" href="{{ $checkboxstyles.Permalink }}" media="screen"/>
 {{ $inputboxstyles := resources.Get "css/inputboxes.css" | minify }}
 <link rel="stylesheet" type="text/css" href="{{ $inputboxstyles.Permalink }}" media="screen"/>
-{{ $marketjs := resources.Get "js/market.js" | minify }}
+{{ $marketjs := resources.Get "js/market.js" }}
 <script src="{{ $marketjs.Permalink }}"></script>
 
 {{ partial "header.html" . }}
@@ -82,7 +82,8 @@
                 <form >
                   <button class="button1" 
 			  id="claimSwapButton" 
-			  type="button">  {{ .Params.swapButton }}
+			  type="button">
+		  {{ .Params.swapButton }}
 		  </button>
                 </form>
 
@@ -91,4 +92,5 @@
    </div>
   </div>
  </body>
+ {{partial "swapdialog.html" . }}
 {{ partial "footer.html" . }}

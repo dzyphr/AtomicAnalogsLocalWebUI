@@ -1,4 +1,3 @@
-loadElGamalKeys()
 
 function uuidv4() {
   return "10000000-1000-4000-8000-100000000000".replace(/[018]/g, c =>
@@ -8,6 +7,8 @@ function uuidv4() {
 
 window.onload = function() {
   refreshOrderTypeList();
+  loadElGamalKeys();
+
 };
 
 function localClientPostJSON(data)
@@ -108,6 +109,62 @@ function getMarkets()
 function deleteLocalstorage()
 {
 	localStorage.clear();
+}
+
+function showStartingOrderIDModal(swapTicketID)
+{
+	window.dialog.showModal();
+	const ID = "<h1>Swap ID:</h1><p>" + swapTicketID + "</p>"
+	document.getElementById("swapiddiv").innerHTML = ID;
+	document.getElementById("swapresponsestatusdiv").style.display = "none";
+        document.getElementById("autoclaimdiv").style.display = "none";
+        document.getElementById("swapfinalizeddiv").style.display = "none";
+}
+
+function updateSwapResponseStatus(swapTicketID, address)
+{
+
+	var swapresponsestatusdivelement = document.getElementById("swapresponsestatusdiv")
+	swapresponsestatusdivelement.style.display = "block";
+
+
+	while(swapresponsestatusdivelement.firstChild)
+	{
+		swapresponsestatusdivelement.removeChild(swapresponsestatusdivelement.firstChild)
+	}
+	swapresponsestatusdivelement.insertAdjacentHTML("beforeend", "<h1>Swap Contract Uploaded</h1>" + 
+              "<h2><a href=\"https://sepolia.etherscan.io/address/" + address  + "\" >" + 
+              "Sepolia Etherscan Contract Address</a></h2>");
+//	swapresponsestatusdivelement.innerHTML = "<h1>Swap Contract Uploaded</h1>" + 
+//		"<h2><a href=\"https://sepolia.etherscan.io/address/" + address  + "\" >" + 
+ //         	"Sepolia Etherscan Contract Address</a></h2>"
+	//TODO Chain Specific
+	var autoclaimdivelement = document.getElementById("autoclaimdiv");
+	autoclaimdivelement.style.display = "block";
+}
+
+function updateSwapFinalizationStatus(swapTicketID, address, ergs)
+{
+	var swapfinalizeddivelement = document.getElementById("swapfinalizeddiv")
+	swapfinalizeddivelement.style.display = "block";
+	while(swapfinalizeddivelement.firstChild)
+	{
+		swapfinalizeddivelement.removeChild(swapfinalizeddivelement.firstChild);
+	}
+	swapfinalizeddivelement.insertAdjacentHTML("beforeend", "<h1>Swap finalized!</h1>" +
+          "<h2>" +
+            "<a href=\"https://testnet.ergoplatform.com/en/addresses/" + address + "\" >" +
+              "Ergo Testnet Script Address" +
+            "</a>" +
+          "</h2>" +
+          "<h2>Value Recieved: " + ergs + " Erg</h2>");
+/*	document.getElementById("swapfinalizeddiv").innerHTML = "<h1>Swap finalized!</h1>" + 
+          "<h2>" + 
+            "<a href=\"https://testnet.ergoplatform.com/en/addresses/" + address + "\" >" + 
+              "Ergo Testnet Script Address" +
+            "</a>" + 
+          "</h2>" +
+          "<h2>Value Recieved: " + ergs + " Erg</h2>"; //TODO real value*/
 }
 
 function representOrderType(marketName, CoinA, CoinB, MinVol, MaxVol, CoinA_Price, CoinB_Price, OrderTypeUUID)
@@ -278,66 +335,204 @@ function claimSwap(event, OrderTypeUUID, coinAmount)
 						const respJSONOBJ = JSON.parse(respJSON);
 						const swapTicketID = respJSONOBJ["SwapTicketID"];
 						const ENCinit = respJSONOBJ["ENC_init.bin"];
-						const data2  = {
+						showStartingOrderIDModal(swapTicketID);
+						const makeSwapDirData  = {
 							"id": uuidv4(),
 							"request_type": "makeSwapDir",
 							"SwapTicketID": swapTicketID,
 							"ENCInit": ENCinit
 						};
-						localClientPostJSON(data2).then(respText => {
-							data3 = {
-								"id": uuidv4(),
-								"request_type": "generateEncryptedResponse",
-								"SwapTicketID": swapTicketID,
-								"responderCrossChain": CoinA, 
-								"responderLocalChain": CoinB,
-								"ElGamalKey": getElGamalKey(),
-								"ElGamalKeyPath": "Key0.ElGamalKey", //TODO
-								"swapAmount": coinAmount
-							};
-							localClientPostJSON(data3).then( respText => {
-								const postmod = existingMarketLists[market]
-									.marketurl.replace("ordertypes", "publicrequests");
-								const cleanresp = respText
-									.replace("\"", "")
-									.replace("\\", "\n")
-									.replace("n", "")
-									.replace(/\\n/g, '\n');
-								data4 = {
-									"id": uuidv4(),
-									"request_type": "submitEncryptedResponse",
-									"SwapTicketID": swapTicketID,
-									"encryptedResponseBIN": cleanresp
-													 
-								};
-								console.log(cleanresp);
-								//here the responder can check the price of initiator's contract
-								//and proceed accordingly
-								postJSONgetText(postmod, data4).then(respText => 
-								{
-									const cleanresp = respText
-										.replace("\"", "")
-										.replace("\\", "\n")
-										.replace("n", "")
-										.replace(/\\n/g, '\n');
-									data5 = {
-										"id": uuidv4(),
-										"request_type": "ENCresponderClaim",
-										"SwapTicketID": swapTicketID,
-										"ENCFin": cleanresp
-									}
-									console.log(localClientPostJSON(data5))
-								});
-							});
-						});
-						
-
+						makeSwapDir(makeSwapDirData, swapTicketID, CoinA, CoinB, coinAmount, postmod);
 					});
 					break;
 				}
 			}
 		});
 	}
+}
+
+function makeSwapDir(makeSwapDirData, swapTicketID, CoinA, CoinB, coinAmount, postmod)
+{
+	localClientPostJSON(makeSwapDirData).then(respText => {
+			generateEncryptedResponseData = {
+				"id": uuidv4(),
+				"request_type": "generateEncryptedResponse",
+				"SwapTicketID": swapTicketID,
+				"responderCrossChain": CoinA,
+				"responderLocalChain": CoinB,
+				"ElGamalKey": getElGamalKey(),
+				"ElGamalKeyPath": "Key0.ElGamalKey", //TODO
+				"swapAmount": coinAmount
+			};
+			generateEncryptedResponse(generateEncryptedResponseData, swapTicketID, postmod)
+		});
+}
+
+function generateEncryptedResponse(generateEncryptedResponseData, swapTicketID, postmod)
+{
+	localClientPostJSON(generateEncryptedResponseData)
+		.then( respText => {
+			cleanresp = respText
+				.replace("\"", "")
+				.replace("\\", "\n")
+				.replace("n", "")
+				.replace(/\\n/g, '\n');
+			POST_get_response_data(swapTicketID)
+			submitEncryptedResponseData = {
+				"id": uuidv4(),
+				"request_type": "submitEncryptedResponse",
+				"SwapTicketID": swapTicketID,
+				"encryptedResponseBIN": cleanresp
+
+			};
+			//here the responder can check the price of initiator's contract
+			//and proceed accordingly
+			submitEncryptedResponse(
+				submitEncryptedResponseData, swapTicketID, postmod)
+		});
+}
+
+function submitEncryptedResponse(submitEncryptedResponseData, swapTicketID, postmod)
+{
+	postJSONgetText(postmod, submitEncryptedResponseData).then(respText =>
+	{
+		cleanresp = respText
+				.replace("\"", "")
+				.replace("\\", "\n")
+				.replace("n", "")
+				.replace(/\\n/g, '\n');
+		POST_write_ENC_finalization(swapTicketID, cleanresp);
+		POST_ElGamal_decrypt_swapFile(
+			swapTicketID,
+			"ENC_finalization.bin",
+			getElGamalKey(),
+			"Key0.ElGamalKey").then(function(result){
+				console.log(result);
+				cleanresult = result
+					.replace(/[\n\r\s]+/g, '')
+					.split('\n').join('')
+					.replace(/\\n/g, '')
+					.slice(1, -1)
+					.replaceAll("\\", '');
+				console.log(cleanresult);
+				j = JSON.parse(cleanresult);
+				boxid = j["boxId"];
+				console.log("boxID: ", boxid);
+				responder_ergobox_finalUI(boxid, swapTicketID)
+			});
+	});
+}
+
+function responder_ergobox_finalUI(boxid, swapTicketID)
+{
+	POST_get_address_by_boxID(boxid)
+		.then(function(result){
+			console.log("address:", result);
+			cleanresult = result.replaceAll("\"", "")
+			POST_getBoxValue(boxid, "boxValue", swapTicketID)
+				.then(function(result){
+					console.log("box value:", result);
+					nanoergs = result.replaceAll("\"", "");
+					ergs = NanoErgToErg(nanoergs);
+					updateSwapFinalizationStatus(swapTicketID, cleanresult, ergs)
+		//enforce manual or automated configuration here
+					POST_ENC_responder_claim(swapTicketID);
+				});
+		});
+}
+
+function NanoErgToErg(NanoErg)
+{
+    let oneErgInNanoErg = 1000000000;
+    return precise(NanoErg / oneErgInNanoErg);
+}
+
+function POST_getBoxValue(boxID, boxValPATH, swapName)
+{
+	checkBoxValueData = {
+		"id": uuidv4(),
+		"request_type": "checkBoxValue",
+		"SwapTicketID": swapName,
+		"fileName": boxValPATH,
+		"boxID": boxID
+	}
+	return localClientPostJSON(checkBoxValueData).then( respText => {
+                return respText
+        });
+}
+
+function POST_ElGamal_decrypt_swapFile(swapTicketID, SwapFileName, ElGamalKey, ElGamalKeyPath)
+{
+	ElGamalDecryptData = {
+		"id": uuidv4(),
+                "request_type": "ElGamal_decrypt_swapFile",
+		"SwapTicketID": swapTicketID,
+                "SwapFileName": SwapFileName,
+		"ElGamalKey": ElGamalKey,
+		"ElGamalKeyPath": ElGamalKeyPath
+	};
+	return localClientPostJSON(ElGamalDecryptData).then( respText => {
+		return respText
+	});
+}
+
+function POST_get_address_by_boxID(boxID)
+{
+	getAddressData = {
+		"id": uuidv4(),
+		"request_type": "SigmaParticle_box_to_addr",
+		"boxID": boxID
+	};
+	return localClientPostJSON(getAddressData).then( respText => {
+		return respText;
+	});
+
+}
+
+function POST_get_response_data(swapTicketID)
+{
+	getResponseData = {
+		"id": uuidv4(),
+		"request_type": "readSwapFile",
+		"SwapTicketID": swapTicketID,
+		"SwapFileName": "response_path.json"
+	};
+	localClientPostJSON(getResponseData).then( respText => {
+		var cleanresp = respText
+			.replace(/[\n\r\s]+/g, '')
+			.split('\n').join('')
+			.replace(/\\n/g, '')
+			.slice(1, -1)
+			.replaceAll("\\", '');
+		console.log(cleanresp);
+		cleanrespjsonobj = JSON.parse(cleanresp);
+		console.log(cleanrespjsonobj);
+		contractAddr = cleanrespjsonobj["responderContractAddr"];
+		updateSwapResponseStatus(swapTicketID, contractAddr)
+	});
+
+}
+
+function POST_write_ENC_finalization(swapTicketID, ENCfin)
+{
+	writeFinalizationData = {
+		"id": uuidv4(),
+		"request_type": "writeSwapFile",
+		"SwapTicketID": swapTicketID,
+		"SwapFileName": "ENC_finalization.bin",
+		"FileContents": ENCfin
+	};
+	localClientPostJSON(writeFinalizationData)
+}
+
+function POST_ENC_responder_claim(swapTicketID)
+{
+	data = {
+		"id": uuidv4(),
+		"request_type": "ENCresponderClaim",
+		"SwapTicketID": swapTicketID,
+	};
+	console.log(localClientPostJSON(data));
 }
 
 function precise(x) {
