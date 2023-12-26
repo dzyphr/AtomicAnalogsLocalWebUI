@@ -10,6 +10,15 @@
 <link rel="stylesheet" type="text/css" href="{{ $inputboxstyles.Permalink }}" media="screen"/>
 {{ $marketjs := resources.Get "js/market.js" }}
 <script src="{{ $marketjs.Permalink }}"></script>
+{{ $pricetoolsjs := resources.Get "js/price_tools.js" }}
+<script src="{{ $pricetoolsjs.Permalink }}"></script>
+{{ $cryptographyjs := resources.Get "js/cryptography.js" }}
+<script src="{{ $cryptographyjs.Permalink }}"></script>
+{{ $localstoragejs := resources.Get "js/localstorage.js" }}
+<script src="{{ $localstoragejs.Permalink }}"></script>
+{{ $RESTinteractionsjs := resources.Get "js/REST_interactions.js" }}
+<script src="{{ $RESTinteractionsjs.Permalink }}"></script>
+
 
 {{ partial "header.html" . }}
  <body>

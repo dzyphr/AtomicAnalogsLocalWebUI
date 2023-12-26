@@ -1,16 +1,9 @@
-
-function uuidv4() {
-  return "10000000-1000-4000-8000-100000000000".replace(/[018]/g, c =>
-    (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
-  );
-}
-
 window.onload = function() {
   refreshOrderTypeList();
   loadElGamalKeys();
 
 };
-
+/*
 function localClientPostJSON(data)
 {
 	url = "http://localhost:3031/v0.0.1/requests"
@@ -71,7 +64,7 @@ function getJSON(url)
 		method: "GET",
 	}).then((res) => res.text()).then((textres) => JSON.parse(textres)).then((json) => json)
 }
-
+*/
 function addMarket()
 {
 	const marketname = document.getElementById("marketnamesetup");
@@ -106,10 +99,6 @@ function getMarkets()
 	console.log(existingData);
 }
 
-function deleteLocalstorage()
-{
-	localStorage.clear();
-}
 
 function showStartingOrderIDModal(swapTicketID)
 {
@@ -135,9 +124,6 @@ function updateSwapResponseStatus(swapTicketID, address)
 	swapresponsestatusdivelement.insertAdjacentHTML("beforeend", "<h1>Swap Contract Uploaded</h1>" + 
               "<h2><a href=\"https://sepolia.etherscan.io/address/" + address  + "\" >" + 
               "Sepolia Etherscan Contract Address</a></h2>");
-//	swapresponsestatusdivelement.innerHTML = "<h1>Swap Contract Uploaded</h1>" + 
-//		"<h2><a href=\"https://sepolia.etherscan.io/address/" + address  + "\" >" + 
- //         	"Sepolia Etherscan Contract Address</a></h2>"
 	//TODO Chain Specific
 	var autoclaimdivelement = document.getElementById("autoclaimdiv");
 	autoclaimdivelement.style.display = "block";
@@ -158,13 +144,6 @@ function updateSwapFinalizationStatus(swapTicketID, address, ergs)
             "</a>" +
           "</h2>" +
           "<h2>Value Recieved: " + ergs + " Erg</h2>");
-/*	document.getElementById("swapfinalizeddiv").innerHTML = "<h1>Swap finalized!</h1>" + 
-          "<h2>" + 
-            "<a href=\"https://testnet.ergoplatform.com/en/addresses/" + address + "\" >" + 
-              "Ergo Testnet Script Address" +
-            "</a>" + 
-          "</h2>" +
-          "<h2>Value Recieved: " + ergs + " Erg</h2>"; //TODO real value*/
 }
 
 function representOrderType(marketName, CoinA, CoinB, MinVol, MaxVol, CoinA_Price, CoinB_Price, OrderTypeUUID)
@@ -441,12 +420,6 @@ function responder_ergobox_finalUI(boxid, swapTicketID)
 		});
 }
 
-function NanoErgToErg(NanoErg)
-{
-    let oneErgInNanoErg = 1000000000;
-    return precise(NanoErg / oneErgInNanoErg);
-}
-
 function POST_getBoxValue(boxID, boxValPATH, swapName)
 {
 	checkBoxValueData = {
@@ -539,14 +512,6 @@ function precise(x) {
   return x.toPrecision(6);
 }
 
-
-function coinPriceConversion(amountMod, CoinA_Price, CoinB_Price)
-{
-	ConversionInCoinA = precise((amountMod * CoinA_Price) / CoinB_Price);
-	ConversionInCoinB = precise((amountMod * CoinB_Price) / CoinA_Price);
-	console.log("CoinA to B:", ConversionInCoinA, "\nCoinB to A:", ConversionInCoinB);
-	return [ConversionInCoinA, ConversionInCoinB];
-}
 
 function refreshOrderTypeList()
 {
