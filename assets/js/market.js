@@ -146,13 +146,16 @@ function representOrderType(marketName, CoinA, CoinB, MinVol, MaxVol, CoinA_Pric
         const newOrderTypeCoin2IMG = document.createElement("img");
 	const SepoliaIMG_path = "../images/Sepolia-Ethereum-Logo-PNG-tranparentBG.png";
 	const SepoliaIMG_className = "sepoliaCheckboxImage";
+	coinA_ticker = "";
 	if (CoinA == "TestnetErgo")
 	{
+		coinA_ticker = "tERG";
 		newOrderTypeCoin1IMG.src = testnetErgoIMG_path;
 		newOrderTypeCoin1IMG.className = testnetErgoIMG_className;
 	}
 	else if (CoinA == "Sepolia")
 	{
+		coinA_ticker = "sepETH";
 		newOrderTypeCoin1IMG.src = SepoliaIMG_path;
                 newOrderTypeCoin1IMG.className = SepoliaIMG_className;
 	}
@@ -161,13 +164,16 @@ function representOrderType(marketName, CoinA, CoinB, MinVol, MaxVol, CoinA_Pric
 		console.log("unhandled coin: ", CoinA);
 	}
 	newOrderTypeCoin1.appendChild(newOrderTypeCoin1IMG);
+	coinB_ticker = "";
 	if (CoinB == "TestnetErgo")
         {
+		coinB_ticker = "tERG";
                 newOrderTypeCoin2IMG.src = testnetErgoIMG_path;
                 newOrderTypeCoin2IMG.className = testnetErgoIMG_className;
         }
 	else if (CoinB == "Sepolia")
         {
+		coinB_ticker = "sepETH";
                 newOrderTypeCoin2IMG.src = SepoliaIMG_path;
                 newOrderTypeCoin2IMG.className = SepoliaIMG_className;
         }
@@ -187,8 +193,8 @@ function representOrderType(marketName, CoinA, CoinB, MinVol, MaxVol, CoinA_Pric
 	//currently using 1 instead of real amount works, needs test to verify
 	const newOrderTypePrice = document.createElement("div");
 	newOrderTypePrice.innerHTML +=
-		"<h1>1 " + CoinA + " = " + ConversionArray[0]  + " " + CoinB + "</h1> " + 
-		"<h1>1 " + CoinB + " = " + ConversionArray[1]  + " " + CoinA + "</h1>"
+		"<h1>1 " + coinA_ticker + " = " + ConversionArray[0]  + " " + coinB_ticker + "</h1> " + 
+		"<h1>1 " + coinB_ticker + " = " + ConversionArray[1]  + " " + coinA_ticker + "</h1>"
 
 	//append in order: Market Name Offering Coin Accepting Coin Minimum Vol Maximum Vol Offer Price
 	individualMarketOrderContainer.appendChild(newOrderTypeSwapName);
