@@ -3,68 +3,7 @@ window.onload = function() {
   loadElGamalKeys();
 
 };
-/*
-function localClientPostJSON(data)
-{
-	url = "http://localhost:3031/v0.0.1/requests"
-	const headers = {
-                Authorization: "Bearer " + "PASSWORD",
-                "Content-Type": "application/json"
-        }
-	console.log(data);
-	return fetch(url, {
-                method: "POST",
-                body: JSON.stringify(data),
-                headers: headers,
-        }).then(async res  =>
-                {
-                         return await res.text();
-                });
-}
 
-function postJSONgetText(url, data)
-{
-        const headers = {
-                Authorization: "Bearer " + "NONE",
-                "Content-Type": "application/json"
-        }
-        return fetch(url, {
-                method: "POST",
-                body: JSON.stringify(data),
-                headers: headers,
-        }).then(async res  =>
-                {
-                         return await res.text();
-                });
-}
-
-
-function postJSON(url, data)
-{
-	const headers = {
-		Authorization: "Bearer " + "NONE",
-		"Content-Type": "application/json"
-	}
-	return fetch(url, {
-		method: "POST", 
-		body: JSON.stringify(data),
-		headers: headers,		
-	}).then(async res  => 
-		{
-			 return await res.json();
-		});
-}
-
-function getJSON(url)
-{
-	const authHeaders = {
-		Authorization: "Bearer " + "NONE",
-	};
-	return fetch(url, {
-		method: "GET",
-	}).then((res) => res.text()).then((textres) => JSON.parse(textres)).then((json) => json)
-}
-*/
 function addMarket()
 {
 	const marketname = document.getElementById("marketnamesetup");
@@ -146,6 +85,50 @@ function updateSwapFinalizationStatus(swapTicketID, address, ergs)
           "<h2>Value Recieved: " + ergs + " Erg</h2>");
 }
 
+function representActiveSwap(CoinA, CoinB, AmtCoinA, AmtCoinB, SwapID)
+{
+	const activeSwapTemp = document.createElement("div");
+	activeSwapTemp.className = "activeSwapTemplate";
+
+
+	//if ergo (testnet)
+	const coinA_image = document.createElement("img");
+	coinA_image.className = "ergoTestnetCheckboxImage";
+	coinA_image.src = "../images/ErgoTestnetTransparentWhite.png";
+
+	const coinA_amount = document.createElement("h1");
+	coinA_amount.insertAdjacentHTML("beforeend", AmtCoinA);
+
+	const swaparrows = document.createElement("img");
+	swaparrows.src = "../images/swaparrows.png";
+
+	//if sepolia
+	const coinB_amount = document.createElement("h1");
+	coinB_amount.insertAdjacentHTML("beforeend", AmtCoinB);
+
+	const coinB_image = document.createElement("img");
+	coinB_image.className = "sepoliaCheckboxImage";
+	coinB_image.src = "../images/Sepolia-Ethereum-Logo-PNG-tranparentBG.png";
+
+
+	activeSwapTemp.appendChild(coinA_image);
+	activeSwapTemp.appendChild(coinA_amount);
+	activeSwapTemp.appendChild(swaparrows);
+	activeSwapTemp.appendChild(coinB_amount);
+	activeSwapTemp.appendChild(coinB_image);
+	
+	activeSwapTemp.id = SwapID;
+
+	const activeSwapSlider = document.getElementById("activeSwapSlider");
+	if (activeSwapSlider)
+	{
+		activeSwapSlider.appendChild(activeSwapTemp);
+	}
+
+
+
+}
+
 function representOrderType(marketName, CoinA, CoinB, MinVol, MaxVol, CoinA_Price, CoinB_Price, OrderTypeUUID)
 {
 	const newOrderTypeRepresentation = document.createElement("div");
@@ -201,6 +184,7 @@ function representOrderType(marketName, CoinA, CoinB, MinVol, MaxVol, CoinA_Pric
         newOrderTypeMaxVol.innerHTML += "<h1>" + MaxVol + "</h1>";
 
 	const ConversionArray = coinPriceConversion(1, CoinA_Price, CoinB_Price);
+	//currently using 1 instead of real amount works, needs test to verify
 	const newOrderTypePrice = document.createElement("div");
 	newOrderTypePrice.innerHTML +=
 		"<h1>1 " + CoinA + " = " + ConversionArray[0]  + " " + CoinB + "</h1> " + 
@@ -243,7 +227,7 @@ function showSwapClaimWindow(event, CoinA, CoinB, CoinA_Price, CoinB_Price, Orde
 		swapButton.addEventListener("click",
 			function (event)
 			{
-				claimSwap(event, OrderTypeUUID, coinBEntry.value)
+				claimSwap(event, OrderTypeUUID, coinBEntry.value, CoinA_Price, CoinB_Price)
 			});
 		document.getElementById("estReceivedCoinA").innerHTML = CoinA;
 	}
@@ -253,41 +237,7 @@ function showSwapClaimWindow(event, CoinA, CoinB, CoinA_Price, CoinB_Price, Orde
 	}
 }
 
-function loadElGamalKeys()
-{
-	//use a local get request to load ElGamal Pubs saved in the main .env file for AtomicAPI
-	getJSON("http://localhost:3031/v0.0.1/ElGamalPubs").then((jsonData) => {
-		const jsonobj = JSON.parse(jsonData.replace(/\\/g, '').replace(/\\n/g, '\n'));
-		const ElGamalKey_Key = "ElGamalPubKey";
-		const existingElGamalKeys = JSON.parse(localStorage.getItem(ElGamalKey_Key)) || [];
-		Object.keys(jsonobj).forEach(function(key) {
-			if (jsonobj[key] in existingElGamalKeys == false)
-			{
-				existingElGamalKeys.push(jsonobj[key])
-			}
-		});
-		localStorage.setItem(ElGamalKey_Key, JSON.stringify(existingElGamalKeys));
-	});
-}
-
-function saveElGamalKey()
-{
-	const ElGamalKeyEntry = document.getElementById("ElGamalKeyEntry");
-	const ElGamalKey_Key = "ElGamalPubKey";
-	const existingElGamalKeys = JSON.parse(localStorage.getItem(ElGamalKey_Key)) || [];
-	existingElGamalKeys.push(ElGamalKeyEntry.value);
-	localStorage.setItem(ElGamalKey_Key, JSON.stringify(existingElGamalKeys));
-}
-
-function getElGamalKey()
-{
-	const ElGamalKey_Key = "ElGamalPubKey";
-        const existingElGamalKeys = JSON.parse(localStorage.getItem(ElGamalKey_Key)) || [];
-	console.log(existingElGamalKeys);
-	return existingElGamalKeys[0];
-}
-
-function claimSwap(event, OrderTypeUUID, coinAmount)
+function claimSwap(event, OrderTypeUUID, coinAmount, CoinA_Price, CoinB_Price)
 {
 	const marketlistKey = 'marketlist';
         const existingMarketLists = JSON.parse(localStorage.getItem(marketlistKey)) || [];
@@ -321,7 +271,7 @@ function claimSwap(event, OrderTypeUUID, coinAmount)
 							"SwapTicketID": swapTicketID,
 							"ENCInit": ENCinit
 						};
-						makeSwapDir(makeSwapDirData, swapTicketID, CoinA, CoinB, coinAmount, postmod);
+						makeSwapDir(makeSwapDirData, swapTicketID, CoinA, CoinB, coinAmount, postmod, CoinA_Price, CoinB_Price);
 					});
 					break;
 				}
@@ -330,7 +280,7 @@ function claimSwap(event, OrderTypeUUID, coinAmount)
 	}
 }
 
-function makeSwapDir(makeSwapDirData, swapTicketID, CoinA, CoinB, coinAmount, postmod)
+function makeSwapDir(makeSwapDirData, swapTicketID, CoinA, CoinB, coinAmount, postmod, CoinA_Price, CoinB_Price)
 {
 	localClientPostJSON(makeSwapDirData).then(respText => {
 			generateEncryptedResponseData = {
@@ -343,7 +293,12 @@ function makeSwapDir(makeSwapDirData, swapTicketID, CoinA, CoinB, coinAmount, po
 				"ElGamalKeyPath": "Key0.ElGamalKey", //TODO
 				"swapAmount": coinAmount
 			};
-			generateEncryptedResponse(generateEncryptedResponseData, swapTicketID, postmod)
+			generateEncryptedResponse(generateEncryptedResponseData, swapTicketID, postmod);
+			const ConversionArray = coinPriceConversion(coinAmount, CoinA_Price, CoinB_Price);
+			AmtCoinB = coinAmount; //we are the responder here
+			AmtCoinA = ConversionArray[1]; // TODO Hide active swaps if there aren't any
+			representActiveSwap(CoinA, CoinB, AmtCoinA, AmtCoinB, swapTicketID);
+			//generate active swap entry here 
 		});
 }
 
@@ -418,98 +373,6 @@ function responder_ergobox_finalUI(boxid, swapTicketID)
 					POST_ENC_responder_claim(swapTicketID);
 				});
 		});
-}
-
-function POST_getBoxValue(boxID, boxValPATH, swapName)
-{
-	checkBoxValueData = {
-		"id": uuidv4(),
-		"request_type": "checkBoxValue",
-		"SwapTicketID": swapName,
-		"fileName": boxValPATH,
-		"boxID": boxID
-	}
-	return localClientPostJSON(checkBoxValueData).then( respText => {
-                return respText
-        });
-}
-
-function POST_ElGamal_decrypt_swapFile(swapTicketID, SwapFileName, ElGamalKey, ElGamalKeyPath)
-{
-	ElGamalDecryptData = {
-		"id": uuidv4(),
-                "request_type": "ElGamal_decrypt_swapFile",
-		"SwapTicketID": swapTicketID,
-                "SwapFileName": SwapFileName,
-		"ElGamalKey": ElGamalKey,
-		"ElGamalKeyPath": ElGamalKeyPath
-	};
-	return localClientPostJSON(ElGamalDecryptData).then( respText => {
-		return respText
-	});
-}
-
-function POST_get_address_by_boxID(boxID)
-{
-	getAddressData = {
-		"id": uuidv4(),
-		"request_type": "SigmaParticle_box_to_addr",
-		"boxID": boxID
-	};
-	return localClientPostJSON(getAddressData).then( respText => {
-		return respText;
-	});
-
-}
-
-function POST_get_response_data(swapTicketID)
-{
-	getResponseData = {
-		"id": uuidv4(),
-		"request_type": "readSwapFile",
-		"SwapTicketID": swapTicketID,
-		"SwapFileName": "response_path.json"
-	};
-	localClientPostJSON(getResponseData).then( respText => {
-		var cleanresp = respText
-			.replace(/[\n\r\s]+/g, '')
-			.split('\n').join('')
-			.replace(/\\n/g, '')
-			.slice(1, -1)
-			.replaceAll("\\", '');
-		console.log(cleanresp);
-		cleanrespjsonobj = JSON.parse(cleanresp);
-		console.log(cleanrespjsonobj);
-		contractAddr = cleanrespjsonobj["responderContractAddr"];
-		updateSwapResponseStatus(swapTicketID, contractAddr)
-	});
-
-}
-
-function POST_write_ENC_finalization(swapTicketID, ENCfin)
-{
-	writeFinalizationData = {
-		"id": uuidv4(),
-		"request_type": "writeSwapFile",
-		"SwapTicketID": swapTicketID,
-		"SwapFileName": "ENC_finalization.bin",
-		"FileContents": ENCfin
-	};
-	localClientPostJSON(writeFinalizationData)
-}
-
-function POST_ENC_responder_claim(swapTicketID)
-{
-	data = {
-		"id": uuidv4(),
-		"request_type": "ENCresponderClaim",
-		"SwapTicketID": swapTicketID,
-	};
-	console.log(localClientPostJSON(data));
-}
-
-function precise(x) {
-  return x.toPrecision(6);
 }
 
 

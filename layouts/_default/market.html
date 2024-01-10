@@ -18,6 +18,9 @@
 <script src="{{ $localstoragejs.Permalink }}"></script>
 {{ $RESTinteractionsjs := resources.Get "js/REST_interactions.js" }}
 <script src="{{ $RESTinteractionsjs.Permalink }}"></script>
+{{ $ElGamaljs := resources.Get "js/ElGamal.js" }}
+<script src="{{ $ElGamaljs.Permalink }}"></script>
+
 
 
 {{ partial "header.html" . }}
@@ -95,7 +98,21 @@
 		  {{ .Params.swapButton }}
 		  </button>
                 </form>
-
+       </div>
+       <div class="activeSwaps" id="activeSwaps">
+	 <h2>Active Swaps:</h2>
+	 <div class="activeSwapSlider" id="activeSwapSlider">
+		 <!--div class="activeSwapTemplate" id="activeSwapTemplate">
+		   {{ $ergo := resources.Get "images/ErgoTestnetTransparentWhite.png" }}
+		   <img src="{{ $ergo.Permalink }}" class="ergoTestnetCheckboxImage">
+		   <h1>50</h1>
+		   {{ $swaparrows := resources.Get "images/swaparrows.png" }}
+                   <img src="{{ $swaparrows.Permalink }}" class="swaparrowsImage">
+		   <h1>50</h1>
+		   {{ $sepolia := resources.Get "images/Sepolia-Ethereum-Logo-PNG-tranparentBG.png" }}
+	           <img src="{{ $sepolia.Permalink }}" class="sepoliaCheckboxImage">
+		 </div-->
+         </div> 
        </div>
      </div>
    </div>

@@ -14,3 +14,7 @@ function coinPriceConversion(amountMod, CoinA_Price, CoinB_Price)
         return [ConversionInCoinA, ConversionInCoinB];
 }
 
+function precise(x) {
+  return x.toPrecision(6);
+}
+
