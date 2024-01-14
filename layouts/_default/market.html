@@ -20,9 +20,16 @@
 <script src="{{ $RESTinteractionsjs.Permalink }}"></script>
 {{ $ElGamaljs := resources.Get "js/ElGamal.js" }}
 <script src="{{ $ElGamaljs.Permalink }}"></script>
-
-
-
+{{ $onload_marketjs := resources.Get "js/onload_market.js" }}
+<script src="{{ $onload_marketjs.Permalink }}"></script>
+{{ $activeSwapModaljs := resources.Get "js/activeSwapModal.js" }}
+<script src="{{ $activeSwapModaljs.Permalink }}"></script>
+{{ $activeSwapSliderjs := resources.Get "js/activeSwapSlider.js" }}
+<script src="{{ $activeSwapSliderjs.Permalink }}"></script>
+{{ $orderRepListjs := resources.Get "js/orderRepList.js" }}
+<script src="{{ $orderRepListjs.Permalink }}"></script>
+{{ $swapClaimingjs := resources.Get "js/swapClaiming.js" }}
+<script src="{{ $swapClaimingjs.Permalink }}"></script>
 {{ partial "header.html" . }}
  <body>
   <div class="bodydiv">
@@ -102,16 +109,6 @@
        <div class="activeSwaps" id="activeSwaps">
 	 <h2>Active Swaps:</h2>
 	 <div class="activeSwapSlider" id="activeSwapSlider">
-		 <!--div class="activeSwapTemplate" id="activeSwapTemplate">
-		   {{ $ergo := resources.Get "images/ErgoTestnetTransparentWhite.png" }}
-		   <img src="{{ $ergo.Permalink }}" class="ergoTestnetCheckboxImage">
-		   <h1>50</h1>
-		   {{ $swaparrows := resources.Get "images/swaparrows.png" }}
-                   <img src="{{ $swaparrows.Permalink }}" class="swaparrowsImage">
-		   <h1>50</h1>
-		   {{ $sepolia := resources.Get "images/Sepolia-Ethereum-Logo-PNG-tranparentBG.png" }}
-	           <img src="{{ $sepolia.Permalink }}" class="sepoliaCheckboxImage">
-		 </div-->
          </div> 
        </div>
      </div>
