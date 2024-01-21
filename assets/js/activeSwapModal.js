@@ -24,7 +24,40 @@ function updateSwapResponseStatus(swapTicketID, address)
               "Sepolia Etherscan Contract Address</a></h2>");
         //TODO Chain Specific
         var autoclaimdivelement = document.getElementById("autoclaimdiv");
+	var autoClaimSwitch = document.getElementById("autoClaimCheckbox");
+	autoclaimval = document.getElementById("autoclaimval");
+	autoclaimval.addEventListener("input",
+		function(event)
+		{
+			autoClaimSwitch.checked = false;
+			storeActiveSwapInfo(swapTicketID, "SettingAutoClaim", "", [false, 0]);
+		}
+	);
+	autoClaimSwitch.addEventListener("click",
+                function (event)
+                {
+			if (autoClaimSwitch.checked)
+			{
+				autoclaimval = document.getElementById("autoclaimval");
+				console.log("autoclaimval.value", autoclaimval.value);
+				if (autoclaimval &&  autoclaimval.value && autoclaimval.value != 0 && 
+					!isNaN(autoclaimval.value))
+				{
+					storeActiveSwapInfo(swapTicketID, "SettingAutoClaim", "", [true, autoclaimval.value]);
+				}
+				else
+				{
+					autoClaimSwitch.checked = false;
+				}
+			}
+			else
+			{
+				storeActiveSwapInfo(swapTicketID, "SettingAutoClaim", "", [false, 0]);
+			}
+                });
         autoclaimdivelement.style.display = "block";
+	//attach a function event to this that stores the autoclaim properties in localstorage when interacted with by UI
+
 }
 
 function updateSwapFinalizationStatus(swapTicketID, address, ergs)

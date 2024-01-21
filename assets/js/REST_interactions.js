@@ -121,9 +121,9 @@ function POST_get_response_data(swapTicketID)
                 cleanrespjsonobj = JSON.parse(cleanresp);
                 console.log(cleanrespjsonobj);
                 contractAddr = cleanrespjsonobj["responderContractAddr"];
-                updateSwapResponseStatus(swapTicketID, contractAddr)
+                updateSwapResponseStatus(swapTicketID, contractAddr);
+		storeActiveSwapInfo(swapTicketID, "Submitting", "", [contractAddr]);
         });
-
 }
 
 function POST_write_ENC_finalization(swapTicketID, ENCfin)
