@@ -151,10 +151,30 @@ function storeActiveSwapInfo(swapTicketID, Stage, infoList, metaList)
                         return false
                 }
 	}
+	if (Stage == "SettingModalFocus")
+	{
+		if (metaList.length == 1) //1 item: modalFocus(bool)
+                {
+                        localStorage.setItem(swapTicketID + "_modalFocus", JSON.stringify(metaList))
+                }
+		else
+                {
+                        console.log("meta list requires exactly 1 item in SettingModalFocus. " +
+                                "Item: [modalFocus(bool)]")
+                        return false
+                }
+	}
 	console.log(localStorage.getItem(swapTicketID));
 	console.log(localStorage.getItem(swapTicketID + "_meta"))
 	console.log(localStorage.getItem(swapTicketID + "_autoclaim"));
+	console.log(localStorage.getItem(swapTicketID + "_modalFocus"));
 }
+
+
+//boolean for if this is the current swap (to look at in the modal)
+//if yes populate the modal UI when the swap updates in each step
+//if no only push info to local storage
+//after allow to click on an active swap entry, and update the current swap modal UI with the info for that entry
 
 function makeSwapDir(makeSwapDirData, swapTicketID, CoinA, CoinB, coinAmount, postmod, CoinA_Price, CoinB_Price)
 {
@@ -190,7 +210,7 @@ function generateEncryptedResponse(generateEncryptedResponseData, swapTicketID, 
 				.replace("\\", "\n")
 				.replace("n", "")
 				.replace(/\\n/g, '\n');
-			POST_get_response_data(swapTicketID)
+			POST_get_response_data(swapTicketID, JSON.parse(localStorage.getItem(swapTicketID + "_modalFocus"))[0])
 			submitEncryptedResponseData = {
 				"id": uuidv4(),
 				"request_type": "submitEncryptedResponse",
@@ -231,13 +251,14 @@ function submitEncryptedResponse(submitEncryptedResponseData, swapTicketID, post
 				j = JSON.parse(cleanresult);
 				boxid = j["boxId"];
 				console.log("boxID: ", boxid);
-				responder_ergobox_finalUI(boxid, swapTicketID);
+				responder_ergobox_finalUI(boxid, swapTicketID, 
+					JSON.parse(localStorage.getItem(swapTicketID + "_modalFocus"))[0]);
 				storeActiveSwapInfo(swapTicketID, "Finalized", "", [boxid]);
 			});
 	});
 }
 
-function responder_ergobox_finalUI(boxid, swapTicketID)
+function responder_ergobox_finalUI(boxid, swapTicketID, UI_bool)
 {
 	POST_get_address_by_boxID(boxid)
 		.then(function(result){
@@ -248,7 +269,10 @@ function responder_ergobox_finalUI(boxid, swapTicketID)
 					console.log("box value:", result);
 					nanoergs = result.replaceAll("\"", "");
 					ergs = NanoErgToErg(nanoergs);
-					updateSwapFinalizationStatus(swapTicketID, cleanresult, ergs)
+					if (UI_bool == true)
+					{
+						updateSwapFinalizationStatus(swapTicketID, cleanresult, ergs)
+					}
 		//enforce manual or automated configuration here
 					storeActiveSwapInfo(swapTicketID, "Unclaimed", "", [ergs]); 
 					//make sure ergs are stored in metalist

@@ -6,6 +6,13 @@ function showStartingOrderIDModal(swapTicketID)
         document.getElementById("swapresponsestatusdiv").style.display = "none";
         document.getElementById("autoclaimdiv").style.display = "none";
         document.getElementById("swapfinalizeddiv").style.display = "none";
+	modalX = document.getElementById("modalX");
+	modalX.addEventListener("click",
+		function (event)
+		{
+			storeActiveSwapInfo(swapTicketID, "SettingModalFocus", "", [false]);
+		}
+	);
 }
 
 function updateSwapResponseStatus(swapTicketID, address)

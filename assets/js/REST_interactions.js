@@ -102,7 +102,7 @@ function POST_get_address_by_boxID(boxID)
 
 }
 
-function POST_get_response_data(swapTicketID)
+function POST_get_response_data(swapTicketID, UI_bool)
 {
         getResponseData = {
                 "id": uuidv4(),
@@ -121,7 +121,12 @@ function POST_get_response_data(swapTicketID)
                 cleanrespjsonobj = JSON.parse(cleanresp);
                 console.log(cleanrespjsonobj);
                 contractAddr = cleanrespjsonobj["responderContractAddr"];
-                updateSwapResponseStatus(swapTicketID, contractAddr);
+		if (UI_bool == true)
+		{
+		// UI
+	                updateSwapResponseStatus(swapTicketID, contractAddr);
+		//
+		}
 		storeActiveSwapInfo(swapTicketID, "Submitting", "", [contractAddr]);
         });
 }

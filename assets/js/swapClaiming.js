@@ -52,6 +52,8 @@ function claimSwap(event, OrderTypeUUID, coinAmount, CoinA_Price, CoinB_Price)
                                                 const swapTicketID = respJSONOBJ["SwapTicketID"];
                                                 const ENCinit = respJSONOBJ["ENC_init.bin"];
                                                 showStartingOrderIDModal(swapTicketID);
+						storeActiveSwapInfo(swapTicketID, "SettingModalFocus", "", [true]);
+						//set modal focus to true as soon as swap starts
                                                 const makeSwapDirData  = {
                                                         "id": uuidv4(),
                                                         "request_type": "makeSwapDir",

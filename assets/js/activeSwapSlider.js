@@ -13,7 +13,7 @@ function representActiveSwap(CoinA, CoinB, AmtCoinA, AmtCoinB, SwapID)
         coinA_amount.insertAdjacentHTML("beforeend", AmtCoinA);
 
         const swaparrows = document.createElement("img");
-        swaparrows.src = "../images/swaparrows.png";
+        swaparrows.src = "../img/swaparrows.png"; //static/img path
 
         //if sepolia
         const coinB_amount = document.createElement("h1");
