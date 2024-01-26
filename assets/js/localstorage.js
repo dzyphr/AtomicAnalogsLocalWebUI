@@ -9,7 +9,7 @@ function deleteLocalstorage()
 //update the local storage as the other interactions finish
 //if the user brings the swap back up again, bring up a newly hydrated modal, use the local storage to determine
 //which stage of the swap its at, use calls to backend to populate with accurate data
-//info list needs at least 6 items. Items: CoinA, CoinB, CoinB_Amt, CoinA_price, CoinB_price
+//info list needs at least 5 items. Items: CoinA, CoinB, CoinB_Amt, CoinA_price, CoinB_price
 function storeActiveSwapInfo(swapTicketID, Stage, infoList, metaList)
 {
         //Stages:

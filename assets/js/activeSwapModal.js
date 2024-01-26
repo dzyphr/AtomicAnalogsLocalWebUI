@@ -1,3 +1,28 @@
+function loadModalInfoFromStorage(swapTicketID)
+{
+	currentSwap = JSON.parse(localStorage.getItem(swapTicketID))
+	
+	Stage = currentSwap[5];
+	console.log("Stage:", Stage);
+	if (Stage == "Funding")
+	{
+		showStartingOrderIDModal(swapTicketID)
+	}
+	if (Stage == "Submitting" || Stage == "Waiting for Finalization" || Stage == "finalized")
+	{
+		currentSwapMeta = JSON.parse(localStorage.getItem(swapTicketID + "_meta"));
+		address = currentSwapMeta[0]
+		updateSwapResponseStatus(swapTicketID, address)
+	}
+	if (Stage == "Unclaimed")
+	{
+		currentSwapMeta = JSON.parse(localStorage.getItem(swapTicketID + "_meta"));
+		address = currentSwapMeta[1];
+		ergs = currentSwapMeta[2];
+		updateSwapFinalizationStatus(swapTicketID, address, ergs)
+	}
+}
+
 function showStartingOrderIDModal(swapTicketID)
 {
         window.dialog.showModal();

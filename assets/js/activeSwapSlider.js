@@ -31,7 +31,13 @@ function representActiveSwap(CoinA, CoinB, AmtCoinA, AmtCoinB, SwapID)
         activeSwapTemp.appendChild(coinB_image);
 
         activeSwapTemp.id = SwapID;
-
+	activeSwapTemp.addEventListener("click",
+		function(event)
+		{
+			loadModalInfoFromStorage(SwapID);
+			storeActiveSwapInfo(SwapID, "SettingModalFocus", "", [true]);
+		}
+	);
         const activeSwapSlider = document.getElementById("activeSwapSlider");
         if (activeSwapSlider)
         {
