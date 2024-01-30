@@ -49,36 +49,69 @@ align-items: center;
 .activeSwaps{
 	border: 2px solid white;
         box-shadow: 0 2px 3px 0 white, 0 2px 3px 0 white;
+	max-height: 20rem;
 	max-width:auto;
-	width: 50rem; /* Set the width of the container */
+	width: 16rem; /* Set the width of the container */
 	overflow-x: hidden;
-  overflow-y: hidden; /* Hide vertical scrolling */
+  overflow-x: hidden; /* Hide vertical scrolling */
   white-space: nowrap;
-  margin: auto;
 	display: grid;
-        grid-template-columns: 1fr 3fr;
+        grid-template-rows: 1fr 4fr;
+	justify-content: center;
+	margin: auto;
+	    padding: 4;
+
+}
+
+
+
+.activeSwapSlider::-webkit-scrollbar {
+  width: 2px;               /* width of the entire scrollbar */
+}
+
+.activeSwapSlider::-webkit-scrollbar-track {
+  background: transparent;        /* color of the tracking area */
+}
+
+.activeSwapSlider::-webkit-scrollbar-thumb {
+  background-color: transparent;  /* color of the scroll thumb */
+  border-radius: 20px;       /* roundness of the scroll thumb */
+  border: 1px solid transparent;  /* creates padding around scroll thumb */
+}
+
+.activeSwaps h1{
+	font-size: 25px;
 }
 .activeSwaps h2{
-	margin: auto;
+	display: inline-block; /* Make sure images and headings behave as inline elements */
+  vertical-align: middle; /* Align them vertically in the middle */
+  font-size: 15px;
+  margin: auto;
 }
 .activeSwapSlider{
-	overflow-x: auto;
-	display: flex;
+	margin: 0% ;
+	border-radius: 0;
+	overflow-x: hidden;
+	overflow-y: auto;
+	flex-direction: column;
+	justify-content: center;
 }
 .activeSwapSlider img,
 .activeSwapSlider h1{
 	display: inline-block; /* Make sure images and headings behave as inline elements */
   vertical-align: middle; /* Align them vertically in the middle */
-  margin: 0;
+  margin: 1%;
 }
 .activeSwapTemplate{
+	padding: 1%;
 	background: #546E7A;
-	width: 100%;
+	width: 15rem;
 	height: auto;
+	    margin:5;
 }
 .activeSwapTemplate img{
-    width:  100px;
-    height: 100px;
+    width:  30px;
+    height: 30px;
 }
 
 .market-grid-container{
@@ -133,17 +166,29 @@ align-items: center;
 	box-shadow: 0 1px 0px 0 white, 0 0px 0px 0 white;
 }
 
+body::-webkit-scrollbar {
+  width: 2px;               /* width of the entire scrollbar */
+}
 
+body::-webkit-scrollbar-track {
+  background: transparent;        /* color of the tracking area */
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: #99ff33;  /* color of the scroll thumb */
+  border-radius: 20px;       /* roundness of the scroll thumb */
+  border: 1px solid transparent;  /* creates padding around scroll thumb */
+}
 
 .marketWidgetsContainer{
 	display: grid;
-        grid-template-columns:1fr 5fr
+        grid-template-columns:4fr 8fr
 }
 .marketCoinSelectorContainer{
 	border: 2px solid white;
         box-shadow: 0 2px 3px 0 white, 0 2px 3px 0 white;
         display: grid;
-        grid-template-rows: repeat(4, 1fr);
+        grid-template-rows: repeat(3, 1fr);
         grid-gap: 0%;
 }
 .ergoAccountSetupBox{

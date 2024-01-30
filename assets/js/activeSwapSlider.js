@@ -10,14 +10,14 @@ function representActiveSwap(CoinA, CoinB, AmtCoinA, AmtCoinB, SwapID)
         coinA_image.className = "ergoTestnetCheckboxImage";
         coinA_image.src = "../images/ErgoTestnetTransparentWhite.png";
 
-        const coinA_amount = document.createElement("h1");
+        const coinA_amount = document.createElement("h2");
         coinA_amount.insertAdjacentHTML("beforeend", AmtCoinA);
 
         const swaparrows = document.createElement("img");
         swaparrows.src = "../img/swaparrows.png"; //static/img path
 
         //if sepolia
-        const coinB_amount = document.createElement("h1");
+        const coinB_amount = document.createElement("h2");
         coinB_amount.insertAdjacentHTML("beforeend", AmtCoinB);
 
         const coinB_image = document.createElement("img");

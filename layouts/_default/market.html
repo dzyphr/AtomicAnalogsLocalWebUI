@@ -8,6 +8,8 @@
 <link rel="stylesheet" type="text/css" href="{{ $checkboxstyles.Permalink }}" media="screen"/>
 {{ $inputboxstyles := resources.Get "css/inputboxes.css" | minify }}
 <link rel="stylesheet" type="text/css" href="{{ $inputboxstyles.Permalink }}" media="screen"/>
+{{ $scrollbarstyles := resources.Get "css/scrollbars.css" | minify }}
+<link rel="stylesheet" type="text/css" href="{{ $scrollbarstyles.Permalink }}" media="screen"/>
 {{ $marketjs := resources.Get "js/market.js" }}
 <script src="{{ $marketjs.Permalink }}"></script>
 {{ $pricetoolsjs := resources.Get "js/price_tools.js" }}
@@ -77,6 +79,11 @@
              <label class="switch"><input type="checkbox"><span class="slider"></span></label>
            </div>
        	 </div>
+	 <div class="activeSwaps" >
+         <h1>Active Swaps:</h1>
+         <div class="activeSwapSlider" id="activeSwapSlider" id="scrollbar1">
+         </div>
+       </div>
        </div>
      <div class="marketOrderInfoContainer" id="marketOrderInfoContainer">
 	   <div class="marketOrderInfoHeaderContainer">
@@ -105,11 +112,6 @@
 		  {{ .Params.swapButton }}
 		  </button>
                 </form>
-       </div>
-       <div class="activeSwaps" id="activeSwaps">
-	 <h2>Active Swaps:</h2>
-	 <div class="activeSwapSlider" id="activeSwapSlider">
-         </div> 
        </div>
      </div>
    </div>
