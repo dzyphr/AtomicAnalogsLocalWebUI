@@ -3,23 +3,33 @@ function loadModalInfoFromStorage(swapTicketID)
 	currentSwap = JSON.parse(localStorage.getItem(swapTicketID))
 	
 	Stage = currentSwap[5];
-	console.log("Stage:", Stage);
 	if (Stage == "Funding")
 	{
+		console.log("Stage:", Stage);
 		showStartingOrderIDModal(swapTicketID)
 	}
-	if (Stage == "Submitting" || Stage == "Waiting for Finalization" || Stage == "finalized")
+	else if (Stage == "Submitting" || Stage == "Waiting for Finalization" || Stage == "Finalized")
 	{
+		console.log("Stage:", Stage);
 		currentSwapMeta = JSON.parse(localStorage.getItem(swapTicketID + "_meta"));
-		address = currentSwapMeta[0]
+		address = currentSwapMeta[0];
+		showStartingOrderIDModal(swapTicketID);
 		updateSwapResponseStatus(swapTicketID, address)
 	}
-	if (Stage == "Unclaimed")
+	else if (Stage == "Unclaimed" || Stage == "Claimed") 
 	{
+		console.log("Stage:", Stage);
 		currentSwapMeta = JSON.parse(localStorage.getItem(swapTicketID + "_meta"));
-		address = currentSwapMeta[1];
+		address1 = currentSwapMeta[0];
+		address2 = currentSwapMeta[1];
 		ergs = currentSwapMeta[2];
-		updateSwapFinalizationStatus(swapTicketID, address, ergs)
+		showStartingOrderIDModal(swapTicketID);
+		updateSwapResponseStatus(swapTicketID, address1);
+		updateSwapFinalizationStatus(swapTicketID, address2, ergs)
+	}
+	else
+	{
+		console.log("unknown stage:", Stage);
 	}
 }
 

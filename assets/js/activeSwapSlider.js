@@ -1,5 +1,6 @@
 function representActiveSwap(CoinA, CoinB, AmtCoinA, AmtCoinB, SwapID)
 {
+	const activeSwapSlider = document.getElementById("activeSwapSlider");
         const activeSwapTemp = document.createElement("div");
         activeSwapTemp.className = "activeSwapTemplate";
 
@@ -30,18 +31,20 @@ function representActiveSwap(CoinA, CoinB, AmtCoinA, AmtCoinB, SwapID)
         activeSwapTemp.appendChild(coinB_amount);
         activeSwapTemp.appendChild(coinB_image);
 
-        activeSwapTemp.id = SwapID;
-	activeSwapTemp.addEventListener("click",
-		function(event)
-		{
-			loadModalInfoFromStorage(SwapID);
-			storeActiveSwapInfo(SwapID, "SettingModalFocus", "", [true]);
-		}
-	);
-        const activeSwapSlider = document.getElementById("activeSwapSlider");
+	activeSwapTemp.id = SwapID;
+
+        activeSwapTemp.addEventListener("click",
+                function(event)
+                {
+                        loadModalInfoFromStorage(SwapID);
+                        storeActiveSwapInfo(SwapID, "SettingModalFocus", "", [true]);
+                }
+        );
+
         if (activeSwapSlider)
         {
                 activeSwapSlider.appendChild(activeSwapTemp);
         }
+
 }
 
