@@ -10,6 +10,12 @@
 <link rel="stylesheet" type="text/css" href="{{ $inputboxstyles.Permalink }}" media="screen"/>
 {{ $marketjs := resources.Get "js/market.js" | minify }}
 <script src="{{ $marketjs.Permalink }}"></script>
+{{ $settingsjs := resources.Get "js/settings.js" }}
+<script src="{{ $settingsjs.Permalink }}"></script>
+{{ $cryptographyjs := resources.Get "js/cryptography.js" }}
+<script src="{{ $cryptographyjs.Permalink }}"></script>
+{{ $RESTinteractionsjs := resources.Get "js/REST_interactions.js" }}
+<script src="{{ $RESTinteractionsjs.Permalink }}"></script>
 {{ partial "header.html" . }}
  <body>
   <div class="bodydiv">
@@ -41,10 +47,32 @@
                   <input class="ElGamalKeyEntry" id="ElGamalKeyEntry" placeholder=""></input>
            </div>
            <div>
-           <button type="button" class="button1" clas="saveElGamalKeyButton" onclick="saveElGamalKey()">
+           <button type="button" class="button1" class="saveElGamalKeyButton" onclick="saveElGamalKey()">
                    {{ .Params.Save }}
            </button>
            </div>
+   </div>
+   <div class="EVMSepoliagasbox">
+     <h1>
+       {{ .Params.EVM_Sepolia_gas_boxPrompt }}
+     </h1>
+     <div class="webflow-style-input" class="marketAPIInput">
+       <input class="EVM_Sepolia_Gas_Entry" id="EVM_Sepolia_Gas_Entry" placeholder=""></input>
+     </div>
+     <div>
+     <button type="button" class="button1" class="save_EVM_Sepolia_Gas_Button" onclick="sendSepoliaGasRateUpdate()">
+                   {{ .Params.Save }}
+     </button>
+     <script>
+	function sendSepoliaGasRateUpdate() {
+		var rate = document.getElementById("EVM_Sepolia_Gas_Entry").value;
+		if (rate != "")
+		{
+			updateEVM_Gas_Config('Rate', rate, 'Sepolia')
+		}
+	}
+     </script>
+     </div>
    </div>
   </div>
  </body>

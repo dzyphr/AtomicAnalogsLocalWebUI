@@ -16,6 +16,20 @@ function localClientPostJSON(data)
                 });
 }
 
+function updateMainEnv(Key, Value)
+{
+	checkBoxValueData = {
+		"id": uuidv4(),
+		"request_type": "updateMainEnv",
+		"Key": Key,
+		"Value": Value
+	}
+	return localClientPostJSON(checkBoxValueData).then( respText => {
+		return respText
+	});
+
+}
+
 function postJSONgetText(url, data)
 {
         const headers = {

@@ -32,6 +32,8 @@
 <script src="{{ $orderRepListjs.Permalink }}"></script>
 {{ $swapClaimingjs := resources.Get "js/swapClaiming.js" }}
 <script src="{{ $swapClaimingjs.Permalink }}"></script>
+{{ $settingsjs := resources.Get "js/settings.js" }}
+<script src="{{ $settingsjs.Permalink }}"></script>
 {{ partial "header.html" . }}
  <body>
   <div class="bodydiv">
