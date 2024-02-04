@@ -5,7 +5,7 @@ function representOrderType(marketName, CoinA, CoinB, MinVol, MaxVol, CoinA_Pric
         individualMarketOrderContainer.className = "individualMarketOrderContainer";
 
         const newOrderTypeSwapName = document.createElement("div");
-        newOrderTypeSwapName.innerHTML += "<h1>" + marketName  +"</h1>";
+        newOrderTypeSwapName.innerHTML += "<h3>" + marketName  +"</h3>";
 
         const testnetErgoIMG_path = "../images/ErgoTestnetTransparentWhite.png";
         const testnetErgoIMG_className = "ergoTestnetCheckboxImage";
@@ -81,8 +81,9 @@ function representOrderType(marketName, CoinA, CoinB, MinVol, MaxVol, CoinA_Pric
                         showSwapClaimWindow(event, CoinA, CoinB, CoinA_Price, CoinB_Price, OrderTypeUUID);
                 });
         const marketOrderInfoContainer = document.getElementById("marketOrderInfoContainer");
-        if (marketOrderInfoContainer) {
-            marketOrderInfoContainer.appendChild(newOrderTypeRepresentation);
+	const marketOrderSlider = document.getElementById("marketOrderInfoSlider");
+        if (marketOrderSlider) {
+            marketOrderSlider.appendChild(newOrderTypeRepresentation);
         }
 }
 
