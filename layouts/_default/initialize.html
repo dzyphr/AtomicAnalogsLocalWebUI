@@ -8,7 +8,14 @@
 <link rel="stylesheet" type="text/css" href="{{ $checkboxstyles.Permalink }}" media="screen"/>
 {{ $inputboxstyles := resources.Get "css/inputboxes.css" | minify }}
 <link rel="stylesheet" type="text/css" href="{{ $inputboxstyles.Permalink }}" media="screen"/>
-
+{{ $initializejs := resources.Get "js/initialize.js" }}
+<script src="{{ $initializejs.Permalink }}"></script>
+{{ $cryptographyjs := resources.Get "js/cryptography.js" }}
+<script src="{{ $cryptographyjs.Permalink }}"></script>
+{{ $localstoragejs := resources.Get "js/localstorage.js" }}
+<script src="{{ $localstoragejs.Permalink }}"></script>
+{{ $RESTinteractionsjs := resources.Get "js/REST_interactions.js" }}
+<script src="{{ $RESTinteractionsjs.Permalink }}"></script>
 {{ partial "header.html" . }}
  <body>
   <div class="bodydiv">
@@ -37,31 +44,29 @@
        </nav>
      </div>
      <div class="webflow-style-input">
-       <input class="accountName" type="accountName" placeholder="Account Name"></input>
+       <input class="accountName" type="accountName" id="accountName" placeholder="Account Name"></input>
      </div>
      <div class="ergoAccountSetupBox">
        <div class="webflow-style-input">
-         <input class="nodeurlsetup" type="nodeurlsetup" placeholder="Ergo TestNet Node URL"></input>
+         <input class="nodeurlsetup" type="nodeurlsetup" id="nodeurlsetup" placeholder="Ergo TestNet Node URL"></input>
        </div>
        <div class="webflow-style-input">
-         <input class="mnemonicsetup" type="menmonicsetup" placeholder="Ergo Mnemonic Phrase"></input>
+         <input class="mnemonicsetup" type="menmonicsetup" id="mnemonicsetup" placeholder="Ergo Mnemonic Phrase"></input>
        </div>
        <div class="webflow-style-input">
-         <input class="mnemonicPassSetup" type="menmonicPassSetup" placeholder="Ergo Mnemonic Password"></input>
+         <input class="mnemonicPassSetup" type="menmonicPassSetup" id="mnemonicPassSetup" placeholder="Ergo Mnemonic Password"></input>
        </div>
        <div class="webflow-style-input">
-         <input class="ErgoEIP3SecretSetup" type="ErgoEIP3SecretSetup" placeholder="Ergo EIP3 (Address Index)"></input>
+         <input class="ErgoEIP3SecretSetup" type="ErgoEIP3SecretSetup" id="ErgoEIP3SecretSetup"  placeholder="Ergo EIP3 (Address Index)"></input>
        </div>
        <div class="webflow-style-input">
-         <input class="ErgoPubkeySetup" type="ErgoPubkeySetup" placeholder="Ergo PublicKey Address"></input>
+         <input class="ErgoPubkeySetup" type="ErgoPubkeySetup" id="ErgoPubkeySetup" placeholder="Ergo PublicKey Address"></input>
        </div>
        <div class="webflow-style-input">
-         <input class="ErgoExplorerAPISetup" type="ErgoExplorerAPISetup" placeholder="Ergo Explorer API URL"></input>
+         <input class="ErgoExplorerAPISetup" type="ErgoExplorerAPISetup" id="ErgoExplorerAPISetup"  placeholder="Ergo Explorer API URL"></input>
        </div>
        <div>
-       <form action="/market">
-         <button class="button1" class="accountSetupButton" >  {{ .Params.accountSetupButton }}</button>
-       </form>       
+         <button class="button1" class="accountSetupButton" onclick="initializeAccountUI_clickAttempt()" >  {{ .Params.accountSetupButton }}</button>
        </div>
      </div>
    </div>

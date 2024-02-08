@@ -16,15 +16,36 @@ function localClientPostJSON(data)
                 });
 }
 
+function initErgoAccountNonInteractive(testnetNode, mnemonic, mnemonicPass, senderEIP3Secret, senderPubKey, apiURL, fulldirpath, fullenvpath)
+{
+        initErgoAccountNonInteractiveData = {
+                "id": uuidv4(),
+                "request_type": "initErgoAccountNonInteractive",
+                "ErgoTestnetNodeURL": testnetNode,
+                "ErgoMnemonic": mnemonic,
+		"ErgoMnemonicPass": mnemonicPass, 
+		"ErgoSenderEIP3Secret": senderEIP3Secret,
+		"ErgoSenderPubKey": senderPubKey,
+		"ErgoAPIURL": apiURL,
+		"FullDirPath": fulldirpath,
+		"FullEnvPath": fullenvpath
+        }
+        return localClientPostJSON(initErgoAccountNonInteractiveData).then( respText => {
+                return respText
+        });
+
+}
+
+
 function updateMainEnv(Key, Value)
 {
-	checkBoxValueData = {
+	updateMainEnvData = {
 		"id": uuidv4(),
 		"request_type": "updateMainEnv",
 		"Key": Key,
 		"Value": Value
 	}
-	return localClientPostJSON(checkBoxValueData).then( respText => {
+	return localClientPostJSON(updateMainEnvData).then( respText => {
 		return respText
 	});
 

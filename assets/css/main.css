@@ -95,7 +95,6 @@ align-items: center;
 	overflow-x: hidden;
 	overflow-y: auto;
 	flex-direction: column;
-	justify-content: center;
 }
 .activeSwapSlider img,
 .activeSwapSlider h1{
