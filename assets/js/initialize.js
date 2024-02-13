@@ -1,4 +1,21 @@
-function initializeAccountUI_clickAttempt()
+function showHideChainInitUI(chain)
+{
+	if (chain == "Ergo")
+	{
+		console.log(chain)
+		ergoAccountSetupBox = document.getElementById("ergoAccountSetupBox");
+		if (ergoAccountSetupBox.style.display != "flex")
+		{
+			ergoAccountSetupBox.style.display = "flex"
+		}
+		else
+		{
+			ergoAccountSetupBox.style.display = "none"
+		}
+	}
+}
+
+function initializeErgoAccountUI_clickAttempt()
 {
 	//TODO Sepolia version then generalized based on UI selection
 	ErgoAccountNameInput = document.getElementById("accountName");
@@ -47,4 +64,9 @@ function initializeAccountUI_clickAttempt()
 			ErgoNodeURL, ErgoMnemonic, ErgoMnemonicPass, EIP3Secret, 
 			ErgoPubkey, ErgoExplorerAPI, fulldirpath, fullenvpath)
 	}
+}
+
+function initializeSepoliaAccountUI_clickAttempt()
+{
+
 }

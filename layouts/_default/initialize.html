@@ -32,7 +32,7 @@
            <menuitem id="chainSelector">
            <a>Select Chain</a>
            <menu>
-             <menuitem>
+             <menuitem onclick="showHideChainInitUI('Ergo')">
              <a>Ergo Testnet</a>
              </menuitem>
              <menuitem>
@@ -46,7 +46,7 @@
      <div class="webflow-style-input">
        <input class="accountName" type="accountName" id="accountName" placeholder="Account Name"></input>
      </div>
-     <div class="ergoAccountSetupBox">
+     <div class="ergoAccountSetupBox" id="ergoAccountSetupBox">
        <div class="webflow-style-input">
          <input class="nodeurlsetup" type="nodeurlsetup" id="nodeurlsetup" placeholder="Ergo TestNet Node URL"></input>
        </div>
@@ -66,7 +66,7 @@
          <input class="ErgoExplorerAPISetup" type="ErgoExplorerAPISetup" id="ErgoExplorerAPISetup"  placeholder="Ergo Explorer API URL"></input>
        </div>
        <div>
-         <button class="button1" class="accountSetupButton" onclick="initializeAccountUI_clickAttempt()" >  {{ .Params.accountSetupButton }}</button>
+         <button class="button1" class="accountSetupButton" onclick="initializeErgoAccountUI_clickAttempt()" >  {{ .Params.accountSetupButton }}</button>
        </div>
      </div>
    </div>

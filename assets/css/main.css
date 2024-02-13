@@ -234,7 +234,8 @@ body::-webkit-scrollbar-thumb {
 
 }
 .ergoAccountSetupBox{
-	display: flex;
+/*	display: flex;*/
+	display: none;
 justify-content: center;
 flex-direction: column;
 align-items: center;
