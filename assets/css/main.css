@@ -233,6 +233,13 @@ body::-webkit-scrollbar-thumb {
 	width: 25;
 
 }
+.SepoliaAccountSetupBox{
+	display: none;
+/*	      display: flex;*/
+justify-content: center;
+flex-direction: column;
+align-items: center;
+}
 .ergoAccountSetupBox{
 /*	display: flex;*/
 	display: none;

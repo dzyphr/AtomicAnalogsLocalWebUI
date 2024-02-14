@@ -16,6 +16,26 @@ function localClientPostJSON(data)
                 });
 }
 
+function initSepoliaAccountNonInteractive(SepoliaSenderAddr, SepoliaPrivKey, SepoliaRPC, SepoliaChainID, SepoliaScan, 
+	SolidityCompilerVersion, FullDirPath, FullEnvPath)
+{
+	initSepoliaAccountNonInteractiveData = {
+		"id": uuidv4(),
+                "request_type": "initSepoliaAccountNonInteractive",
+		"SepoliaSenderAddr": SepoliaSenderAddr, 
+		"SepoliaPrivKey": SepoliaPrivKey, 
+		"Sepolia": SepoliaRPC,
+		"SepoliaID": SepoliaChainID,
+		"SepoliaScan": SepoliaScan,
+		"SolidityCompilerVersion": SolidityCompilerVersion,
+		"FullDirPath": FullDirPath,
+		"FullEnvPath": FullEnvPath
+	}
+	return localClientPostJSON(initSepoliaAccountNonInteractiveData).then( respText => {
+                return respText
+        });
+}
+
 function initErgoAccountNonInteractive(testnetNode, mnemonic, mnemonicPass, senderEIP3Secret, senderPubKey, apiURL, fulldirpath, fullenvpath)
 {
         initErgoAccountNonInteractiveData = {

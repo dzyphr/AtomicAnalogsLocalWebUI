@@ -35,7 +35,7 @@
              <menuitem onclick="showHideChainInitUI('Ergo')">
              <a>Ergo Testnet</a>
              </menuitem>
-             <menuitem>
+             <menuitem onclick="showHideChainInitUI('Sepolia')">
              <a>Sepolia</a>
              </menuitem>
            </menu>
@@ -67,6 +67,29 @@
        </div>
        <div>
          <button class="button1" class="accountSetupButton" onclick="initializeErgoAccountUI_clickAttempt()" >  {{ .Params.accountSetupButton }}</button>
+       </div>
+     </div>
+     <div class="SepoliaAccountSetupBox" id="SepoliaAccountSetupBox">
+        <div class="webflow-style-input">
+         <input class="SepoliaSenderAddrSetup" type="SepoliaSenderAddrSetup" id="SepoliaSenderAddrSetup" placeholder="Sepolia SenderAddr"></input>
+       </div>
+       <div class="webflow-style-input">
+         <input class="SepoliaPrivKeySetup" type="SepoliaPrivKeySetup" id="SepoliaPrivKeySetup" placeholder="Sepolia PrivKey"></input>
+       </div>
+       <div class="webflow-style-input">
+         <input class="SepoliaRPCSetup" type="SepoliaRPCSetup" id="SepoliaRPCSetup" placeholder="Sepolia RPC URL"></input>
+       </div>
+       <div class="webflow-style-input">
+         <input class="SepoliaChainIDSetup" type="SepoliaChainIDSetup" id="SepoliaChainIDSetup" placeholder="Sepolia Chain ID"></input>
+       </div>
+       <div class="webflow-style-input">
+         <input class="SepoliaScanSetup" type="SepoliaScanSetup" id="SepoliaScanSetup" placeholder="Sepolia Block Explorer URL"></input>
+       </div>
+       <div class="webflow-style-input">
+         <input class="SolidityCompilerVersionSetup" type="SolidityCompilerVersionSetup" id="SolidityCompilerVersionSetup" placeholder="Solidity Compiler Version"></input>
+       </div>
+       <div>
+         <button class="button1" class="accountSetupButton" onclick="initializeSepoliaAccountUI_clickAttempt()" >  {{ .Params.accountSetupButton }}</button>
        </div>
      </div>
    </div>
