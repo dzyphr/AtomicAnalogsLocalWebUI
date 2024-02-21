@@ -12,12 +12,80 @@ function addMarket()
 		};
 		existingMarkets.push(newMarket);
 		localStorage.setItem(marketKey, JSON.stringify(existingMarkets));
+
+		//http://127.0.0.1:3030/v0.0.1/ordertypes
+		//marketurl will look like this:e add.r.e.ss:port/apiversion/ordertypes
+		//ElGamal Q Channels located in this directory: apiversion/publicrequests/ElGamalQChannels
+		//ElGamal Public Keys located in this directory: apiversion/publicrequests/ElGamalPubs
+		//ElGamal QPubkey Array located in this directory: apiversion/publicrequests/QPubkeyArray
+		//we need some info about the market to proceed:
+		//ElGamal Q Channel and Corresponding Public Key
+		//Use this to determine communicable Public Key for our client
+		//After this proceed the swap normally using the selected Key
+		QChannelURL = marketurl.value.replace("ordertypes", "publicrequests/ElGamalQChannels");
+		ElGPubKeyURL = marketurl.value.replace("ordertypes", "publicrequests/ElGamalPubs");
+		QPubKeyArrayURL = marketurl.value.replace("ordertypes", "publicrequests/QPubkeyArray");
+		QPubKeyArray_JSON = getJSON(QPubKeyArrayURL).then( result => { loadCompatibleElGPubKeyFromQChannelArray(result); } );
+		ElGPubKey_JSON = getJSON(ElGPubKeyURL).then( result => { return result; } );
+		QChannels_JSON = getJSON(QChannelURL).then( result => {  } );
 		refreshOrderTypeList();
 	}
 }
 
-function removeMarket()
+function loadCompatibleElGPubKeyFromQChannelArray(QChannelArrayJSON)
 {
+	console.log(QChannelArrayJSON);
+	obj = JSON.parse(QChannelArrayJSON);
+	for (var each in obj)
+	{
+		console.log(each);
+		console.log("torf:", checkElGQChannelCorrectness(each));
+		if (checkElGQChannelCorrectness(each) == true)
+		{
+			generateElGKeySpecificQ(each)
+			break //optionally later create more per market?
+			//then match the key to the market in local storage somewhere
+		}
+	}
+}
+
+function generateElGKeySpecificQ(Q)
+{
+	let generateElGKeySpecificQdata = {
+		"id": uuidv4(),
+                "request_type": "generateElGKeySpecificQ",
+		"QChannel": Q
+	}
+	localClientPostJSON(generateElGKeySpecificQdata).then( respText =>
+                {
+                        console.log("new key:", respText);
+                });
+}
+
+function checkElGQChannelCorrectness(Q)
+{
+	let checkElGQChannelCorrectnessData  = {
+		"id": uuidv4(),
+                "request_type": "checkElGQChannelCorrectness",
+		"QChannel": Q
+	}
+	if (localClientPostJSON(checkElGQChannelCorrectnessData)
+	    .then(respText => respText === "true"))
+	{
+		return true
+	}
+
+/*	return localClientPostJSON(checkElGQChannelCorrectnessData).then( respText =>
+		{
+			if (respText == "true")
+			{
+				return true
+			}
+		});*/
+}
+
+function removeMarket()
+{//untested
 	//get an html element to target the market name or url
 	const existingMarketList = JSON.parse(localStorage.getItem('marketlist')) || [];
 	const itemToRemove = 'ItemNameToRemove'; //replace w element content
