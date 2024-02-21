@@ -32,33 +32,67 @@ function addMarket()
 	}
 }
 
-function loadCompatibleElGPubKeyFromQChannelArray(QChannelArrayJSON)
+function superclean(string)
+{
+	return string.replace(/(\r\n|\n|\r)/gm, "").trim().replace(/\\n/g, '').replace(/["\\]/g, '');
+}
+
+function loadCompatibleElGPubKeyFromQChannelArray(QChannelArrayJSON, marketurl)
 {
 	console.log(QChannelArrayJSON);
 	obj = JSON.parse(QChannelArrayJSON);
+	//marketurl information storage for elgamal {marketurl_ElGCompatKeys: [Store, Each, PubKey, In List]}
+	//if multiple keys and one key is found not to work remove it immediately 
+	//(only removed at high level still exists at local storage to deal with retiring entire Q Channels and subsequent keys later)
 	for (var each in obj)
 	{
-		console.log(each);
-		console.log("torf:", checkElGQChannelCorrectness(each));
+		//TODO check for existing Q Channel Match
 		if (checkElGQChannelCorrectness(each) == true)
 		{
-			generateElGKeySpecificQ(each)
+			generateElGKeySpecificQ(each, marketurl)
 			break //optionally later create more per market?
 			//then match the key to the market in local storage somewhere
 		}
 	}
 }
 
-function generateElGKeySpecificQ(Q)
+function generateElGKeySpecificQ(Q, marketurl)
 {
+	marketElGStorageKey = marketurl + "_ElGCompatKeys"
 	let generateElGKeySpecificQdata = {
 		"id": uuidv4(),
                 "request_type": "generateElGKeySpecificQ",
 		"QChannel": Q
 	}
-	localClientPostJSON(generateElGKeySpecificQdata).then( respText =>
+	localClientPostJSON(generateElGKeySpecificQdata).then( newKeyText =>
                 {
-                        console.log("new key:", respText);
+			cleanNewKey = superclean(newKeyText);
+			if(
+				localStorage.getItem(marketElGStorageKey) === null || 
+				localStorage.getItem(marketElGStorageKey) === undefined
+			)
+			{
+				localStorage.setItem(marketElGStorageKey, JSON.stringify([cleanNewKey]));
+				console.log(localStorage.getItem(marketElGStorageKey));
+			}
+			else
+			{
+				list = JSON.parse(localStorage.getItem(marketElGStorageKey));
+				console.log(list);
+				if (Array.isArray(list))
+				{
+					list.push(cleanNewKey);
+					localStorage.setItem(marketElGStorageKey, JSON.stringify(list));
+					console.log(localStorage.getItem(marketElGStorageKey))
+				}
+				else
+				{
+					list = [list];
+					list.push(cleanNewKey);
+                                        localStorage.setItem(marketElGStorageKey, JSON.stringify(list));
+                                        console.log(localStorage.getItem(marketElGStorageKey))
+				}
+			}
                 });
 }
 
@@ -74,14 +108,12 @@ function checkElGQChannelCorrectness(Q)
 	{
 		return true
 	}
+	else if (localClientPostJSON(checkElGQChannelCorrectnessData)
+            .then(respText => respText === "false"))
+        {
+                return false
+        }
 
-/*	return localClientPostJSON(checkElGQChannelCorrectnessData).then( respText =>
-		{
-			if (respText == "true")
-			{
-				return true
-			}
-		});*/
 }
 
 function removeMarket()
