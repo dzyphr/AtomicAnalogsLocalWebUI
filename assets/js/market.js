@@ -25,7 +25,9 @@ function addMarket()
 		QChannelURL = marketurl.value.replace("ordertypes", "publicrequests/ElGamalQChannels");
 		ElGPubKeyURL = marketurl.value.replace("ordertypes", "publicrequests/ElGamalPubs");
 		QPubKeyArrayURL = marketurl.value.replace("ordertypes", "publicrequests/QPubkeyArray");
-		QPubKeyArray_JSON = getJSON(QPubKeyArrayURL).then( result => { loadCompatibleElGPubKeyFromQChannelArray(result); } );
+		QPubKeyArray_JSON = getJSON(QPubKeyArrayURL).then( result => { 
+			loadCompatibleElGPubKeyFromQChannelArray(result, marketurl.value); 
+		} );
 		ElGPubKey_JSON = getJSON(ElGPubKeyURL).then( result => { return result; } );
 		QChannels_JSON = getJSON(QChannelURL).then( result => {  } );
 		refreshOrderTypeList();
@@ -58,15 +60,42 @@ function loadCompatibleElGPubKeyFromQChannelArray(QChannelArrayJSON, marketurl)
 
 function generateElGKeySpecificQ(Q, marketurl)
 {
-	marketElGStorageKey = marketurl + "_ElGCompatKeys"
+	marketElGStorageKey = marketurl + "_ElGCompatKeys";
+	marketElGQChannelStoragekey = marketurl + "_ElGCompatQChannels";
+	ElGPubKeyIndexArrayStorageKey = "ElGPubKeyIndexArray";
 	let generateElGKeySpecificQdata = {
 		"id": uuidv4(),
                 "request_type": "generateElGKeySpecificQ",
 		"QChannel": Q
 	}
+	if (
+		localStorage.getItem(marketElGQChannelStoragekey) == null || 
+		localStorage.getItem(marketElGQChannelStoragekey) == undefined
+	)
+	{
+		localStorage.setItem(marketElGQChannelStoragekey, JSON.stringify([Q]));
+	}
+	else
+	{
+		list = JSON.parse(localStorage.getItem(marketElGQChannelStoragekey));
+		if (Array.isArray(list))
+		{
+			list.push(Q);
+			localStorage.setItem(marketElGQChannelStoragekey, JSON.stringify(list));
+		}
+		else
+		{
+			list = [list];
+                        list.push(Q);
+			localStorage.setItem(marketElGQChannelStoragekey, JSON.stringify(list));
+		}
+	}
 	localClientPostJSON(generateElGKeySpecificQdata).then( newKeyText =>
                 {
-			cleanNewKey = superclean(newKeyText);
+			keyresparray = newKeyText.split(' ');
+			cleankeyindex = superclean(keyresparray[1]);
+			cleanNewKey = superclean(keyresparray[0]);
+			localStorage.setItem(cleanNewKey, cleankeyindex); //set result of each pubkey to its local index, convenience
 			if(
 				localStorage.getItem(marketElGStorageKey) === null || 
 				localStorage.getItem(marketElGStorageKey) === undefined
@@ -133,7 +162,7 @@ function getMarkets()
 }
 //TODO: allow to click on an active swap entry, and update the current swap modal UI with the info for that entry
 
-function makeSwapDir(makeSwapDirData, swapTicketID, CoinA, CoinB, coinAmount, postmod, CoinA_Price, CoinB_Price)
+function makeSwapDir(makeSwapDirData, swapTicketID, CoinA, CoinB, coinAmount, postmod, CoinA_Price, CoinB_Price, marketurl)
 {
 	localClientPostJSON(makeSwapDirData).then(respText => {
 			generateEncryptedResponseData = {
@@ -142,8 +171,8 @@ function makeSwapDir(makeSwapDirData, swapTicketID, CoinA, CoinB, coinAmount, po
 				"SwapTicketID": swapTicketID,
 				"responderCrossChain": CoinA,
 				"responderLocalChain": CoinB,
-				"ElGamalKey": getElGamalKey(),
-				"ElGamalKeyPath": "Key0.ElGamalKey", //TODO
+				"ElGamalKey": getElGamalKey(marketurl),
+				"ElGamalKeyPath": "Key" + localStorage.getItem(getElGamalKey(marketurl)) + ".ElGamalKey", 
 				"swapAmount": coinAmount
 			};
 			generateEncryptedResponse(generateEncryptedResponseData, swapTicketID, postmod);
@@ -158,7 +187,7 @@ function makeSwapDir(makeSwapDirData, swapTicketID, CoinA, CoinB, coinAmount, po
 		});
 }
 
-function generateEncryptedResponse(generateEncryptedResponseData, swapTicketID, postmod)
+function generateEncryptedResponse(generateEncryptedResponseData, swapTicketID, postmod, marketurl)
 {
 	localClientPostJSON(generateEncryptedResponseData)
 		.then( respText => {
@@ -177,11 +206,11 @@ function generateEncryptedResponse(generateEncryptedResponseData, swapTicketID, 
 			//here the responder can check the price of initiator's contract
 			//and proceed accordingly
 			submitEncryptedResponse(
-				submitEncryptedResponseData, swapTicketID, postmod)
+				submitEncryptedResponseData, swapTicketID, postmod, marketurl)
 		});
 }
 
-function submitEncryptedResponse(submitEncryptedResponseData, swapTicketID, postmod)
+function submitEncryptedResponse(submitEncryptedResponseData, swapTicketID, postmod, marketurl)
 {
 	storeActiveSwapInfo(swapTicketID, "Waiting For Finalization", "", "");
 	postJSONgetText(postmod, submitEncryptedResponseData).then(respText =>
@@ -192,11 +221,13 @@ function submitEncryptedResponse(submitEncryptedResponseData, swapTicketID, post
 				.replace("n", "")
 				.replace(/\\n/g, '\n');
 		POST_write_ENC_finalization(swapTicketID, cleanresp);
+		keypath = "Key" + localStorage.getItem(getElGamalKey(marketurl)) + ".ElGamalKey";
 		POST_ElGamal_decrypt_swapFile(
 			swapTicketID,
 			"ENC_finalization.bin",
-			getElGamalKey(),
-			"Key0.ElGamalKey").then(function(result){
+			getElGamalKey(marketurl),
+			keypath
+		).then(function(result){
 				console.log(result);
 				cleanresult = result
 					.replace(/[\n\r\s]+/g, '')

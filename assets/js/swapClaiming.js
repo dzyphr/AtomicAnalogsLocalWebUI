@@ -36,7 +36,6 @@ function claimSwap(event, OrderTypeUUID, coinAmount, CoinA_Price, CoinB_Price)
                         {
                                 if (key == OrderTypeUUID)
                                 {
-                                        console.log("ElGamalKey:", getElGamalKey());
                                         const CoinA = jsonobj[key]["CoinA"];
                                         const CoinB = jsonobj[key]["CoinB"];
                                         console.log("CoinA", CoinA, "CoinB", CoinB);
@@ -44,8 +43,10 @@ function claimSwap(event, OrderTypeUUID, coinAmount, CoinA_Price, CoinB_Price)
                                                 "id": uuidv4(),
                                                 "request_type": "requestEncryptedInitiation",
                                                 "OrderTypeUUID": OrderTypeUUID,
-                                                "ElGamalKey": getElGamalKey()
+						"QChannel": getElGamalQChannel(existingMarketLists[market].marketurl),
+                                                "ElGamalKey": getElGamalKey(existingMarketLists[market].marketurl)
                                         };
+					marketurl = existingMarketLists[market].marketurl
                                         const postmod = existingMarketLists[market].marketurl.replace("ordertypes", "publicrequests");
                                         postJSON(postmod, data).then(respJSON => {
                                                 const respJSONOBJ = JSON.parse(respJSON);
@@ -60,7 +61,7 @@ function claimSwap(event, OrderTypeUUID, coinAmount, CoinA_Price, CoinB_Price)
                                                         "SwapTicketID": swapTicketID,
                                                         "ENCInit": ENCinit
                                                 };
-                                                makeSwapDir(makeSwapDirData, swapTicketID, CoinA, CoinB, coinAmount, postmod, CoinA_Price, CoinB_Price);
+                                                makeSwapDir(makeSwapDirData, swapTicketID, CoinA, CoinB, coinAmount, postmod, CoinA_Price, CoinB_Price, marketurl);
                                         });
                                         break;
                                 }

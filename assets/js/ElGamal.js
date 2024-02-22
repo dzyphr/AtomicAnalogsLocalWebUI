@@ -26,11 +26,24 @@ function saveElGamalKey()
 }
 */
 
-function getElGamalKey()
+function getElGamalKey(marketurl)
 {
-        const ElGamalKey_Key = "ElGamalPubKey";
+/*        const ElGamalKey_Key = "ElGamalPubKey";
         const existingElGamalKeys = JSON.parse(localStorage.getItem(ElGamalKey_Key)) || [];
         console.log(existingElGamalKeys);
-        return existingElGamalKeys[0];
+        return existingElGamalKeys[0];*/
+	//load per marketurl
+	marketElGCompatKey = marketurl + "_ElGCompatKeys";
+	console.log("url", marketurl);
+	console.log("Test", localStorage.getItem(marketElGCompatKey));
+	key = JSON.parse(localStorage.getItem(marketElGCompatKey))[0]; //more logic to add
+	return key
+}
+
+function getElGamalQChannel(marketurl)
+{
+	marketElGCompatQChannel = marketurl + "_ElGCompatQChannels";
+	Q = JSON.parse(localStorage.getItem(marketElGCompatQChannel))[0];
+	return Q
 }
 
