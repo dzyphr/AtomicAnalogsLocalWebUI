@@ -43,7 +43,7 @@ function claimSwap(event, OrderTypeUUID, coinAmount, CoinA_Price, CoinB_Price)
                                                 "id": uuidv4(),
                                                 "request_type": "requestEncryptedInitiation",
                                                 "OrderTypeUUID": OrderTypeUUID,
-						"QChannel": getElGamalQChannel(existingMarketLists[market].marketurl),
+						"QGChannel": getElGamalQGChannel(existingMarketLists[market].marketurl),
                                                 "ElGamalKey": getElGamalKey(existingMarketLists[market].marketurl)
                                         };
 					marketurl = existingMarketLists[market].marketurl

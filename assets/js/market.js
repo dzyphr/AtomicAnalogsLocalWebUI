@@ -1,3 +1,7 @@
+function isEmptyObject(obj) {
+  return Object.keys(obj).length === 0;
+}
+
 function addMarket()
 {
 	const marketname = document.getElementById("marketnamesetup");
@@ -11,6 +15,7 @@ function addMarket()
 			marketurl: marketurl.value
 		};
 		existingMarkets.push(newMarket);
+		console.log("adding market")
 		localStorage.setItem(marketKey, JSON.stringify(existingMarkets));
 
 		//http://127.0.0.1:3030/v0.0.1/ordertypes
@@ -22,14 +27,16 @@ function addMarket()
 		//ElGamal Q Channel and Corresponding Public Key
 		//Use this to determine communicable Public Key for our client
 		//After this proceed the swap normally using the selected Key
-		QChannelURL = marketurl.value.replace("ordertypes", "publicrequests/ElGamalQChannels");
+		QGChannelURL = marketurl.value.replace("ordertypes", "publicrequests/ElGamalQGChannels");
 		ElGPubKeyURL = marketurl.value.replace("ordertypes", "publicrequests/ElGamalPubs");
-		QPubKeyArrayURL = marketurl.value.replace("ordertypes", "publicrequests/QPubkeyArray");
-		QPubKeyArray_JSON = getJSON(QPubKeyArrayURL).then( result => { 
-			loadCompatibleElGPubKeyFromQChannelArray(result, marketurl.value); 
+		QGPubKeyArrayURL = marketurl.value.replace("ordertypes", "publicrequests/QGPubkeyArray");
+		
+		QGPubKeyArray_JSON = getJSON(QGPubKeyArrayURL).then( result => { 	
+			console.log("loading compatible pubkeys");
+			loadCompatibleElGPubKeyFromQGChannelArray(result, marketurl.value); 
 		} );
 		ElGPubKey_JSON = getJSON(ElGPubKeyURL).then( result => { return result; } );
-		QChannels_JSON = getJSON(QChannelURL).then( result => {  } );
+		QGChannels_JSON = getJSON(QGChannelURL).then( result => {  } );
 		refreshOrderTypeList();
 	}
 }
@@ -39,70 +46,89 @@ function superclean(string)
 	return string.replace(/(\r\n|\n|\r)/gm, "").trim().replace(/\\n/g, '').replace(/["\\]/g, '');
 }
 
-function loadCompatibleElGPubKeyFromQChannelArray(QChannelArrayJSON, marketurl)
+function loadCompatibleElGPubKeyFromQGChannelArray(QGChannelArrayJSON, marketurl)
 {
-	console.log(QChannelArrayJSON);
-	obj = JSON.parse(QChannelArrayJSON);
+	console.log(QGChannelArrayJSON);
+	obj = JSON.parse(QGChannelArrayJSON);
 	//marketurl information storage for elgamal {marketurl_ElGCompatKeys: [Store, Each, PubKey, In List]}
 	//if multiple keys and one key is found not to work remove it immediately 
 	//(only removed at high level still exists at local storage to deal with retiring entire Q Channels and subsequent keys later)
 	for (var each in obj)
 	{
 		//TODO check for existing Q Channel Match
-		if (checkElGQChannelCorrectness(each) == true)
+		if (checkElGQGChannelCorrectness(each) == true)
 		{
-			generateElGKeySpecificQ(each, marketurl)
+			console.log("generating new pubkey")
+			QGPubKeys = obj[each]
+			var QGPubMatch;
+			if (Array.isArray(QGPubKeys) == true)
+			{
+				QGPubMatch = QGPubKeys[0] //TODO use others in list
+			}
+			else
+			{
+				QGPubMatch = QGPubKeys
+			}
+			generateElGKeySpecificQG(each, QGPubMatch, marketurl)
 			break //optionally later create more per market?
 			//then match the key to the market in local storage somewhere
 		}
 	}
+	if (isEmptyObject(obj) == true)
+	{
+		console.log("Error: QPubKeyArray  Object returned empty!");
+	}
 }
 
-function generateElGKeySpecificQ(Q, marketurl)
+function generateElGKeySpecificQG(QG, QGPubMatch, marketurl)
 {
+	
 	marketElGStorageKey = marketurl + "_ElGCompatKeys";
-	marketElGQChannelStoragekey = marketurl + "_ElGCompatQChannels";
+	marketElGQGChannelStoragekey = marketurl + "_ElGCompatQGChannels";
 	ElGPubKeyIndexArrayStorageKey = "ElGPubKeyIndexArray";
-	let generateElGKeySpecificQdata = {
+	let generateElGKeySpecificQGdata = {
 		"id": uuidv4(),
-                "request_type": "generateElGKeySpecificQ",
-		"QChannel": Q
+                "request_type": "generateElGKeySpecificQG",
+		"QGChannel": QG
 	}
 	if (
-		localStorage.getItem(marketElGQChannelStoragekey) == null || 
-		localStorage.getItem(marketElGQChannelStoragekey) == undefined
+		localStorage.getItem(marketElGQGChannelStoragekey) == null || 
+		localStorage.getItem(marketElGQGChannelStoragekey) == undefined
 	)
 	{
-		localStorage.setItem(marketElGQChannelStoragekey, JSON.stringify([Q]));
+		localStorage.setItem(marketElGQGChannelStoragekey, JSON.stringify([QG]));
 	}
 	else
 	{
-		list = JSON.parse(localStorage.getItem(marketElGQChannelStoragekey));
+		list = JSON.parse(localStorage.getItem(marketElGQGChannelStoragekey));
 		if (Array.isArray(list))
 		{
-			list.push(Q);
-			localStorage.setItem(marketElGQChannelStoragekey, JSON.stringify(list));
+			list.push(QG);
+			localStorage.setItem(marketElGQGChannelStoragekey, JSON.stringify(list));
 		}
 		else
 		{
 			list = [list];
-                        list.push(Q);
-			localStorage.setItem(marketElGQChannelStoragekey, JSON.stringify(list));
+                        list.push(QG);
+			localStorage.setItem(marketElGQGChannelStoragekey, JSON.stringify(list));
 		}
 	}
-	localClientPostJSON(generateElGKeySpecificQdata).then( newKeyText =>
+	localClientPostJSON(generateElGKeySpecificQGdata).then( newKeyText =>
                 {
 			keyresparray = newKeyText.split(' ');
 			cleankeyindex = superclean(keyresparray[1]);
 			cleanNewKey = superclean(keyresparray[0]);
+			marketElGQGPubMatchStorageKey = marketurl + "_QGPubMatch" + "_" + cleanNewKey;
+			localStorage.setItem(marketElGQGPubMatchStorageKey, QGPubMatch); //connect new key to server's key in local
 			localStorage.setItem(cleanNewKey, cleankeyindex); //set result of each pubkey to its local index, convenience
 			if(
 				localStorage.getItem(marketElGStorageKey) === null || 
 				localStorage.getItem(marketElGStorageKey) === undefined
 			)
 			{
+				console.log(cleanNewKey);
 				localStorage.setItem(marketElGStorageKey, JSON.stringify([cleanNewKey]));
-				console.log(localStorage.getItem(marketElGStorageKey));
+				console.log("ElGKeyTest:", localStorage.getItem(marketElGStorageKey));
 			}
 			else
 			{
@@ -125,19 +151,19 @@ function generateElGKeySpecificQ(Q, marketurl)
                 });
 }
 
-function checkElGQChannelCorrectness(Q)
+function checkElGQGChannelCorrectness(QG)
 {
-	let checkElGQChannelCorrectnessData  = {
+	let checkElGQGChannelCorrectnessData  = {
 		"id": uuidv4(),
-                "request_type": "checkElGQChannelCorrectness",
-		"QChannel": Q
+                "request_type": "checkElGQGChannelCorrectness",
+		"QGChannel": QG
 	}
-	if (localClientPostJSON(checkElGQChannelCorrectnessData)
+	if (localClientPostJSON(checkElGQGChannelCorrectnessData)
 	    .then(respText => respText === "true"))
 	{
 		return true
 	}
-	else if (localClientPostJSON(checkElGQChannelCorrectnessData)
+	else if (localClientPostJSON(checkElGQGChannelCorrectnessData)
             .then(respText => respText === "false"))
         {
                 return false
@@ -165,17 +191,25 @@ function getMarkets()
 function makeSwapDir(makeSwapDirData, swapTicketID, CoinA, CoinB, coinAmount, postmod, CoinA_Price, CoinB_Price, marketurl)
 {
 	localClientPostJSON(makeSwapDirData).then(respText => {
+			console.log("ElGamalKeyPath")
+			ElGamalKeyPath = "Key" + localStorage.getItem(getElGamalKey(marketurl)) + ".ElGamalKey";
+			
+			console.log(ElGamalKeyPath);
+			console.log(marketurl);
+			console.log("QPubMatchStorageKey")
+			QGPubMatchStorageKey = marketurl + "_QGPubMatch" + "_" + getElGamalKey(marketurl);
+			QGPubMatchElGMarketServerKey = localStorage.getItem(QGPubMatchStorageKey);
 			generateEncryptedResponseData = {
 				"id": uuidv4(),
 				"request_type": "generateEncryptedResponse",
 				"SwapTicketID": swapTicketID,
 				"responderCrossChain": CoinA,
 				"responderLocalChain": CoinB,
-				"ElGamalKey": getElGamalKey(marketurl),
-				"ElGamalKeyPath": "Key" + localStorage.getItem(getElGamalKey(marketurl)) + ".ElGamalKey", 
+				"ElGamalKey": QGPubMatchElGMarketServerKey, //SERVER's Key here!!!
+				"ElGamalKeyPath": ElGamalKeyPath, 
 				"swapAmount": coinAmount
 			};
-			generateEncryptedResponse(generateEncryptedResponseData, swapTicketID, postmod);
+			generateEncryptedResponse(generateEncryptedResponseData, swapTicketID, postmod, marketurl);
 			const ConversionArray = coinPriceConversion(coinAmount, CoinA_Price, CoinB_Price);
 			AmtCoinB = coinAmount; //we are the responder here
 			AmtCoinA = ConversionArray[1]; // TODO Hide active swaps if there aren't any
@@ -222,10 +256,12 @@ function submitEncryptedResponse(submitEncryptedResponseData, swapTicketID, post
 				.replace(/\\n/g, '\n');
 		POST_write_ENC_finalization(swapTicketID, cleanresp);
 		keypath = "Key" + localStorage.getItem(getElGamalKey(marketurl)) + ".ElGamalKey";
+		QGPubMatchStorageKey = marketurl + "_QGPubMatch" + "_" + getElGamalKey(marketurl);
+                QGPubMatchElGMarketServerKey = localStorage.getItem(QGPubMatchStorageKey);
 		POST_ElGamal_decrypt_swapFile(
 			swapTicketID,
 			"ENC_finalization.bin",
-			getElGamalKey(marketurl),
+			QGPubMatchElGMarketServerKey,
 			keypath
 		).then(function(result){
 				console.log(result);
@@ -269,5 +305,4 @@ function responder_ergobox_finalUI(boxid, swapTicketID, UI_bool)
 				});
 		});
 }
-
 
