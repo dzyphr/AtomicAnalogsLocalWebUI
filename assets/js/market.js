@@ -41,6 +41,38 @@ function addMarket()
 	}
 }
 
+function syncLocalElGamalPubKeyIndexes()
+{
+	ElGamalKeyLocalIndexesStorageKey = "ElGamalKeyLocalIndexes"
+	ElGamalPubsEndpointURL = "http://127.0.0.1:3031/v0.0.1/ElGamalPubs"
+	getJSON(ElGamalPubsEndpointURL).then((result) => {
+		resJSON = JSON.parse(result);
+		localStorage.setItem(ElGamalKeyLocalIndexesStorageKey, JSON.stringify(resJSON)) 
+	});
+}
+
+function getKeyByVal(obj, val)
+{
+	return Object.keys(obj).find(key => obj[key] === val)
+}
+
+function getLocalElGamalPubKeyIndexFromLocalStorage(pubkey)
+{
+	ElGamalKeyLocalIndexesStorageKey = "ElGamalKeyLocalIndexes"
+	currentkeysobj = JSON.parse(localStorage.getItem(ElGamalKeyLocalIndexesStorageKey))
+	var index = getKeyByVal(currentkeysobj, pubkey)
+	if (index !== undefined)
+	{
+		return index;
+	}
+	else
+	{
+
+		console.log("Given ElGamal PubKey Not Found in Local Storage Indexes.\n PubKey: ", pubkey)
+	}
+
+}
+
 function superclean(string)
 {
 	return string.replace(/(\r\n|\n|\r)/gm, "").trim().replace(/\\n/g, '').replace(/["\\]/g, '');
@@ -120,7 +152,10 @@ function generateElGKeySpecificQG(QG, QGPubMatch, marketurl)
 			cleanNewKey = superclean(keyresparray[0]);
 			marketElGQGPubMatchStorageKey = marketurl + "_QGPubMatch" + "_" + cleanNewKey;
 			localStorage.setItem(marketElGQGPubMatchStorageKey, QGPubMatch); //connect new key to server's key in local
-			localStorage.setItem(cleanNewKey, cleankeyindex); //set result of each pubkey to its local index, convenience
+			//localStorage.setItem(cleanNewKey, cleankeyindex); //set result of each pubkey to its local index, convenience
+			//DEFUNCT ^^^
+			//Replaced with:
+			syncLocalElGamalPubKeyIndexes()		
 			if(
 				localStorage.getItem(marketElGStorageKey) === null || 
 				localStorage.getItem(marketElGStorageKey) === undefined
@@ -192,7 +227,7 @@ function makeSwapDir(makeSwapDirData, swapTicketID, CoinA, CoinB, coinAmount, po
 {
 	localClientPostJSON(makeSwapDirData).then(respText => {
 			console.log("ElGamalKeyPath")
-			ElGamalKeyPath = "Key" + localStorage.getItem(getElGamalKey(marketurl)) + ".ElGamalKey";
+			ElGamalKeyPath = "Key" + getLocalElGamalPubKeyIndexFromLocalStorage(getElGamalKey(marketurl)) + ".ElGamalKey";
 			
 			console.log(ElGamalKeyPath);
 			console.log(marketurl);
@@ -255,7 +290,7 @@ function submitEncryptedResponse(submitEncryptedResponseData, swapTicketID, post
 				.replace("n", "")
 				.replace(/\\n/g, '\n');
 		POST_write_ENC_finalization(swapTicketID, cleanresp);
-		keypath = "Key" + localStorage.getItem(getElGamalKey(marketurl)) + ".ElGamalKey";
+		keypath = "Key" + getLocalElGamalPubKeyIndexFromLocalStorage(getElGamalKey(marketurl)) + ".ElGamalKey";
 		QGPubMatchStorageKey = marketurl + "_QGPubMatch" + "_" + getElGamalKey(marketurl);
                 QGPubMatchElGMarketServerKey = localStorage.getItem(QGPubMatchStorageKey);
 		POST_ElGamal_decrypt_swapFile(
