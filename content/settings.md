@@ -8,5 +8,6 @@ Delete = "Delete"
 ElGamalPubKeyPrompt = "ElGamal PubKey"
 Save = "Save"
 EVM_Sepolia_gas_boxPrompt = "EVM Sepolia Gas Rate"
+PrivateClientInitialRESTAPIKeyEntryPrompt = "Private Client REST API Key"
 +++
 Manage market data, set timelock minimums, etc..

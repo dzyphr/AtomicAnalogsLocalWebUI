@@ -74,6 +74,29 @@
      </script>
      </div>
    </div>
+   <div class="PrivateClientInitialRESTAPIKeyBox">
+     <h1>
+       {{ .Params.PrivateClientInitialRESTAPIKeyEntryPrompt }}
+     </h1>
+     <div class="webflow-style-input" class="marketAPIInput">
+       <input class="PrivateClientInitialRESTAPIKeyEntry" id="PrivateClientInitialRESTAPIKeyEntry" placeholder=""></input>
+     </div>
+     <div>
+     <button type="button" class="button1" class="PrivateClientInitialRESTAPIKeySubmitButton" onclick="submitPrivateClientRESTAPIKey()">
+                   {{ .Params.Save }}
+     </button>
+     <script>
+       function submitPrivateClientRESTAPIKey() {
+       		var key = document.getElementById("PrivateClientInitialRESTAPIKeyEntry").value;
+		if (key != "")
+		{
+				     manualAddPrivateAcceptedClientAPIKeytoLocalStorage(key)
+			//TODO implement user manually add Private Client RESTAPI key to local storage function 
+		}
+       }
+     </script>
+     </div>
+   </div>
   </div>
  </body>
 {{ partial "footer.html" . }}

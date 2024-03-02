@@ -1,3 +1,44 @@
+//TODO: modularly inject a local or server-compatible REST-API key at the REST interaction function call
+//
+//on client side: just generate a key, save it to accepted private keys json, create a private GET endpoint to read the json,
+//read it into local storage (or just one key depending on the userflow undetermined), have a function return that key, 
+//feed it into the (new) REST API key argument that should be added to REST API interaction functions
+
+function manualAddPrivateAcceptedClientAPIKeytoLocalStorage(APIKey)
+{
+	acceptedPrivateAPIKeysLocalStorageKey = "acceptedPrivateClientAPIKeys";
+	if (localStorage.getItem(acceptedPrivateAPIKeysLocalStorageKey))
+	{
+		currentkeysobj = JSON.parse(localStorage.getItem(acceptedPrivateAPIKeysLocalStorageKey));
+		currentkeysobj[Object.keys(currentkeysobj).length] = APIKey;
+		localStorage.setItem(acceptedPrivateAPIKeysLocalStorageKey, JSON.stringify(currentkeysobj))
+		console.log(localStorage.getItem(acceptedPrivateAPIKeysLocalStorageKey));
+	}
+	else
+	{
+		obj = {
+			0: APIKey
+		}
+		localStorage.setItem(acceptedPrivateAPIKeysLocalStorageKey, JSON.stringify(obj));
+	}
+}
+
+function updateAcceptedPrivateClientAPIKeysStorage()
+{
+	//TODO: make the private GET endpoint for these keys
+	//
+	//TODO: solve "chicken or egg" with first API key, for now client is not hosted online at all so this key will be...
+	//somewhat irrelevant, however if the client ever hosts any endpoints online, this key will be more security critical,
+	//initially key will just connect the frontend to the backend on the users own device,
+	//in the future these keys could be used to apply certain permissions to someone connecting to the client accross the internet
+	url = "http://localhost:3031/v0.0.1/acceptedPrivateAPIKeys";
+	getJSON(url).then((result) => {
+		obj = JSON.parse(result);
+		acceptedPrivateAPIKeysLocalStorageKey = "acceptedPrivateClientAPIKeys";
+		localStorage.setItem(acceptedPrivateAPIKeysLocalStorageKey, JSON.stringify(obj));
+	});
+}
+
 function localClientPostJSON(data)
 {
         url = "http://localhost:3031/v0.0.1/requests"
