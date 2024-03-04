@@ -16,6 +16,8 @@
 <script src="{{ $cryptographyjs.Permalink }}"></script>
 {{ $RESTinteractionsjs := resources.Get "js/REST_interactions.js" }}
 <script src="{{ $RESTinteractionsjs.Permalink }}"></script>
+{{ $localstoragejs := resources.Get "js/localstorage.js" }}
+<script src="{{ $localstoragejs.Permalink }}"></script>
 {{ partial "header.html" . }}
  <body>
   <div class="bodydiv">

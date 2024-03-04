@@ -17,6 +17,7 @@ function addMarket()
 		existingMarkets.push(newMarket);
 		console.log("adding market")
 		localStorage.setItem(marketKey, JSON.stringify(existingMarkets));
+		loadStarterRESTAPIKeysFromMarketUrl(marketurl.value);
 
 		//http://127.0.0.1:3030/v0.0.1/ordertypes
 		//marketurl will look like this:e add.r.e.ss:port/apiversion/ordertypes
@@ -35,8 +36,12 @@ function addMarket()
 			console.log("loading compatible pubkeys");
 			loadCompatibleElGPubKeyFromQGChannelArray(result, marketurl.value); 
 		} );
+/*		setTimeout(function() {
+		console.log(getStarterRESTAPIKeyFromMarketUrlAtIndex(marketurl.value, 0));
+		}, 100); //takes a while to store used somewhere less than 100ms*/
 		ElGPubKey_JSON = getJSON(ElGPubKeyURL).then( result => { return result; } );
 		QGChannels_JSON = getJSON(QGChannelURL).then( result => {  } );
+		//replace todos with get bottom api key for this specific market function to be made
 		refreshOrderTypeList();
 	}
 }
@@ -265,6 +270,7 @@ function generateEncryptedResponse(generateEncryptedResponseData, swapTicketID, 
 				.replace("\\", "\n")
 				.replace("n", "")
 				.replace(/\\n/g, '\n');
+			//local call vv
 			POST_get_response_data(swapTicketID, JSON.parse(localStorage.getItem(swapTicketID + "_modalFocus"))[0])
 			submitEncryptedResponseData = {
 				"id": uuidv4(),
@@ -274,6 +280,7 @@ function generateEncryptedResponse(generateEncryptedResponseData, swapTicketID, 
 			};
 			//here the responder can check the price of initiator's contract
 			//and proceed accordingly
+			//to server call vv
 			submitEncryptedResponse(
 				submitEncryptedResponseData, swapTicketID, postmod, marketurl)
 		});
@@ -282,7 +289,11 @@ function generateEncryptedResponse(generateEncryptedResponseData, swapTicketID, 
 function submitEncryptedResponse(submitEncryptedResponseData, swapTicketID, postmod, marketurl)
 {
 	storeActiveSwapInfo(swapTicketID, "Waiting For Finalization", "", "");
-	postJSONgetText(postmod, submitEncryptedResponseData).then(respText =>
+	postJSONgetText(
+		postmod, 
+		submitEncryptedResponseData,
+		getStarterRESTAPIKeyFromMarketUrlAtIndex(marketurl, 0)
+	).then(respText =>
 	{
 		cleanresp = respText
 				.replace("\"", "")

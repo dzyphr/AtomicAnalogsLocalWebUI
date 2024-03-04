@@ -39,11 +39,26 @@ function updateAcceptedPrivateClientAPIKeysStorage()
 	});
 }
 
+function getBottomPrivateClientRESTAPIKeyFromLocalStorage()
+{
+	acceptedPrivateAPIKeysLocalStorageKey = "acceptedPrivateClientAPIKeys";
+        if (localStorage.getItem(acceptedPrivateAPIKeysLocalStorageKey))
+        {
+		currentkeys = JSON.parse(localStorage.getItem(acceptedPrivateAPIKeysLocalStorageKey));
+		bottomkey = currentkeys[0];
+		return bottomkey
+	}
+	else
+	{
+		console.log("no private client REST API keys found in local storage!")
+	}
+}
+
 function localClientPostJSON(data)
 {
         url = "http://localhost:3031/v0.0.1/requests"
         const headers = {
-                Authorization: "Bearer " + "PASSWORD",
+                Authorization: "Bearer " + getBottomPrivateClientRESTAPIKeyFromLocalStorage(),
                 "Content-Type": "application/json"
         }
         console.log(data);
@@ -55,6 +70,7 @@ function localClientPostJSON(data)
                 {
                          return await res.text();
                 });
+
 }
 
 function initSepoliaAccountNonInteractive(SepoliaSenderAddr, SepoliaPrivKey, SepoliaRPC, SepoliaChainID, SepoliaScan, 
@@ -112,47 +128,97 @@ function updateMainEnv(Key, Value)
 
 }
 
-function postJSONgetText(url, data)
+function postJSONgetText(url, data, APIKey) //neccesarily NON LOCAL / PRIVATE CLIENT POSTS
 {
-        const headers = {
-                Authorization: "Bearer " + "NONE",
-                "Content-Type": "application/json"
+	if (APIKey)
+        {
+		const headers = {
+			Authorization: "Bearer " + APIKey,
+			"Content-Type": "application/json"
+		}
+		return fetch(url, {
+			method: "POST",
+			body: JSON.stringify(data),
+			headers: headers,
+		}).then(async res  =>
+			{
+				 return await res.text();
+			});
+	}
+	else
+        {
+                console.log("no APIKey provided");
         }
-        return fetch(url, {
-                method: "POST",
-                body: JSON.stringify(data),
-                headers: headers,
-        }).then(async res  =>
-                {
-                         return await res.text();
-                });
 }
 
-
-function postJSON(url, data)
+function loadStarterRESTAPIKeysFromMarketUrl(marketURL)
 {
-        const headers = {
-                Authorization: "Bearer " + "NONE",
-                "Content-Type": "application/json"
-        }
-        return fetch(url, {
-                method: "POST",
-                body: JSON.stringify(data),
-                headers: headers,
-        }).then(async res  =>
-                {
-                         return await res.json();
-                });
+	newURL = marketURL.replace("ordertypes", "publicrequests/starterAPIKeys")
+	console.log(newURL);
+	getJSON(newURL).then((starterAPIKeysJSON) =>
+		{
+				try{
+
+					localStorage.setItem(newURL, starterAPIKeysJSON);
+				}
+				catch (e)
+				{
+					console.error("Error in  setItem:", e);
+				}
+				console.log(starterAPIKeysJSON);
+//			obj = JSON.parse(starterAPIKeysJSON);
+		})
+}
+
+function getStarterRESTAPIKeyFromMarketUrlAtIndex(marketURL, index)
+{
+	newURL  = marketURL.replace("ordertypes", "publicrequests/starterAPIKeys");
+	console.log(newURL);
+	console.log(localStorage.getItem(newURL));
+	starterKeysString = localStorage.getItem(newURL);
+	console.log(starterKeysString);
+	starterKeysOBJ = JSON.parse(starterKeysString);
+	if (starterKeysOBJ.hasOwnProperty(index))
+	{
+		return 	starterKeysOBJ[index]
+	}
+	else
+	{
+		console.log("no starter key at index!");
+	}
+}
+
+function postJSON(url, data, APIKey) //neccesarily NON LOCAL / PRIVATE CLIENT POSTS
+{
+	if (APIKey)
+	{
+		const headers = {
+			Authorization: "Bearer " + APIKey,
+			"Content-Type": "application/json"
+		}
+		return fetch(url, {
+			method: "POST",
+			body: JSON.stringify(data),
+			headers: headers,
+		}).then(async res  =>
+			{
+				 return await res.json();
+			});
+	}
+	else
+	{
+		console.log("no APIKey provided");
+	}
 }
 
 function getJSON(url)
 {
-        const authHeaders = {
-                Authorization: "Bearer " + "NONE",
-        };
-        return fetch(url, {
-                method: "GET",
-        }).then((res) => res.text()).then((textres) => JSON.parse(textres)).then((json) => json)
+/*		const authHeaders = {
+			Authorization: "Bearer " + APIKey,
+		};*/
+		return fetch(url, {
+			method: "GET",
+		}).then((res) => res.text()).then((textres) => JSON.parse(textres)).then((json) => json)
 }
 
 

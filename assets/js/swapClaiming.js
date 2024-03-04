@@ -30,7 +30,7 @@ function claimSwap(event, OrderTypeUUID, coinAmount, CoinA_Price, CoinB_Price)
         const existingMarketLists = JSON.parse(localStorage.getItem(marketlistKey)) || [];
         for (market in existingMarketLists)
         {
-                getJSON(existingMarketLists[market].marketurl).then((jsonData) => {
+                getJSON(existingMarketLists[market].marketurl, getBottomPrivateClientRESTAPIKeyFromLocalStorage()).then((jsonData) => {
                         var jsonobj = JSON.parse(jsonData);
                         for (key in jsonobj)
                         {
@@ -48,22 +48,31 @@ function claimSwap(event, OrderTypeUUID, coinAmount, CoinA_Price, CoinB_Price)
                                         };
 					marketurl = existingMarketLists[market].marketurl
                                         const postmod = existingMarketLists[market].marketurl.replace("ordertypes", "publicrequests");
-                                        postJSON(postmod, data).then(respJSON => {
-                                                const respJSONOBJ = JSON.parse(respJSON);
-                                                const swapTicketID = respJSONOBJ["SwapTicketID"];
-                                                const ENCinit = respJSONOBJ["ENC_init.bin"];
-                                                showStartingOrderIDModal(swapTicketID);
-						storeActiveSwapInfo(swapTicketID, "SettingModalFocus", "", [true]);
-						//set modal focus to true as soon as swap starts
-                                                const makeSwapDirData  = {
-                                                        "id": uuidv4(),
-                                                        "request_type": "makeSwapDir",
-                                                        "SwapTicketID": swapTicketID,
-                                                        "ENCInit": ENCinit
-                                                };
-                                                makeSwapDir(makeSwapDirData, swapTicketID, CoinA, CoinB, coinAmount, postmod, CoinA_Price, CoinB_Price, marketurl);
-                                        });
-                                        break;
+                                        postJSON(
+						postmod, 
+						data, 
+						getStarterRESTAPIKeyFromMarketUrlAtIndex(
+							marketurl, 
+							0
+						)
+					).then(respJSON => {
+							const respJSONOBJ = JSON.parse(respJSON);
+							const swapTicketID = respJSONOBJ["SwapTicketID"];
+							const ENCinit = respJSONOBJ["ENC_init.bin"];
+							showStartingOrderIDModal(swapTicketID);
+							storeActiveSwapInfo(swapTicketID, "SettingModalFocus", "", [true]);
+							//set modal focus to true as soon as swap starts
+							const makeSwapDirData  = {
+								"id": uuidv4(),
+								"request_type": "makeSwapDir",
+								"SwapTicketID": swapTicketID,
+								"ENCInit": ENCinit
+							};
+							makeSwapDir(makeSwapDirData, swapTicketID, CoinA, 
+								CoinB, coinAmount, postmod, CoinA_Price, CoinB_Price, marketurl);
+                                        	
+					});
+                                     	break;
                                 }
                         }
                 });

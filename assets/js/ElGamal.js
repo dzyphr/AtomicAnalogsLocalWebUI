@@ -6,7 +6,7 @@ function loadElGamalKeys()
 {
         //use a local get request to load ElGamal Pubs saved in the main .env file for AtomicAPI
         getJSON("http://localhost:3031/v0.0.1/ElGamalPubs").then((jsonData) => {
-		console.log(jsonData);
+//		console.log(jsonData);
 //                const jsonobj = JSON.parse(jsonData.replace(/\\/g, '').replace(/\\n/g, '\n'));
 		var jsonobj;
 		if (isObject(jsonData))

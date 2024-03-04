@@ -95,7 +95,8 @@ function refreshOrderTypeList()
         const existingMarketLists = JSON.parse(localStorage.getItem(marketlistKey)) || [];
         for (market in existingMarketLists)
         {
-                getJSON(existingMarketLists[market].marketurl).then((jsonData) => {
+                getJSON(existingMarketLists[market].marketurl, 
+		getBottomPrivateClientRESTAPIKeyFromLocalStorage()).then((jsonData) => {
                         const marketurl = existingMarketLists[market].marketurl;
                         const exists = existingOrderTypes.some(obj => obj[marketurl]);
                         if (!exists)
