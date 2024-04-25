@@ -222,14 +222,15 @@ function getJSON(url)
 }
 
 
-function POST_getBoxValue(boxID, boxValPATH, swapName)
+function POST_getBoxValue(boxID, boxValPATH, swapName, crossChain)
 {
         checkBoxValueData = {
                 "id": uuidv4(),
                 "request_type": "checkBoxValue",
                 "SwapTicketID": swapName,
                 "fileName": boxValPATH,
-                "boxID": boxID
+                "boxID": boxID,
+		"CrossChain": crossChain
         }
         return localClientPostJSON(checkBoxValueData).then( respText => {
                 return respText
@@ -251,12 +252,13 @@ function POST_ElGamal_decrypt_swapFile(swapTicketID, SwapFileName, ElGamalKey, E
         });
 }
 
-function POST_get_address_by_boxID(boxID)
+function POST_get_address_by_boxID(boxID, swapTicketID)
 {
         getAddressData = {
                 "id": uuidv4(),
                 "request_type": "SigmaParticle_box_to_addr",
-                "boxID": boxID
+                "boxID": boxID,
+		"swapName": swapTicketID
         };
         return localClientPostJSON(getAddressData).then( respText => {
                 return respText;

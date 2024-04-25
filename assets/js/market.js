@@ -249,7 +249,7 @@ function makeSwapDir(makeSwapDirData, swapTicketID, CoinA, CoinB, coinAmount, po
 				"ElGamalKeyPath": ElGamalKeyPath, 
 				"swapAmount": coinAmount
 			};
-			generateEncryptedResponse(generateEncryptedResponseData, swapTicketID, postmod, marketurl);
+			generateEncryptedResponse(generateEncryptedResponseData, swapTicketID, postmod, marketurl, CoinA, CoinB)
 			const ConversionArray = coinPriceConversion(coinAmount, CoinA_Price, CoinB_Price);
 			AmtCoinB = coinAmount; //we are the responder here
 			AmtCoinA = ConversionArray[1]; // TODO Hide active swaps if there aren't any
@@ -261,7 +261,7 @@ function makeSwapDir(makeSwapDirData, swapTicketID, CoinA, CoinB, coinAmount, po
 		});
 }
 
-function generateEncryptedResponse(generateEncryptedResponseData, swapTicketID, postmod, marketurl)
+function generateEncryptedResponse(generateEncryptedResponseData, swapTicketID, postmod, marketurl, CoinA, CoinB)
 {
 	localClientPostJSON(generateEncryptedResponseData)
 		.then( respText => {
@@ -282,11 +282,11 @@ function generateEncryptedResponse(generateEncryptedResponseData, swapTicketID, 
 			//and proceed accordingly
 			//to server call vv
 			submitEncryptedResponse(
-				submitEncryptedResponseData, swapTicketID, postmod, marketurl)
+				submitEncryptedResponseData, swapTicketID, postmod, marketurl, CoinA, CoinB)
 		});
 }
 
-function submitEncryptedResponse(submitEncryptedResponseData, swapTicketID, postmod, marketurl)
+function submitEncryptedResponse(submitEncryptedResponseData, swapTicketID, postmod, marketurl, CoinA, CoinB)
 {
 	storeActiveSwapInfo(swapTicketID, "Waiting For Finalization", "", "");
 	postJSONgetText(
@@ -321,20 +321,25 @@ function submitEncryptedResponse(submitEncryptedResponseData, swapTicketID, post
 				j = JSON.parse(cleanresult);
 				boxid = j["boxId"];
 				console.log("boxID: ", boxid);
-				responder_ergobox_finalUI(boxid, swapTicketID, 
-					JSON.parse(localStorage.getItem(swapTicketID + "_modalFocus"))[0]);
+				responder_ergobox_finalUI(
+					boxid, swapTicketID, 
+					JSON.parse(localStorage.getItem(swapTicketID + "_modalFocus"))[0],
+					CoinA, CoinB
+				);
 				storeActiveSwapInfo(swapTicketID, "Finalized", "", [boxid]);
 			});
 	});
 }
 
-function responder_ergobox_finalUI(boxid, swapTicketID, UI_bool)
+function responder_ergobox_finalUI(boxid, swapTicketID, UI_bool, CoinA, CoinB)
 {
-	POST_get_address_by_boxID(boxid)
+	POST_get_address_by_boxID(boxid, swapTicketID)
 		.then(function(result){
 			console.log("address:", result);
 			cleanresult = result.replaceAll("\"", "");
-			POST_getBoxValue(boxid, "boxValue", swapTicketID)
+			crossChain = CoinB; 
+			//since checking ergo box value cross chain means whatever other chain is used
+			POST_getBoxValue(boxid, "boxValue", swapTicketID, crossChain)
 				.then(function(result){
 					console.log("box value:", result);
 					nanoergs = result.replaceAll("\"", "");

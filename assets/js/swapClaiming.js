@@ -46,6 +46,7 @@ function claimSwap(event, OrderTypeUUID, coinAmount, CoinA_Price, CoinB_Price)
 						"QGChannel": getElGamalQGChannel(existingMarketLists[market].marketurl),
                                                 "ElGamalKey": getElGamalKey(existingMarketLists[market].marketurl)
                                         };
+					console.log(data);
 					marketurl = existingMarketLists[market].marketurl
                                         const postmod = existingMarketLists[market].marketurl.replace("ordertypes", "publicrequests");
                                         postJSON(
