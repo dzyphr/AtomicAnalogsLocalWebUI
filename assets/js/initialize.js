@@ -1,3 +1,6 @@
+//functions for initializing an account on a specific blockchain
+//an "account" in this sense refers to a collection of private data used for blockchain interactions
+//the account can be encrypted or plaintext as of recent updates
 function showHideChainInitUI(chain)
 {
 	ergoAccountSetupBox = document.getElementById("ergoAccountSetupBox");

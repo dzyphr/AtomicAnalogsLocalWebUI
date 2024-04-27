@@ -28,8 +28,11 @@ align-items: center;
         border: 2px solid white;
         box-shadow: 0 2px 3px 0 white, 0 2px 3px 0 white;
         display: grid;
-        grid-template-columns:repeat(4, 1fr); 
+        grid-template-columns:repeat(5, 1fr); 
         grid-gap: 2%;
+}
+.accountPassword{
+	width: 90%;
 }
 .initialize-grid-container{
 	width: 55%;
@@ -329,6 +332,8 @@ align-items: center;
         height:auto;
 }
 .loginbuttonbox{
+	display: flex;
+    flex-direction: column;
 	margin-top: 50%;
   margin-bottom: 50%;
 }
