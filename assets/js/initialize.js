@@ -1,8 +1,42 @@
 //functions for initializing an account on a specific blockchain
 //an "account" in this sense refers to a collection of private data used for blockchain interactions
 //the account can be encrypted or plaintext as of recent updates
+//
+//
+
+document.addEventListener('DOMContentLoaded', function () {
+  const menuItems = document.querySelectorAll('menuitem');
+  menuItems.forEach(function (menuItem) {
+    menuItem.addEventListener('click', function (event) {
+	if (menuItem.getAttribute('id') != ('chainSelector')) //avoid encapsulating chainSelector id as its technically a css menuitem
+	{
+		if (menuItem.classList.contains('selected'))
+		{
+			menuItem.classList.remove('selected');
+		}
+		else
+		{
+			event.preventDefault(); // Prevent following links
+
+			// Remove "selected" class from all menu items
+			menuItems.forEach(function (item) {
+			    if (item.classList.contains('selected'))
+			    {
+				item.classList.remove('selected')
+			    }
+			})
+
+			// Add "selected" class to the clicked menu item
+			menuItem.classList.add('selected');
+		}
+	}
+    });
+  });
+});
+
 function showHideChainInitUI(chain)
 {
+
 	ergoAccountSetupBox = document.getElementById("ergoAccountSetupBox");
 	sepoliaAccountSetupBox = document.getElementById("SepoliaAccountSetupBox");
 	if (chain == "Ergo")

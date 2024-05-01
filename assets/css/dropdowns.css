@@ -23,6 +23,13 @@ menuitem:hover > menu {
    pointer-events:initial;
    
 }
+
+
+menuitem.selected {
+  transform: translateX(0); /* Adjust this based on your layout */
+  opacity:1;
+}
+
 menuitem:hover > menu > menuitem,
 menu:hover > menuitem{
    opacity:1;
@@ -69,7 +76,7 @@ nav a:hover:before {
    height:100%;
 }
 
-/*
+
 nav menuitem > menu > menuitem > a + menu:after{ 
    content: '';
    position:absolute;
@@ -79,7 +86,7 @@ nav menuitem > menu > menuitem > a + menu:after{
    transition: opacity 0.6, transform 0s;
    
 }
-*/
+
 nav > menu > menuitem > menu > menuitem{
    transition: transform 0.6s, opacity 0.6s;
    transform:translateY(150%);

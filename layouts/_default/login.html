@@ -10,6 +10,9 @@
 <link rel="stylesheet" type="text/css" href="{{ $inputboxstyles.Permalink }}" media="screen"/>
 {{ $logInjs := resources.Get "js/logIn.js" }}
 <script src="{{ $logInjs.Permalink }}"></script>
+{{ $RESTinteractionsjs := resources.Get "js/REST_interactions.js" }}
+<script src="{{ $RESTinteractionsjs.Permalink }}"></script>
+
 {{ partial "header.html" . }}
  <body>
    <div class="bodydiv">

@@ -221,6 +221,11 @@ function getJSON(url)
 		}).then((res) => res.text()).then((textres) => JSON.parse(textres)).then((json) => json)
 }
 
+function getAllChainAccountsJSON()
+{
+	url = "http://localhost:3031/v0.0.1/AllChainAccountsMap"
+	return getJSON(url)
+}
 
 function POST_getBoxValue(boxID, boxValPATH, swapName, crossChain)
 {
