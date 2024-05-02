@@ -12,6 +12,8 @@
 <script src="{{ $logInjs.Permalink }}"></script>
 {{ $RESTinteractionsjs := resources.Get "js/REST_interactions.js" }}
 <script src="{{ $RESTinteractionsjs.Permalink }}"></script>
+{{ $cryptographyjs := resources.Get "js/cryptography.js" }}
+<script src="{{ $cryptographyjs.Permalink }}"></script>
 
 {{ partial "header.html" . }}
  <body>
@@ -55,16 +57,23 @@
          </nav>
        </div>
        <div class="loginbuttonbox">
-	 <h1>
-           {{ .Params.Loginprompt }}
-         </h1>
 	 <div class="webflow-style-input">
            <input class="accountPassword" type="accountPassword" id="accountPassword" placeholder="Password"></input>
          </div>
 	 <div></div>
-         <form action="/market">
-           <button class="button1" class="login-button-functional" >  {{ .Params.Loginbutton }}</button>
-         </form>
+         <!--form action="/market"-->
+	 <div>
+           <button onclick="logIn()" class="button1" class="login-button-functional" >  {{ .Params.Loginbutton }}</button>
+	 </div>
+         <!--/form-->
+       </div>
+       <div class="enterMarketButtonBox">
+	     <h3>
+               {{ .Params.entermarketprompt }}
+             </h3>
+	     <form action="/market">
+		     <button  class="button1" class="entermarket-button-functional" >  {{ .Params.Entermarketbutton }}</button>
+	     </form>
        </div>
      </div>
    </div>

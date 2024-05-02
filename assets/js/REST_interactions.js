@@ -188,6 +188,29 @@ function getStarterRESTAPIKeyFromMarketUrlAtIndex(marketURL, index)
 	}
 }
 
+function POST_loginToPasswordEncryptedAccount(Chain, AccountName, Password)
+{
+
+	data = {
+		"id": uuidv4(),
+		"request_type": "logInToPasswordEncryptedAccount",
+		"Chain": Chain,
+		"AccountName": AccountName,
+		"Password": Password
+	}
+	return localClientPostJSON(data).then(function(result) {
+		console.log(result.replace(/"/g, ''));
+		cleanresult = result.replace(/"/g, '');
+		if (cleanresult === "True")
+		{
+			return true;
+		}
+		/*if (cleanresult === "false")
+		{}*/ //needs to be implemented at REST API level still
+
+	})
+}
+
 function postJSON(url, data, APIKey) //neccesarily NON LOCAL / PRIVATE CLIENT POSTS
 {
 	if (APIKey)
