@@ -7,4 +7,4 @@ loginbutton = "Login"
 entermarketprompt = "Enter Swap Market:"
 entermarketbutton = "Enter"
 +++
-Log In to any Encrypted accounts you have created.
+Only encrypted accounts shown, plaintext accounts work automatically

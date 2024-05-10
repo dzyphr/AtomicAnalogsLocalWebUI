@@ -231,6 +231,10 @@ function getMarkets()
 function makeSwapDir(makeSwapDirData, swapTicketID, CoinA, CoinB, coinAmount, postmod, CoinA_Price, CoinB_Price, marketurl)
 {
 	localClientPostJSON(makeSwapDirData).then(respText => {
+
+			POST_saveMarketURLToSwapFolder(swapTicketID, marketurl).then(function(result) {
+				POST_getMarketURL_bySwapID(swapTicketID).then(function(result) { console.log(result); })
+			});
 			console.log("ElGamalKeyPath")
 			ElGamalKeyPath = "Key" + getLocalElGamalPubKeyIndexFromLocalStorage(getElGamalKey(marketurl)) + ".ElGamalKey";
 			

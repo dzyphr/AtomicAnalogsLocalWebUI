@@ -335,6 +335,103 @@ function POST_write_ENC_finalization(swapTicketID, ENCfin)
         localClientPostJSON(writeFinalizationData)
 }
 
+function POST_hotReloadAllSwapStates()
+{
+	hotReloadData = {
+		"id": uuidv4(),
+                "request_type": "hotReloadAllSwapStates"
+	}
+	localClientPostJSON(hotReloadData).then(function(result) {
+		console.log(result.replace(/\\/g, '').slice(1, -1));	
+		swapstatemap = JSON.parse(result.replace(/\\/g, '').slice(1, -1) );
+		console.log(swapstatemap[0])
+		for (let swap in swapstatemap)
+		{
+			POST_getResponderJSON_bySwapID(swap).then(function(result)
+                                        {
+                                                console.log(JSON.parse(result.replace(/\\n/g, '').replace(/\\/g, '').slice(1, -1)));
+					});
+			console.log(swap)
+			if (swapstatemap[swap] == "responded_unsubmitted")
+			{
+				POST_getMarketURL_bySwapID(swap).then(function(result) 
+				{
+					marketurl = result.replace(/"/g, '');
+					postmod = marketurl.replace("ordertypes", "publicrequests");
+					POST_getResponderJSON_bySwapID(swap).then(function(result)
+					{
+						responderJSON = JSON.parse(result.replace(/\\n/g, '').replace(/\\/g, '').slice(1, -1))
+						CoinA = responderJSON["InitiatorChain"];
+						CoinB = responderJSON["ResponderChain"];
+						POST_getResponseBIN_bySwapID(swapTicketID).then(function(result) {
+							cleanresp = result.replace(/"/g, '');
+							console.log(cleanresp);
+							submitEncryptedResponseData = {
+								"id": uuidv4(),
+								"request_type": "submitEncryptedResponse",
+								"SwapTicketID": swapTicketID,
+								"encryptedResponseBIN": cleanresp
+							}
+							submitEncryptedResponse(
+								submitEncryptedResponseData, swap, postmod, marketurl, CoinA, CoinB
+							)
+						});
+					})
+				});
+			}
+		}
+		//TODO if one of the swaps has a state of "responded_unsubmitted"
+		//call submitEncryptedResponse() we will need to keep track of market url in swap folder
+		//to do this properly
+	})
+}
+
+function POST_getResponseBIN_bySwapID(swapTicketID)
+{
+	POST_getResponseBIN_bySwapID_data = {
+                "id": uuidv4(),
+                "request_type": "readSwapFile",
+                "SwapTicketID": swapTicketID,
+                "SwapFileName": "ENC_response_path.bin"
+        }
+        return localClientPostJSON(POST_getResponseBIN_bySwapID_data)
+}
+
+function POST_getResponderJSON_bySwapID(swapTicketID)
+{
+	POST_getResponderJSON_bySwapID_data = {
+		"id": uuidv4(),
+                "request_type": "readSwapFile",
+                "SwapTicketID": swapTicketID,
+                "SwapFileName": "responder.json"
+	}
+	return localClientPostJSON(POST_getResponderJSON_bySwapID_data)
+}
+
+function POST_getMarketURL_bySwapID(swapTicketID)
+{
+	getMarketURL_bySwapID_data = {
+		"id": uuidv4(),
+                "request_type": "readSwapFile",
+                "SwapTicketID": swapTicketID,
+                "SwapFileName": "MarketURL"
+	}
+	return localClientPostJSON(getMarketURL_bySwapID_data);
+}
+
+function POST_saveMarketURLToSwapFolder(swapTicketID, URL)
+{
+	saveMarketURLData = {
+		"id": uuidv4(),
+                "request_type": "writeSwapFile",
+                "SwapTicketID": swapTicketID,
+		"SwapFileName": "MarketURL",
+		"FileContents": URL
+	}
+	return localClientPostJSON(saveMarketURLData);
+}
+
+
 function POST_ENC_responder_claim(swapTicketID)
 {
         data = {
