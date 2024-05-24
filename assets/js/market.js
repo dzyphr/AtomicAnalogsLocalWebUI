@@ -2,6 +2,101 @@ function isEmptyObject(obj) {
   return Object.keys(obj).length === 0;
 }
 
+function populateMarketExistingAccounts(localChain, crossChain, clear)
+{
+
+        let accountObj
+        getAllChainAccountsJSON().then( function(result)
+        {
+		localChainAccountMenu = document.getElementById("localaccountMenu");
+	        crossChainAccountMenu = document.getElementById("crossaccountMenu");
+		if (clear == true)
+		{
+			while (localChainAccountMenu.firstChild) {
+			  localChainAccountMenu.removeChild(localChainAccountMenu.firstChild);
+			}
+			while (crossChainAccountMenu.firstChild) {
+                          crossChainAccountMenu.removeChild(crossChainAccountMenu.firstChild);
+                        }
+		}
+                accountObj =  JSON.parse(result)
+                for (let key in accountObj) {
+		    if (localChain == "Sepolia")
+		    {
+
+			    //TODO: keep track of logged in accounts in localStorage
+				//check if account is .env.encrypted here and make sure its logged in before populating
+			    //TODO if only one acc exists per chain auto select that acc
+			    //TODO if no acc exists per chain link to create account for that chain page
+			    const menuItem = document.createElement("menuitem");
+			    const link = document.createElement("a");
+			    if (key.includes("Atomicity"))
+			    {
+				    link.textContent = accountObj[key];
+				    menuItem.appendChild(link);
+				    menuItem.setAttribute('data-custom', key)
+				    // Add the click event listener
+				    menuItem.addEventListener('click', function (event) {
+					if (menuItem.classList.contains('localselected'))
+					{
+						menuItem.classList.remove('localselected');
+					}
+					else
+					{
+						event.preventDefault(); // Prevent following links
+						const menuItems = document.querySelectorAll('menuitem');
+						// Remove "selected" class from all menu items
+						menuItems.forEach(function (item) {
+						    if (item.classList.contains('localselected'))
+						    {
+							item.classList.remove('localselected');
+						    }
+						});
+						// Add "selected" class to the clicked menu item
+						menuItem.classList.add('localselected');
+					}
+				    });
+				    localChainAccountMenu.appendChild(menuItem);
+			    }
+		    }
+		    if (crossChain == "TestnetErgo")
+		    {
+			    const menuItem = document.createElement("menuitem");
+                            const link = document.createElement("a");
+                            if (key.includes("SigmaParticle"))
+                            {
+                                    link.textContent = accountObj[key];
+                                    menuItem.appendChild(link);
+                                    menuItem.setAttribute('data-custom', key)
+                                    // Add the click event listener
+                                    menuItem.addEventListener('click', function (event) {
+                                        if (menuItem.classList.contains('crossselected'))
+                                        {
+                                                menuItem.classList.remove('crossselected');
+                                        }
+                                        else
+                                        {
+                                                event.preventDefault(); // Prevent following links
+                                                const menuItems = document.querySelectorAll('menuitem');
+                                                // Remove "selected" class from all menu items
+                                                menuItems.forEach(function (item) {
+                                                    if (item.classList.contains('crossselected'))
+                                                    {
+                                                        item.classList.remove('crossselected');
+                                                    }
+                                                });
+                                                // Add "selected" class to the clicked menu item
+                                                menuItem.classList.add('crossselected');
+                                        }
+                                    });
+                                    crossChainAccountMenu.appendChild(menuItem);
+                            }
+		    }
+                }
+        })
+}
+
+
 function addMarket()
 {
 	const marketname = document.getElementById("marketnamesetup");

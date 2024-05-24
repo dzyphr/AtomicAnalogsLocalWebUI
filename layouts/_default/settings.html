@@ -8,16 +8,33 @@
 <link rel="stylesheet" type="text/css" href="{{ $checkboxstyles.Permalink }}" media="screen"/>
 {{ $inputboxstyles := resources.Get "css/inputboxes.css" | minify }}
 <link rel="stylesheet" type="text/css" href="{{ $inputboxstyles.Permalink }}" media="screen"/>
-{{ $marketjs := resources.Get "js/market.js" | minify }}
+{{ $scrollbarstyles := resources.Get "css/scrollbars.css" | minify }}
+<link rel="stylesheet" type="text/css" href="{{ $scrollbarstyles.Permalink }}" media="screen"/>
+{{ $marketjs := resources.Get "js/market.js" }}
 <script src="{{ $marketjs.Permalink }}"></script>
-{{ $settingsjs := resources.Get "js/settings.js" }}
-<script src="{{ $settingsjs.Permalink }}"></script>
+{{ $pricetoolsjs := resources.Get "js/price_tools.js" }}
+<script src="{{ $pricetoolsjs.Permalink }}"></script>
 {{ $cryptographyjs := resources.Get "js/cryptography.js" }}
 <script src="{{ $cryptographyjs.Permalink }}"></script>
-{{ $RESTinteractionsjs := resources.Get "js/REST_interactions.js" }}
-<script src="{{ $RESTinteractionsjs.Permalink }}"></script>
 {{ $localstoragejs := resources.Get "js/localstorage.js" }}
 <script src="{{ $localstoragejs.Permalink }}"></script>
+{{ $RESTinteractionsjs := resources.Get "js/REST_interactions.js" }}
+<script src="{{ $RESTinteractionsjs.Permalink }}"></script>
+{{ $ElGamaljs := resources.Get "js/ElGamal.js" }}
+<script src="{{ $ElGamaljs.Permalink }}"></script>
+{{ $onload_marketjs := resources.Get "js/onload_market.js" }}
+<script src="{{ $onload_marketjs.Permalink }}"></script>
+{{ $activeSwapModaljs := resources.Get "js/activeSwapModal.js" }}
+<script src="{{ $activeSwapModaljs.Permalink }}"></script>
+{{ $activeSwapSliderjs := resources.Get "js/activeSwapSlider.js" }}
+<script src="{{ $activeSwapSliderjs.Permalink }}"></script>
+{{ $orderRepListjs := resources.Get "js/orderRepList.js" }}
+<script src="{{ $orderRepListjs.Permalink }}"></script>
+{{ $swapClaimingjs := resources.Get "js/swapClaiming.js" }}
+<script src="{{ $swapClaimingjs.Permalink }}"></script>
+{{ $settingsjs := resources.Get "js/settings.js" }}
+<script src="{{ $settingsjs.Permalink }}"></script>
+
 {{ partial "header.html" . }}
  <body>
   <div class="bodydiv">
@@ -99,12 +116,12 @@
      </script>
      </div>
    </div>
-   <div class="hotReloadDiv" id="hotReloadDiv">
+   <div class="ReloadDiv" id="ReloadDiv">
      <h1>
-	     {{ .Params.hotreloadprompt }}
+	     {{ .Params.reloadprompt }}
      </h1>
-     <button type="button" class="button1" class="hotReloadButton" onclick="POST_hotReloadAllSwapStates()">
-		{{ .Params.hotreloadbutton }}
+     <button type="button" class="button1" class="ReloadButton" onclick="POST_ReloadAllSwapStates()">
+		{{ .Params.reloadbutton }}
      </button>
    </div>
   </div>

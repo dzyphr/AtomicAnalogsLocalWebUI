@@ -164,6 +164,17 @@ align-items: center;
   border: 1px solid transparent;  /* creates padding around scroll thumb */
 }
 
+/*
+.swapClaimWindowInnerDiv{
+	border: 2px solid white;
+        box-shadow: 0 2px 3px 0 white, 0 2px 3px 0 white;
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        grid-gap: 0%;
+        justify-content: center;
+        align-items: center;
+        font-size: 75%;
+}
 
 .swapClaimWindow{
 	border: 2px solid white;
@@ -174,9 +185,71 @@ align-items: center;
 	justify-content: center;
 	align-items: center;
 	font-size: 75%;
-/*	display: none;*/
 	visibility: hidden;
+}*/
+
+.swapClaimWindow {
+	gap: 1px;
+    border: 2px solid white;
+    box-shadow: 0 2px 3px 0 white, 0 2px 3px 0 white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 75%;
+    visibility: hidden; /* Adjust as needed */
+    width: 100%;
 }
+
+
+.swapClaimWindowInnerDiv {
+    display: grid;
+    grid-template-rows: auto auto;
+    gap: 20px; /* Adjust as needed for spacing */
+    width: 100%; /* Ensures it takes the full width of the container */
+}
+
+.fundSection {
+    border: 1px solid white; /* For visual separation */
+    padding: 1px; /* Adjust as needed */
+    display: grid;
+    align-items: center;
+     grid-template-columns: repeat(6, 1fr);
+    width: fit-content`; /* Ensures each section takes the full width of the container */
+    box-sizing: border-box; /* Ensures padding and border are included in the width */
+    height: fit-content; /* Ensures height fits content */
+}
+
+ .localAccountSection {
+    border: 1px solid white; /* For visual separation */
+    padding: 1px; /* Adjust as needed */
+    display: grid;
+    align-items: center;
+     grid-template-columns: repeat(5, 1fr);
+    width: fit-content`; /* Ensures each section takes the full width of the container */
+    box-sizing: border-box; /* Ensures padding and border are included in the width */
+    height: fit-content; /* Ensures height fits content */
+}
+
+
+.fundSection h3, .localAccountSection h3 {
+    margin: 10px 0; /* Adjust as needed for spacing between headings */
+}
+
+.webflow-style-input {
+    margin-bottom: 20px; /* Space between the input and next element */
+}
+
+#coinBEntry {
+    width: 100%; /* Make the input field take full width */
+}
+
+form {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px; /* Adjust as needed */
+}
+
+
 .marketOrderInfoHeaderContainer{
 	display: grid;
         grid-template-columns:repeat(6, 1fr);
@@ -370,7 +443,7 @@ align-items: center;
         font-size: 75%;
 }
 
-.hotReloadDiv{
+.ReloadDiv{
 	display: flex;
 justify-content: center;
 flex-direction: row;

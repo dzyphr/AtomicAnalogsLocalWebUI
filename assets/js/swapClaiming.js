@@ -14,17 +14,62 @@ function showSwapClaimWindow(event, CoinA, CoinB, CoinA_Price, CoinB_Price, Orde
                 swapButton.addEventListener("click",
                         function (event)
                         {
-                                claimSwap(event, OrderTypeUUID, coinBEntry.value, CoinA_Price, CoinB_Price)
+				localChainAccountMenu = document.getElementById("localaccountMenu");
+		                crossChainAccountMenu = document.getElementById("crossaccountMenu");
+				hasSelectedLocalAccount = false;
+				hasSelectedCrossAccount = false;
+				localAccount = ""
+				crossAccount = ""
+				if (localChainAccountMenu.firstChild)
+				{
+					for (const child of localChainAccountMenu.children)
+					{
+						if (child.classList.contains('localselected'))
+						{
+							hasSelectedLocalAccount = true;
+							localAccount = child.textContent
+						}
+					}
+					//.classList.contains('localselected')
+				}
+				if (crossChainAccountMenu.firstChild)
+                                {
+                                        for (const child of crossChainAccountMenu.children)
+                                        {
+                                                if (child.classList.contains('crossselected'))
+                                                {
+                                                        hasSelectedCrossAccount = true;
+							crossAccount = child.textContent
+                                                }
+                                        }
+                                }
+				if (hasSelectedCrossAccount == false || hasSelectedLocalAccount == false)
+				{
+					console.log("chain accounts not selected!")
+				}
+				else
+				{
+	                                claimSwap(
+						event, 
+						OrderTypeUUID, 
+						coinBEntry.value, 
+						CoinA_Price, 
+						CoinB_Price, 
+						localAccount, 
+						crossAccount
+					)
+				}
                         });
                 document.getElementById("estReceivedCoinA").innerHTML = CoinA;
         }
         else if (window.getComputedStyle(swapClaimWindow).visibility === "visible")
         {
                 swapClaimWindow.style.visibility = "hidden";
+		populateMarketExistingAccounts("", "", true) //clear when unclicked
         }
 }
 
-function claimSwap(event, OrderTypeUUID, coinAmount, CoinA_Price, CoinB_Price)
+function claimSwap(event, OrderTypeUUID, coinAmount, CoinA_Price, CoinB_Price, localAccount, crossAccount)
 {
         const marketlistKey = 'marketlist';
         const existingMarketLists = JSON.parse(localStorage.getItem(marketlistKey)) || [];
@@ -36,6 +81,49 @@ function claimSwap(event, OrderTypeUUID, coinAmount, CoinA_Price, CoinB_Price)
                         {
                                 if (key == OrderTypeUUID)
                                 {
+					//instead of raw handling the request here, lets keep the requests local
+					//start storing the state of this swap on the back end
+					//make the request from the backend and then query its state from here
+					//make a local request that anticipates the initiation being recieved to the backend
+					//replace further swap claiming functions with this behavior
+					//this makes reloading swaps and rendering state far more simple and rational
+					//
+					//
+					//TODO stronger link between Market specific ElGamal Key and QG channel to ensure consistency
+					const CoinA = jsonobj[key]["CoinA"]; //crosschain
+                                        const CoinB = jsonobj[key]["CoinB"]; //localchain
+					let LocalChain = CoinB;
+					let CrossChain = CoinA;
+					marketurl = existingMarketLists[market].marketurl
+					let ClientElGamalKey = getElGamalKey(marketurl);
+					ElGamalKeyPath = 
+						"Key" + 
+						getLocalElGamalPubKeyIndexFromLocalStorage(ClientElGamalKey) + 
+						".ElGamalKey";
+					QGPubMatchStorageKey = marketurl + "_QGPubMatch" + "_" + getElGamalKey(marketurl);
+		                        QGPubMatchElGMarketServerKey = localStorage.getItem(QGPubMatchStorageKey);
+					ServerElGamalKey = QGPubMatchElGMarketServerKey
+					let startSwapFromUIData = {
+						"id": uuidv4(),
+						"request_type": "startSwapFromUI",
+						"OrderTypeUUID": OrderTypeUUID,
+                                                "QGChannel": getElGamalQGChannel(marketurl),
+                                                "ElGamalKey": ClientElGamalKey,
+						"ServerElGamalKey": ServerElGamalKey,
+						"ElGamalKeyPath": ElGamalKeyPath,
+						"MarketURL": marketurl,
+						"MarketAPIKey": getStarterRESTAPIKeyFromMarketUrlAtIndex(marketurl, 0),
+						"LocalChain": LocalChain,
+						"CrossChain": CrossChain,
+						"LocalChainAccount": localAccount,
+						"CrossChainAccount": crossAccount,
+						"SwapRole": "Responder", //TODO for now client is always responder might change itf
+						"swapAmount": coinAmount
+					}
+					localClientPostJSON(startSwapFromUIData).then(function(response) {
+						console.log(response);
+					});
+					/*
                                         const CoinA = jsonobj[key]["CoinA"];
                                         const CoinB = jsonobj[key]["CoinB"];
                                         console.log("CoinA", CoinA, "CoinB", CoinB);
@@ -72,7 +160,7 @@ function claimSwap(event, OrderTypeUUID, coinAmount, CoinA_Price, CoinB_Price)
 							makeSwapDir(makeSwapDirData, swapTicketID, CoinA, 
 								CoinB, coinAmount, postmod, CoinA_Price, CoinB_Price, marketurl);
                                         	
-					});
+					});*/
                                      	break;
                                 }
                         }

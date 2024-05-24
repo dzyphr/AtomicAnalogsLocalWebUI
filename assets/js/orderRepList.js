@@ -79,6 +79,8 @@ function representOrderType(marketName, CoinA, CoinB, MinVol, MaxVol, CoinA_Pric
                 function (event)
                 {
                         showSwapClaimWindow(event, CoinA, CoinB, CoinA_Price, CoinB_Price, OrderTypeUUID);
+			populateMarketExistingAccounts("", "", true) //clear before populating to be sure
+			populateMarketExistingAccounts(CoinB, CoinA, false)
                 });
         const marketOrderInfoContainer = document.getElementById("marketOrderInfoContainer");
 	const marketOrderSlider = document.getElementById("marketOrderInfoSlider");

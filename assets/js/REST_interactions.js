@@ -335,55 +335,15 @@ function POST_write_ENC_finalization(swapTicketID, ENCfin)
         localClientPostJSON(writeFinalizationData)
 }
 
-function POST_hotReloadAllSwapStates()
+function POST_ReloadAllSwapStates()
 {
-	hotReloadData = {
+	ReloadData = {
 		"id": uuidv4(),
-                "request_type": "hotReloadAllSwapStates"
+                "request_type": "reloadAllSwapStates"
 	}
-	localClientPostJSON(hotReloadData).then(function(result) {
-		console.log(result.replace(/\\/g, '').slice(1, -1));	
-		swapstatemap = JSON.parse(result.replace(/\\/g, '').slice(1, -1) );
-		console.log(swapstatemap[0])
-		for (let swap in swapstatemap)
-		{
-			POST_getResponderJSON_bySwapID(swap).then(function(result)
-                                        {
-                                                console.log(JSON.parse(result.replace(/\\n/g, '').replace(/\\/g, '').slice(1, -1)));
-					});
-			console.log(swap)
-			if (swapstatemap[swap] == "responded_unsubmitted")
-			{
-				POST_getMarketURL_bySwapID(swap).then(function(result) 
-				{
-					marketurl = result.replace(/"/g, '');
-					postmod = marketurl.replace("ordertypes", "publicrequests");
-					POST_getResponderJSON_bySwapID(swap).then(function(result)
-					{
-						responderJSON = JSON.parse(result.replace(/\\n/g, '').replace(/\\/g, '').slice(1, -1))
-						CoinA = responderJSON["InitiatorChain"];
-						CoinB = responderJSON["ResponderChain"];
-						POST_getResponseBIN_bySwapID(swapTicketID).then(function(result) {
-							cleanresp = result.replace(/"/g, '');
-							console.log(cleanresp);
-							submitEncryptedResponseData = {
-								"id": uuidv4(),
-								"request_type": "submitEncryptedResponse",
-								"SwapTicketID": swapTicketID,
-								"encryptedResponseBIN": cleanresp
-							}
-							submitEncryptedResponse(
-								submitEncryptedResponseData, swap, postmod, marketurl, CoinA, CoinB
-							)
-						});
-					})
-				});
-			}
-		}
-		//TODO if one of the swaps has a state of "responded_unsubmitted"
-		//call submitEncryptedResponse() we will need to keep track of market url in swap folder
-		//to do this properly
-	})
+	localClientPostJSON(ReloadData).then(function(result) {
+		console.log(result);	
+	});
 }
 
 function POST_getResponseBIN_bySwapID(swapTicketID)

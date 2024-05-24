@@ -104,25 +104,52 @@
        </div>
      </div>
    </div>
-     <div>
        <div class="swapClaimWindow" id="swapClaimWindow">
-	       	<h1>Amount to Fund:</h1>
-		<div class="webflow-style-input" class="marketAPIInput">
-                  <input class="coinBEntry" id="coinBEntry" placeholder=""></input>
-                </div>
-		<h1>Est. Received:</h1>
-		<h1 id="coinAConvertedValue"></h1>
-		<h1 id="estReceivedCoinA"></h1>
-                <form >
-                  <button class="button1" 
-			  id="claimSwapButton" 
-			  type="button">
-		  {{ .Params.swapButton }}
-		  </button>
-                </form>
-       </div>
-     </div>
-   </div>
+	    <div class="swapClaimWindowInnerDiv" id="swapClaimWindowInnerDiv">
+		<div class="fundSection">
+		    <h3>Amount to Fund:</h3>
+		    <div class="webflow-style-input marketAPIInput">
+			<input class="coinBEntry" id="coinBEntry" placeholder=""></input>
+		    </div>
+		    <h3>Est. Received:</h3>
+		    <h3 id="coinAConvertedValue"></h3>
+		    <h3 id="estReceivedCoinA"></h3>
+		    <form>
+			<button class="button1" id="claimSwapButton" type="button">
+			    {{ .Params.swapButton }}
+			</button>
+		    </form>
+		</div>
+		<div class="localAccountSection">
+			<div><h3>Select Accounts:</h3></div>
+		       <div class="marketLocalAccountmenudiv">
+			 <nav>
+			   <menu>
+			     <menuitem id="accountSelector">
+			     <a>Local Chain Accounts</a>
+			     <menu class="localaccountMenu" id="localaccountMenu">
+			     </menu>
+			     </menuitem>
+			   </menu>
+			 </nav>
+		       </div>
+		        <div></div>
+		       <div class="marketCrossAccountmenudiv">
+                         <nav>
+                           <menu>
+                             <menuitem id="accountSelector">
+                             <a>Cross Chain Accounts</a>
+                             <menu class="crossaccountMenu" id="crossaccountMenu">
+                             </menu>
+                             </menuitem>
+                           </menu>
+                         </nav>
+                       </div>
+		        <div></div>
+		</div>
+	    </div>
+	</div>
+      </div>
   </div>
  </body>
  {{partial "swapdialog.html" . }}
