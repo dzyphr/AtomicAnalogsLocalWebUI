@@ -54,6 +54,26 @@ function getBottomPrivateClientRESTAPIKeyFromLocalStorage()
 	}
 }
 
+
+
+function localClientPostJSONgetJSON(data)
+{
+	        url = "http://localhost:3031/v0.0.1/requests"
+        const headers = {
+                Authorization: "Bearer " + getBottomPrivateClientRESTAPIKeyFromLocalStorage(),
+                "Content-Type": "application/json"
+        }
+        console.log(data);
+        return fetch(url, {
+                method: "POST",
+                body: JSON.stringify(data),
+                headers: headers,
+        }).then(async res  =>
+                {
+                         return await res.json();
+                });
+}
+
 function localClientPostJSON(data)
 {
         url = "http://localhost:3031/v0.0.1/requests"
@@ -231,7 +251,14 @@ function postJSON(url, data, APIKey) //neccesarily NON LOCAL / PRIVATE CLIENT PO
 	else
 	{
 		console.log("no APIKey provided");
+		
 	}
+}
+
+function getSwapStateMap()
+{
+	url = "http://localhost:3031/v0.0.1/SwapStateMap"
+	return getJSON(url)
 }
 
 function getJSON(url)
@@ -250,15 +277,13 @@ function getAllChainAccountsJSON()
 	return getJSON(url)
 }
 
-function POST_getBoxValue(boxID, boxValPATH, swapName, crossChain)
+function POST_getBoxValue(swapTicketID)
 {
         checkBoxValueData = {
                 "id": uuidv4(),
-                "request_type": "checkBoxValue",
-                "SwapTicketID": swapName,
-                "fileName": boxValPATH,
-                "boxID": boxID,
-		"CrossChain": crossChain
+                "request_type": "readSwapFile",
+		"SwapTicketID": swapTicketID,
+                "SwapFileName": "boxVal"
         }
         return localClientPostJSON(checkBoxValueData).then( respText => {
                 return respText
@@ -280,6 +305,18 @@ function POST_ElGamal_decrypt_swapFile(swapTicketID, SwapFileName, ElGamalKey, E
         });
 }
 
+function POST_get_responderJSON_by_swap_ID(swapID)
+{
+	data = {
+		"id": uuidv4(),
+                "request_type": "get_responderJSONbySwapID",
+		"SwapTicketID": swapID
+	}
+	return localClientPostJSON(data).then( respText => {
+                return respText;
+        });
+}
+
 function POST_get_address_by_boxID(boxID, swapTicketID)
 {
         getAddressData = {
@@ -292,6 +329,19 @@ function POST_get_address_by_boxID(boxID, swapTicketID)
                 return respText;
         });
 
+}
+
+function POST_get_boxAddr(swapTicketID)
+{
+	getResponseData = {
+                "id": uuidv4(),
+                "request_type": "readSwapFile",
+                "SwapTicketID": swapTicketID,
+		"SwapFileName": "boxAddr"
+	}
+	return localClientPostJSON(getResponseData).then( respText => {
+		return respText;
+        });
 }
 
 function POST_get_response_data(swapTicketID, UI_bool)

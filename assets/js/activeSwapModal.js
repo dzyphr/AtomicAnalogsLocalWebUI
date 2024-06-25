@@ -1,36 +1,123 @@
+async function updateActiveSwapFocusedModals()
+{
+	while (true)
+	{
+		getSwapStateMap().then(SwapStateMap => {
+			for (key in SwapStateMap)
+			{
+				modalFocus = JSON.parse(localStorage.getItem(key + "_modalFocus"))[0]
+				console.log(modalFocus)
+				if (modalFocus == true)
+				{
+					loadModalInfoFromStorage(key)
+					break
+				}
+			}
+		});	
+		await new Promise(r => setTimeout(r, 10000));
+	}
+}
+
 function loadModalInfoFromStorage(swapTicketID)
 {
-	currentSwap = JSON.parse(localStorage.getItem(swapTicketID))
-	
-	Stage = currentSwap[5];
-	if (Stage == "Funding")
-	{
-		console.log("Stage:", Stage);
-		showStartingOrderIDModal(swapTicketID)
-	}
-	else if (Stage == "Submitting" || Stage == "Waiting for Finalization" || Stage == "Finalized")
-	{
-		console.log("Stage:", Stage);
-		currentSwapMeta = JSON.parse(localStorage.getItem(swapTicketID + "_meta"));
-		address = currentSwapMeta[0];
-		showStartingOrderIDModal(swapTicketID);
-		updateSwapResponseStatus(swapTicketID, address)
-	}
-	else if (Stage == "Unclaimed" || Stage == "Claimed") 
-	{
-		console.log("Stage:", Stage);
-		currentSwapMeta = JSON.parse(localStorage.getItem(swapTicketID + "_meta"));
-		address1 = currentSwapMeta[0];
-		address2 = currentSwapMeta[1];
-		ergs = currentSwapMeta[2];
-		showStartingOrderIDModal(swapTicketID);
-		updateSwapResponseStatus(swapTicketID, address1);
-		updateSwapFinalizationStatus(swapTicketID, address2, ergs)
-	}
-	else
-	{
-		console.log("unknown stage:", Stage);
-	}
+	PossibleSwapStates = [
+		"initiated", //0
+		"uploadingResponseContract", //1
+		"uploadedResponseContract", //2
+		"fundingResponseContract", //3
+		"fundedResponseContract",  //4
+		"responding", //5
+		"responded_unsubmitted", //6
+		"responded_submitted", //7
+		"finalized", //8
+		"verifyingFinalizedContractValues", //9
+		"verifiedFinalizedContractValues", //10
+		"claiming", //11
+		"refunding", //12
+		"claimed", //13
+		"refunded", //14
+		"terminated", //15
+		"tbd"//16
+	];
+	Beginning = [
+		PossibleSwapStates[0],
+		PossibleSwapStates[1],
+		PossibleSwapStates[2],
+		PossibleSwapStates[3]
+	]
+	Middle = [
+                PossibleSwapStates[4],
+                PossibleSwapStates[5],
+                PossibleSwapStates[6],
+                PossibleSwapStates[7],
+		PossibleSwapStates[8],
+		PossibleSwapStates[9]
+        ]
+	End = [
+		PossibleSwapStates[10],
+                PossibleSwapStates[11],
+                PossibleSwapStates[12],
+                PossibleSwapStates[13],
+                PossibleSwapStates[14],
+                PossibleSwapStates[15],
+		PossibleSwapStates[16]
+	]
+	console.log(Beginning, Middle, End)
+
+	getSwapStateMap().then(result => {
+		SwapStateMap = result
+		for (key in SwapStateMap)
+		{
+			if (key == swapTicketID)
+			{
+				SwapState = SwapStateMap[key]["SwapState"]
+				if (Beginning.includes(SwapState) == true)
+				{
+					showStartingOrderIDModal(swapTicketID)
+
+				}
+				if (Middle.includes(SwapState) == true)
+				{
+                                        POST_get_responderJSON_by_swap_ID(swapTicketID).then(response => {
+                                                cleanresp = response.replace(/[\n\r\s]+/g, '')
+                                                        .split('\n').join('')
+                                                        .replace(/\\n/g, '')
+                                                        .slice(1, -1)
+                                                        .replaceAll("\\", '')
+                                                console.log(JSON.parse(cleanresp))
+						responderJSON = JSON.parse(cleanresp)
+						EVMContractAddr = responderJSON["responderContractAddr"]
+						showStartingOrderIDModal(swapTicketID)
+				                updateSwapResponseStatus(swapTicketID, EVMContractAddr)
+                                        })
+				}
+				if (End.includes(SwapState) == true)
+				{
+					POST_get_responderJSON_by_swap_ID(swapTicketID).then(response => {
+						cleanresp = response.replace(/[\n\r\s]+/g, '')
+                                                        .split('\n').join('')
+                                                        .replace(/\\n/g, '')
+                                                        .slice(1, -1)
+                                                        .replaceAll("\\", '')
+						responderJSON = JSON.parse(cleanresp)
+						EVMContractAddr = responderJSON["responderContractAddr"]
+						boxID = responderJSON["boxId"]
+						console.log(POST_get_boxAddr(swapTicketID))
+						POST_get_boxAddr(swapTicketID).then(ergoaddr => {
+							console.log(ergoaddr.replaceAll("\"", ""))
+							ErgoAddr = ergoaddr.replaceAll("\"", "")
+							POST_getBoxValue(swapTicketID).then( response => {
+								ergs = NanoErgToErg(response.replaceAll("\"", ""))
+								showStartingOrderIDModal(swapTicketID);
+								updateSwapResponseStatus(swapTicketID, EVMContractAddr);
+								updateSwapFinalizationStatus(swapTicketID, ErgoAddr, ergs)
+							});
+						})
+					})
+				}
+			}
+		}
+	});
 }
 
 function showStartingOrderIDModal(swapTicketID)

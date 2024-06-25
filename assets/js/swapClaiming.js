@@ -120,8 +120,23 @@ function claimSwap(event, OrderTypeUUID, coinAmount, CoinA_Price, CoinB_Price, l
 						"SwapRole": "Responder", //TODO for now client is always responder might change itf
 						"swapAmount": coinAmount
 					}
-					localClientPostJSON(startSwapFromUIData).then(function(response) {
-						console.log(response);
+					return localClientPostJSONgetJSON(startSwapFromUIData).then(function(response) {
+						cleanresp = response.replace(/[\n\r\s]+/g, '')
+                                        .split('\n').join('')
+                                        .replace(/\\n/g, '')
+                                        .slice(1, -1)
+                                        .replaceAll("\\", '');
+						console.log(JSON.parse(cleanresp))
+						respJSON = JSON.parse(cleanresp)
+						const swapTicketID = respJSON["SwapTicketID"];
+						showStartingOrderIDModal(swapTicketID);
+						storeActiveSwapInfo(swapTicketID, "SettingModalFocus", "", [true]);
+						const ConversionArray = coinPriceConversion(coinAmount, CoinA_Price, CoinB_Price);
+						AmtCoinB = coinAmount; //we are the responder here
+						AmtCoinA = ConversionArray[1]; // TODO Hide active swaps if there aren't any
+						representActiveSwap(CoinA, CoinB, AmtCoinA, AmtCoinB, swapTicketID)
+						//TODO  replace swap stage logic with one that uses SwapStateMap async without
+						//relying on local storage
 					});
 					/*
                                         const CoinA = jsonobj[key]["CoinA"];
