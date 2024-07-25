@@ -81,7 +81,7 @@ function localClientPostJSON(data)
                 Authorization: "Bearer " + getBottomPrivateClientRESTAPIKeyFromLocalStorage(),
                 "Content-Type": "application/json"
         }
-        console.log(data);
+//        console.log(data);
         return fetch(url, {
                 method: "POST",
                 body: JSON.stringify(data),

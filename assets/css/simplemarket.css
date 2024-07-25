@@ -1,0 +1,160 @@
+/* CSS HEX */
+--van-dyke: #484041ff;
+--space-cadet: #192A51;
+--delft-blue: #434371ff;
+--cambridge-blue: #79aea3ff;
+--light-green: #70ee9cff;
+--green-yellow: #b5f44aff;
+
+
+--darker-night: #080a0c;
+--slightly-darker-night: #0b0d0e;
+--night: #121619;
+--dark-grey: #1d1b1b;
+--lighter-grey: #403a3a;
+
+
+--super-light-grey: #a3acb2;
+
+/* CSS HSL */
+--van-dyke: hsla(353, 6%, 27%, 1);
+--delft-blue: hsla(240, 26%, 35%, 1);
+--cambridge-blue: hsla(168, 25%, 58%, 1);
+--light-green: hsla(141, 79%, 69%, 1);
+--green-yellow: hsla(82, 89%, 62%, 1);
+
+
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+
+input {
+	color: white;
+}
+
+body{
+        background-color: black;
+}
+
+div{
+        padding: 0 auto;
+        margin: 0.5%;
+}
+
+
+body{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.ergoTestnetCheckboxImage{
+        width: 25;
+        height:27;
+}
+.sepoliaCheckboxImage{
+        width: 25;
+        height:27;
+}
+
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+/* make sure input number types dont have a scroll/spin button*/
+
+.simpleSwapMainDiv{
+    border-radius: 15px;
+    padding: 6px; /* Adjust as needed */
+    display: grid;
+    width: 40%;
+    background-color: #080a0c;
+}
+
+.sellBox{
+	background-color: #121619;
+	border-radius: 8px;
+	padding: 1px; /* Adjust as needed */
+        display: grid;
+}
+.sellBox h1{
+	color: #a3acb2;
+	text-align: left;
+	margin: 1px;
+	font-size:.9em;
+	padding: 3px;
+}
+
+.inputAndCoinSelectorDiv{
+	display: flex;
+	flex-direction: row;
+	
+}
+.sellAmountInput{
+	color: #a3acb2;
+	width: 85%;
+	text-align: left;
+	margin: 0;
+	padding: 5px;
+	font-size: 2em;
+}
+.sellCoinSelector{
+	border-radius: 16px;
+	border: 1px solid #1d1b1b;
+	padding: 7px;
+	height: fit-content;
+	display: flex;
+	 background-color: #0b0d0e;
+}
+.sellCoinSelector img{
+
+}
+.sellCoinSelector h1{
+	color: #a3acb2;
+	font-size: 1.15em;
+}
+
+
+.buyBox{
+	background-color: #121619;
+	border-radius: 8px;
+        padding: 1px; /* Adjust as needed */
+        display: grid;
+}
+.buyBox h1{
+	color: #a3acb2;
+	text-align: left;
+        margin: 1px;
+	height: auto;
+        font-size:.9em;
+        padding: 3px;
+}
+.buyAmountInput{
+	color: #a3acb2;
+        text-align: left;
+        margin: 0;
+        padding: 5px;
+        font-size: 2em;
+	width: 85%;
+}
+.buyCoinSelector{
+        border-radius: 16px;
+         border: 1px solid #1d1b1b;
+        padding: 7px;
+        height: fit-content;
+	display: flex;
+	 background-color: #0b0d0e;
+}
+.buyCoinSelector h1{
+        color: #a3acb2;
+        font-size: 1.15em;
+}
+
+
+

@@ -5,15 +5,21 @@ async function updateActiveSwapFocusedModals()
 		getSwapStateMap().then(SwapStateMap => {
 			for (key in SwapStateMap)
 			{
-				modalFocus = JSON.parse(localStorage.getItem(key + "_modalFocus"))[0]
-				console.log(modalFocus)
-				if (modalFocus == true)
+				if (JSON.parse(localStorage.getItem(key + "_modalFocus")) != null)
 				{
-					loadModalInfoFromStorage(key)
-					break
+					modalFocus = JSON.parse(localStorage.getItem(key + "_modalFocus"))[0]
+					if (modalFocus == true)
+					{
+						loadModalInfoFromStorage(key)
+						break
+					}
 				}
 			}
 		});	
+		async function wait()
+		{
+			await new Promise(r => setTimeout(r, 10000));
+		}
 		await new Promise(r => setTimeout(r, 10000));
 	}
 }
@@ -62,7 +68,7 @@ function loadModalInfoFromStorage(swapTicketID)
                 PossibleSwapStates[15],
 		PossibleSwapStates[16]
 	]
-	console.log(Beginning, Middle, End)
+//	console.log(Beginning, Middle, End)
 
 	getSwapStateMap().then(result => {
 		SwapStateMap = result
@@ -84,7 +90,7 @@ function loadModalInfoFromStorage(swapTicketID)
                                                         .replace(/\\n/g, '')
                                                         .slice(1, -1)
                                                         .replaceAll("\\", '')
-                                                console.log(JSON.parse(cleanresp))
+  //                                              console.log(JSON.parse(cleanresp))
 						responderJSON = JSON.parse(cleanresp)
 						EVMContractAddr = responderJSON["responderContractAddr"]
 						showStartingOrderIDModal(swapTicketID)
@@ -102,9 +108,9 @@ function loadModalInfoFromStorage(swapTicketID)
 						responderJSON = JSON.parse(cleanresp)
 						EVMContractAddr = responderJSON["responderContractAddr"]
 						boxID = responderJSON["boxId"]
-						console.log(POST_get_boxAddr(swapTicketID))
+//						console.log(POST_get_boxAddr(swapTicketID))
 						POST_get_boxAddr(swapTicketID).then(ergoaddr => {
-							console.log(ergoaddr.replaceAll("\"", ""))
+//							console.log(ergoaddr.replaceAll("\"", ""))
 							ErgoAddr = ergoaddr.replaceAll("\"", "")
 							POST_getBoxValue(swapTicketID).then( response => {
 								ergs = NanoErgToErg(response.replaceAll("\"", ""))
