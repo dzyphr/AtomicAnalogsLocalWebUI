@@ -1,50 +1,143 @@
 /* CSS HEX */
---van-dyke: #484041ff;
---space-cadet: #192A51;
---delft-blue: #434371ff;
---cambridge-blue: #79aea3ff;
---light-green: #70ee9cff;
---green-yellow: #b5f44aff;
-
-
---darker-night: #080a0c;
---slightly-darker-night: #0b0d0e;
---night: #121619;
---dark-grey: #1d1b1b;
---lighter-grey: #403a3a;
-
-
---super-light-grey: #a3acb2;
-
-/* CSS HSL */
---van-dyke: hsla(353, 6%, 27%, 1);
---delft-blue: hsla(240, 26%, 35%, 1);
---cambridge-blue: hsla(168, 25%, 58%, 1);
---light-green: hsla(141, 79%, 69%, 1);
---green-yellow: hsla(82, 89%, 62%, 1);
-
-
-
-* {
-	margin: 0;
-	padding: 0;
-	box-sizing: border-box;
+:root{
+	--van-dyke: #484041ff;
+	--space-cadet: #192A51;
+	--delft-blue: #434371ff;
+	--cambridge-blue: #79aea3ff;
+	--light-green: #70ee9cff;
+	--green-yellow: #b5f44aff;
+	--darker-night: #080a0c;
+	--slightly-darker-night: #0b0d0e;
+	--night: #121619;
+	--dark-grey: #1d1b1b;
+	--lighter-grey: #403a3a;
+	--super-light-grey: #a3acb2;
 }
 
-
-input {
-	color: white;
+* {
 }
 
 body{
+	margin: 0;
+	display: flex;
+	flex-direction: column;
         background-color: black;
+	font-family: Arial;	
 }
+
 
 div{
         padding: 0 auto;
         margin: 0.5%;
 }
 
+/* Styles for the overlay menu */
+#swap-settings-overlay-menu {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6); /* semi-transparent black overlay */
+  backdrop-filter: blur(1.5px);
+  display: none; /* Initially hidden */
+  z-index: 1000; /* Ensure it's on top of other content */
+}
+#swap-settings-overlay-menu h1, h2, h3{
+	text-align: left;
+	color: var(--super-light-grey);
+	padding-left: 5;
+}
+.overlay-content {
+  position: absolute;
+  top:25%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: transparent;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+}
+
+.main-content {
+  text-align: center;
+}
+
+/* Transition animation for the menu */
+#swap-settings-overlay-menu.open {
+  display: block;
+  animation: fadeIn 0.1s ease forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.marketChoiceSetting, .autoClaimSetting{
+	border-radius: 9px;
+	border: 1px solid black;
+	background-color: var(--night);
+}
+.marketChoiceSetting h2, .autoClaimSetting h2{
+	text-align: left;
+	padding-right: 100px;
+	font-size: 1em;
+}
+.marketChoiceSetting h3, .autoClaimSetting h3{
+	font-size: .8em;
+}
+
+.navbar {
+	background-color: rgba(50, 50, 50, 0.5); /* Transparent grey color */
+	overflow: hidden;
+	width: 100%;
+	margin: 0;
+}
+.navbar a {
+	float: left;
+	height: 100%;
+	color: white;
+	text-align: center;
+	margin: 0;
+	padding: 25px 25px;
+	text-decoration: none;
+	font-size: 22px;
+}
+.navbar a:hover {
+	background-color: rgba(100, 100, 100, 0.5); /* Darker transparent grey on hover */
+}
+
+.navleft{
+	margin: 0;
+}
+
+.navright{
+	margin: 0;
+}
+.navright a{
+	float: right;
+        height: 100%;
+        display: block;
+        color: white;
+        text-align: center;
+        margin: 0;
+        padding: auto auto ;
+        text-decoration: none;
+        font-size: 22px;
+}
+
+a.ergodiscord svg{
+	width: fit-content;
+	color: var(--super-light-grey)
+}
+
+img.logo{
+	height: fit-content;
+	width: 30;
+	margin: 0;
+	padding: 0;
+}
 
 body{
 	display: flex;
@@ -64,27 +157,62 @@ body{
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+	-webkit-appearance: none;
+	margin: 0;
 }
-/* make sure input number types dont have a scroll/spin button*/
+/* makes sure number type inputs dont have a scroll/spin button*/
+
+.simpleSwapContainerDiv{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+h1.title {
+	text-align: left;
+        font-size: 70;
+	font-family: Arial;/*Inter;  Roboto;*/
+        color: var(--super-light-grey);
+}
+
+.simpleSwapToolBar{
+	width: 100%;
+	display: grid;
+	grid-template-columns: auto auto auto auto auto auto;
+	padding: 10px;
+	direction: rtl;
+}
+
+.swapSettingsButton{
+	border-radius: 5px;
+	width: fit-content;
+	margin-right:20%;
+	padding: 1;
+	background-color: transparent;
+	border: 0px solid transparent;
+}
+.swapSettingsButton{
+	color: var(--lighter-grey);
+}
+.swapSettingsButton:hover{
+	color: var(--super-light-grey);
+}
 
 .simpleSwapMainDiv{
-    border-radius: 15px;
-    padding: 6px; /* Adjust as needed */
-    display: grid;
-    width: 40%;
-    background-color: #080a0c;
+	border-radius: 15px;
+	padding: 6px; /* Adjust as needed */
+	display: grid;
+	width: auto;
+	background-color: var(--darker-night);
 }
 
 .sellBox{
-	background-color: #121619;
+	background-color: var(--night);
 	border-radius: 8px;
 	padding: 1px; /* Adjust as needed */
         display: grid;
 }
 .sellBox h1{
-	color: #a3acb2;
+	color: var(--super-light-grey);
 	text-align: left;
 	margin: 1px;
 	font-size:.9em;
@@ -96,65 +224,122 @@ input::-webkit-inner-spin-button {
 	flex-direction: row;
 	
 }
+
 .sellAmountInput{
-	color: #a3acb2;
+	color: var(--super-light-grey);
 	width: 85%;
 	text-align: left;
 	margin: 0;
 	padding: 5px;
 	font-size: 2em;
 }
+
 .sellCoinSelector{
 	border-radius: 16px;
-	border: 1px solid #1d1b1b;
+	border: 1px solid var(--dark-grey);
 	padding: 7px;
 	height: fit-content;
 	display: flex;
-	 background-color: #0b0d0e;
-}
-.sellCoinSelector img{
-
+	background-color: var(--slightly-darker-night);
 }
 .sellCoinSelector h1{
-	color: #a3acb2;
+	color: var(--super-light-grey);
 	font-size: 1.15em;
 }
+.sellCoinSelector:hover{
+	background-color: var(--dark-grey);
+}
+.sellCoinSelector:active{
+        background-color: var(--lighter-grey);
+}
 
+.switchCoinsDiv{
+	border-radius: 12px;
+	height: 45px;
+	width: 45px;
+	position: relative;
+	margin: -25px auto;
+	background-color: var(--night);
+	border: 4px solid var(--darker-night);
+	z-index: 2;
+}
+.switchCoinsDiv svg{
+	color: var(--super-light-grey);
+}
+
+.switchCoinsButton{
+	border-radius: 5px;
+	height: 45px;
+	width: 45px;
+	background-color: var(--night);
+	border: 0px solid transparent;
+}
+.switchCoinsButton:hover{
+	background-color: var(--slightly-darker-night);
+}
+.switchCoinsButton:active{
+	background-color: var(--darker-night);
+}
 
 .buyBox{
-	background-color: #121619;
+	background-color: var(--night);
 	border-radius: 8px;
         padding: 1px; /* Adjust as needed */
         display: grid;
 }
 .buyBox h1{
-	color: #a3acb2;
+	color: var(--super-light-grey);
 	text-align: left;
         margin: 1px;
 	height: auto;
         font-size:.9em;
         padding: 3px;
 }
+
 .buyAmountInput{
-	color: #a3acb2;
+	color: var(--super-light-grey);
         text-align: left;
         margin: 0;
         padding: 5px;
         font-size: 2em;
 	width: 85%;
 }
+
 .buyCoinSelector{
         border-radius: 16px;
-         border: 1px solid #1d1b1b;
+        border: 1px solid var(--dark-grey);
         padding: 7px;
         height: fit-content;
 	display: flex;
-	 background-color: #0b0d0e;
+	background-color: var(--slightly-darker-night);
 }
 .buyCoinSelector h1{
-        color: #a3acb2;
+        color: var(--super-light-grey);
         font-size: 1.15em;
 }
+.buyCoinSelector:hover{
+        background-color: var(--dark-grey);
+}
+.buyCoinSelector:active{
+        background-color: var(--lighter-grey);
+}
 
-
-
+.swapButton{
+	border-radius: 9px;
+        border: 1px solid var(--lighter-grey);
+	background-color: var(--space-cadet);
+	padding-left: 150;
+	padding-right: 150;
+}
+.swapButton h1{
+	color: var(--super-light-grey);
+	margin: 0;
+	padding: 5;
+}
+.swapButton:hover{
+	border: 1px solid var(--dark-grey);
+}
+.swapButton:active{
+        background-color: var(--delft-blue);
+	border: 1px solid var(--night);
+}

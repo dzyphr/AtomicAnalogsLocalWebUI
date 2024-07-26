@@ -1,3 +1,4 @@
+<head>
 {{ $simplemarketstyles := resources.Get "css/simplemarket.css" | minify }}
 <link rel="stylesheet" type="text/css" href="{{ $simplemarketstyles.Permalink }}" media="screen"/>
 {{ $buttonstyles := resources.Get "css/buttons.css" | minify }}
@@ -10,6 +11,8 @@
 <link rel="stylesheet" type="text/css" href="{{ $inputboxstyles.Permalink }}" media="screen"/>
 {{ $scrollbarstyles := resources.Get "css/scrollbars.css" | minify }}
 <link rel="stylesheet" type="text/css" href="{{ $scrollbarstyles.Permalink }}" media="screen"/>
+{{ $simplemarketjs := resources.Get "js/simplemarket.js" }}
+<script src="{{ $simplemarketjs.Permalink }}"></script>
 {{ $marketjs := resources.Get "js/market.js" }}
 <script src="{{ $marketjs.Permalink }}"></script>
 {{ $pricetoolsjs := resources.Get "js/price_tools.js" }}
@@ -34,32 +37,148 @@
 <script src="{{ $swapClaimingjs.Permalink }}"></script>
 {{ $settingsjs := resources.Get "js/settings.js" }}
 <script src="{{ $settingsjs.Permalink }}"></script>
+
 {{ partial "header.html" . }}
+</head>
 <body>
-{{ .Content }}
-<div class="simpleSwapMainDiv" id="simpleSwapMainDiv">
-	<div class="sellBox" id="sellBox">
-		<h1> Sell </h1>
-		<div class="inputAndCoinSelectorDiv", id="inputAndCoinSelectorDiv">
-			<input value="0.0" type="number" class="sellAmountInput" id="sellAmountInput"></input>
-			<div class="sellCoinSelector" id="sellCoinSelector">
-				{{ $sepolia := resources.Get "images/Sepolia-Ethereum-Logo-PNG-tranparentBG.png" }}
-				<img src="{{ $sepolia.Permalink }}" class="sepoliaCheckboxImage" id="sepoliaCheckboxImage">
-				<h1>sepETH</h1>
+	<div id="swap-settings-overlay-menu">
+	  <div class="overlay-content">
+	      <h1>Swap Settings</h1>
+	      <div class="marketChoiceSetting">
+		      <h2>Choose Market</h2>
+		      <h3>Choose which market you want to swap with from the available list.</h3>
+	      </div>
+	      <div class="autoClaimSetting">
+                      <h2>Set AutoClaim</h2>
+                      <h3>Configure what your client will do when deciding whether or not to claim a swap.</h3>
+		      <h3>You can adjust the expected minimum value or manually claim as soon as the swap is finalized.</h3>
+              </div>
+	  </div>
+	</div>
+	<div class="navbar">
+		<div class="navleft">
+			<a href="/">
+				{{ $logo := resources.Get "images/atomicanalogslogo1-colorinverted.png" }}
+				<img src="{{ $logo.Permalink }}" class="logo">
+			</a>
+			<a href="/login">Login</a>
+			<a href="/initialize">Create Accounts</a>
+			<a href="/settings">Settings</a>
+		</div>
+		<div class="navright">
+			<a href="https://discord.gg/VDJGszpW58">
+				<svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="30" height="30" viewBox="0 0 48 48">
+					<path fill="#8c9eff" 
+						d="M40,12c0,0-4.585-3.588-10-4l-0.488,0.976C34.408,10.174,36.654,11.891,39,14c-4.045-2.065-8.039-4-15-4s-10.955,1.935-15,4c2.346-2.109,5.018-4.015,9.488-5.024L18,8c-5.681,0.537-10,4-10,4s-5.121,7.425-6,22c5.162,5.953,13,6,13,6l1.639-2.185C13.857,36.848,10.715,35.121,8,32c3.238,2.45,8.125,5,16,5s12.762-2.55,16-5c-2.715,3.121-5.857,4.848-8.639,5.815L33,40c0,0,7.838-0.047,13-6C45.121,19.425,40,12,40,12z M17.5,30c-1.933,0-3.5-1.791-3.5-4c0-2.209,1.567-4,3.5-4s3.5,1.791,3.5,4C21,28.209,19.433,30,17.5,30z M30.5,30c-1.933,0-3.5-1.791-3.5-4c0-2.209,1.567-4,3.5-4s3.5,1.791,3.5,4C34,28.209,32.433,30,30.5,30z">
+					</path>
+				</svg>
+			</a>
+			<a class="ergodiscord" href="https://discord.gg/ergo-platform-668903786361651200">
+				<svg  height="30" xmlns="http://www.w3.org/2000/svg" 
+					viewBox="0 0 213 82" class="w-24 lg:w-32"
+				>
+				<path fill-rule="evenodd" fill="currentColor" 
+				clip-rule="evenodd" 
+				d="M97.365 31.142v6.241h15.372v6.512h-15.38v6.795h15.704v6.506H90.213V24.638h22.856v6.504H97.365Zm31.099 
+						14.55h-3.986v11.506h-7.154v-32.56h14.407c6.311 0 10.943 4.107 10.943 10.531 0 2.565-.745 
+						5.026-2.489 6.95a9.442 9.442 0 0 1-4.29 2.677l7.713 
+						12.4h-8.306l-6.838-11.505Zm-3.986-14.55v8.045h6.514c2.457 0 4.392-1.457 4.392-4.021 
+						0-2.565-1.935-4.024-4.392-4.024h-6.514Zm44.39 
+						17.808v-3.536h-9.189v-6.506h16.343v12.759l-.226.25c-3.489 
+						3.86-8.15 5.876-13.35 5.876-9.726 0-17.04-7.039-17.04-16.856 0-9.818 
+						7.32-16.808 17.04-16.808 5.49 0 9.991 2.305 13.141 6.793l.554.78-5.966 
+						3.356-.454-.65a8.944 8.944 0 0 0-7.275-3.736c-5.851 0-9.751 4.535-9.751 
+						10.255 0 5.72 3.887 10.303 9.751 10.303 2.169 0 4.722-.858 
+						6.422-2.29v.01Zm10.117-8.014c0-9.667 6.898-16.807 16.624-16.807 9.726 0 16.622 7.14 
+						16.622 16.808 0 9.667-6.898 16.805-16.622 16.805s-16.624-7.136-16.624-16.805Zm25.956 
+						0c0-5.642-3.417-10.254-9.332-10.254-5.915 0-9.334 4.59-9.334 10.255 0 5.663 3.415 
+						10.258 9.334 10.258s9.332-4.636 9.332-10.258ZM38.396 
+					51.536h15.871v7.376H27.732V52.21l10.442-11.56-10.392-10.83v-6.722h26.485v7.374H38.733l9.633 
+					10.087-9.97 10.978Z"
+				>
+				</path>
+				<path fill="currentColor" 
+				d="m41 7.462 23.719 9.823 9.824 23.72-9.824 23.72-23.72 9.825-23.719-9.826-9.825-23.72 9.825-23.719L41 
+				7.462ZM41 0c-.422 0-.84.083-1.23.244l-26.718 11.07a3.209 3.209 0 0 0-1.738 1.737L.244 39.771a3.212 
+				3.212 0 0 0 0 2.457l11.07 26.719a3.203 3.203 0 0 0 1.738 1.737l26.719 11.07a3.191 3.191 0 0 0 2.457 
+				0l26.72-11.07a3.208 3.208 0 0 0 1.737-1.737l11.07-26.72a3.212 3.212 
+				0 0 0 0-2.457l-11.07-26.719a3.215 3.215 0 0 0-1.738-1.737L42.228.244A3.234 
+				3.234 0 0 0 41 0Z"
+				>
+				</path>
+				</svg>
+			</a>
+		</div>
+	</div>
+<div class="simpleSwapContainerDiv" id="simpleSwapContainerDiv">
+	<h1 class="title" id="title" >{{ .Content }}</h1>
+	<div class="simpleSwapToolBar" id="simpleSwapToolBar">
+		<button class="swapSettingsButton" id="swapSettingsButton">
+			<svg xmlns="http://www.w3.org/2000/svg" 
+				width="23" height="23" fill="currentColor" class="bi bi-gear-fill" viewBox="0 0 16 16"
+			>
+				<path d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 
+					0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 
+					1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 
+					2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 
+					1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 
+					2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 
+					0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 
+					1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 
+					0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 
+					1.464 0 0 1-2.105-.872zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z"
+				/>
+			</svg>
+		</button>
+	</div>
+	<div class="simpleSwapMainDiv" id="simpleSwapMainDiv">
+		<div class="sellBox" id="sellBox">
+			<h1> Sell </h1>
+			<div class="inputAndCoinSelectorDiv", id="inputAndCoinSelectorDiv">
+				<input value="0.0" type="number" class="sellAmountInput" id="sellAmountInput" 
+					oninput="estimateReturnSellToBuy('TestnetErgo', 'Sepolia')"
+				>
+				</input>
+				<div class="sellCoinSelector" id="sellCoinSelector">
+					{{ $sepolia := resources.Get "images/Sepolia-Ethereum-Logo-PNG-tranparentBG.png" }}
+					<img src="{{ $sepolia.Permalink }}" class="sepoliaCheckboxImage" id="sepoliaCheckboxImage">
+					<h1>sepETH</h1>
+				</div>
+			</div>
+		</div>
+		<div class="switchCoinsDiv" id="switchCoinsDiv">
+			<button class="switchCoinsButton">
+			<svg 
+				xmlns="http://www.w3.org/2000/svg"  
+				fill="currentColor" class="bi bi-arrows-vertical" viewBox="0 0 16 16"
+			>
+			  <path d="M8.354 14.854a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1 
+				.708-.708L7.5 13.293V2.707L6.354 3.854a.5.5 0 1 1-.708-.708l2-2a.5.5 0 0 1 
+				.708 0l2 2a.5.5 0 0 1-.708.708L8.5 2.707v10.586l1.146-1.147a.5.5 0 0 1 .708.708z"
+			  />
+			</svg>
+			</button>
+		</div>
+		<div class="buyBox" id="buyBox">
+			<h1> Buy </h1>
+			<div class="inputAndCoinSelectorDiv", id="inputAndCoinSelectorDiv">
+				<input value="0.0" type="number" class="buyAmountInput" id="buyAmountInput" 
+					oninput="estimateReturnBuyToSell('TestnetErgo', 'Sepolia')"
+				>
+				</input>
+				<div class="buyCoinSelector" id="buyCoinSelector">
+					{{ $ergo := resources.Get "images/ErgoTestnetTransparentWhite.png" }}
+					<img src="{{ $ergo.Permalink }}" class="ergoTestnetCheckboxImage">
+					<h1>testERG</h1>
+				</div>
 			</div>
 		</div>
 	</div>
-	<div class="buyBox" id="buyBox">
-		<h1> Buy </h1>
-		<div class="inputAndCoinSelectorDiv", id="inputAndCoinSelectorDiv">
-			<input value="0.0" type="number" class="buyAmountInput" id="buyAmountInput"></input>
-			<div class="buyCoinSelector" id="buyCoinSelector">
-				{{ $ergo := resources.Get "images/ErgoTestnetTransparentWhite.png" }}
-			        <img src="{{ $ergo.Permalink }}" class="ergoTestnetCheckboxImage">
-				<h1>testERG</h1>
-			</div>
-		</div>
-        </div>
+	<div class="swapButtonDiv" id="swapButtonDiv">
+		<button class="swapButton" id="swapButton">
+			<h1>Swap</h1>
+		</button>
+	</div>
 </div>
 </body>
 {{ partial "footer.html" . }}
