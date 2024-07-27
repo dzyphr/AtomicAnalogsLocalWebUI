@@ -1,4 +1,10 @@
 <head>
+{{ $modernButtonstyles := resources.Get "css/modernButton.css" | minify }}
+<link rel="stylesheet" type="text/css" href="{{ $modernButtonstyles.Permalink }}" media="screen"/>
+{{ $gradientInputstyles := resources.Get "css/gradientInput.css" | minify }}
+<link rel="stylesheet" type="text/css" href="{{ $gradientInputstyles.Permalink }}" media="screen"/>
+{{ $styledAndFilterableSelectDropdownstyles := resources.Get "css/styledAndFilterableSelectDropdown.css" | minify }}
+<link rel="stylesheet" type="text/css" href="{{ $styledAndFilterableSelectDropdownstyles.Permalink }}" media="screen"/>
 {{ $simplemarketstyles := resources.Get "css/simplemarket.css" | minify }}
 <link rel="stylesheet" type="text/css" href="{{ $simplemarketstyles.Permalink }}" media="screen"/>
 {{ $buttonstyles := resources.Get "css/buttons.css" | minify }}
@@ -11,6 +17,8 @@
 <link rel="stylesheet" type="text/css" href="{{ $inputboxstyles.Permalink }}" media="screen"/>
 {{ $scrollbarstyles := resources.Get "css/scrollbars.css" | minify }}
 <link rel="stylesheet" type="text/css" href="{{ $scrollbarstyles.Permalink }}" media="screen"/>
+{{ $styledAndFilterableSelectDropdownjs := resources.Get "js/styledAndFilterableSelectDropdown.js" }}
+<script src="{{ $styledAndFilterableSelectDropdownjs.Permalink }}"></script>
 {{ $simplemarketjs := resources.Get "js/simplemarket.js" }}
 <script src="{{ $simplemarketjs.Permalink }}"></script>
 {{ $marketjs := resources.Get "js/market.js" }}
@@ -47,12 +55,58 @@
 	      <div class="marketChoiceSetting">
 		      <h2>Choose Market</h2>
 		      <h3>Choose which market you want to swap with from the available list.</h3>
+			<form>
+				<input 
+					class="chosen-value" type="text" 
+					value="" placeholder="Markets"  
+					autocomplete="off" autocorrect="off" 
+					autocapitalize="off" spellcheck="false"
+				>
+				<ul class="value-list", class="scrollbar">
+					<li>AtomicAnalogs</li>
+					<li>AtomicAnalogs</li>
+					<li>AtomicAnalogs</li>
+					<li>AtomicAnalogs</li>
+					<li>AtomicAnalogs</li>
+					<li>AtomicAnalogs</li>
+					<li>AtomicAnalogs</li>
+				</ul>
+			</form>
 	      </div>
 	      <div class="autoClaimSetting">
                       <h2>Set AutoClaim</h2>
                       <h3>Configure what your client will do when deciding whether or not to claim a swap.</h3>
 		      <h3>You can adjust the expected minimum value or manually claim as soon as the swap is finalized.</h3>
+		      <div style="display: flex; flex-direction: row;">
+		      	<h2 style="padding-right: 10px;">Off/On:</h2>
+			<div class="checkbox-wrapper-59">
+			  <label class="switch"><input type="checkbox"><span class="slider"></span></label>
+			</div>
+		      	<div class="form__group field">
+			  <input type="number" class="form__field" placeholder=""/>
+			  <label for="name" class="form__label"style="padding-right: 0px;" >Min:</label>
+			</div>
+			<button class="animated-button">
+				Set
+			</button>
+		     </div>
               </div>
+	      <div class="addNewMarkets">
+		      <h2>Add new Markets</h2>
+		      <div style="display: flex; flex-direction: row;">
+		      <div class="form__group field">
+                          <input  class="form__field" placeholder=""/>
+                          <label for="name" class="form__label"style="padding-right: 0px;" >MarketName:</label>
+                      </div>
+		      <div class="form__group field">
+                          <input  class="form__field" placeholder=""/>
+                          <label for="name" class="form__label"style="padding-right: 0px;" >MarketURL:</label>
+                      </div>
+		      <button class="animated-button">
+                                Add
+                      </button>
+		      </div>
+	      </div>
 	  </div>
 	</div>
 	<div class="navbar">

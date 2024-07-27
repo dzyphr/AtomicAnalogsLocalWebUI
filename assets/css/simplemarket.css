@@ -18,6 +18,8 @@
 }
 
 body{
+
+
 	margin: 0;
 	display: flex;
 	flex-direction: column;
@@ -33,13 +35,13 @@ div{
 
 /* Styles for the overlay menu */
 #swap-settings-overlay-menu {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.6); /* semi-transparent black overlay */
-  backdrop-filter: blur(1.5px);
-  display: none; /* Initially hidden */
-  z-index: 1000; /* Ensure it's on top of other content */
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.6); /* semi-transparent black overlay */
+	backdrop-filter: blur(1.5px);
+	display: none; /* Initially hidden */
+	z-index: 1000; /* Ensure it's on top of other content */
 }
 #swap-settings-overlay-menu h1, h2, h3{
 	text-align: left;
@@ -47,45 +49,60 @@ div{
 	padding-left: 5;
 }
 .overlay-content {
-  position: absolute;
-  top:25%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: transparent;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+	position: absolute;
+	top:25%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	background-color: transparent;
+	border-radius: 10px;
 }
 
 .main-content {
-  text-align: center;
+	text-align: center;
 }
 
 /* Transition animation for the menu */
 #swap-settings-overlay-menu.open {
-  display: block;
-  animation: fadeIn 0.1s ease forwards;
+	display: block;
+	animation: fadeIn 0.1s ease forwards;
 }
 
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
 }
-.marketChoiceSetting, .autoClaimSetting{
+.addNewMarkets, .marketChoiceSetting, .autoClaimSetting{
 	border-radius: 9px;
 	border: 1px solid black;
 	background-color: var(--night);
+	height: fit-content;
+	box-sizing: border-box;
+	position: relative;
+	 padding: 10px;
 }
-.marketChoiceSetting h2, .autoClaimSetting h2{
+.addNewMarkets h2, .marketChoiceSetting h2, .autoClaimSetting h2{
 	text-align: left;
 	padding-right: 100px;
 	font-size: 1em;
 }
-.marketChoiceSetting h3, .autoClaimSetting h3{
+.addNewMarkets h3, .marketChoiceSetting h3, .autoClaimSetting h3{
 	font-size: .8em;
+}
+.checkboxholder{
+        display: flex;
+}
+
+.autoClaimCheckbox{
+	display: flex;
+justify-content: center;
+flex-direction: column;
+align-items: center;
+  text-align: center;
+
 }
 
 .navbar {
