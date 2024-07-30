@@ -42,6 +42,8 @@ div{
 	backdrop-filter: blur(1.5px);
 	display: none; /* Initially hidden */
 	z-index: 1000; /* Ensure it's on top of other content */
+
+	
 }
 #swap-settings-overlay-menu h1, h2, h3{
 	text-align: left;
@@ -55,6 +57,9 @@ div{
 	transform: translate(-50%, -50%);
 	background-color: transparent;
 	border-radius: 10px;
+	display: flex;
+	flex-direction: column;
+	 
 }
 
 .main-content {
@@ -63,7 +68,7 @@ div{
 
 /* Transition animation for the menu */
 #swap-settings-overlay-menu.open {
-	display: block;
+	display: flex;
 	animation: fadeIn 0.1s ease forwards;
 }
 
@@ -79,10 +84,11 @@ div{
 	border-radius: 9px;
 	border: 1px solid black;
 	background-color: var(--night);
-	height: fit-content;
 	box-sizing: border-box;
-	position: relative;
-	 padding: 10px;
+	padding: 10px;
+	display: flex;
+	flex-direction: column;
+	width: fit-content;
 }
 .addNewMarkets h2, .marketChoiceSetting h2, .autoClaimSetting h2{
 	text-align: left;
@@ -98,13 +104,11 @@ div{
 
 .autoClaimCheckbox{
 	display: flex;
-justify-content: center;
-flex-direction: column;
-align-items: center;
-  text-align: center;
-
+	justify-content: center;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
 }
-
 .navbar {
 	background-color: rgba(50, 50, 50, 0.5); /* Transparent grey color */
 	overflow: hidden;
@@ -220,6 +224,20 @@ h1.title {
 	display: grid;
 	width: auto;
 	background-color: var(--darker-night);
+}
+
+.simpleSellTitle{
+	margin-right: 65%;
+}
+.CoinA_AccountSelectorButton{
+	background-color: transparent;
+	border: transparent;
+	border-radius: 1;
+}
+
+.titleAndAccountSelectorDiv{
+	display: flex;
+        flex-direction: row;
 }
 
 .sellBox{

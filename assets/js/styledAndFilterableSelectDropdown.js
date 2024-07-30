@@ -1,5 +1,8 @@
 
 window.addEventListener("DOMContentLoaded", (event) => {
+	setList()
+});
+function setList() {
 	const inputField = document.querySelector('.chosen-value');
 	const dropdown = document.querySelector('.value-list');
 	const dropdownArray = [... document.querySelectorAll('li')];
@@ -56,4 +59,4 @@ window.addEventListener("DOMContentLoaded", (event) => {
 	    dropdown.classList.remove('open');
 	  }
 	});
-});
+}

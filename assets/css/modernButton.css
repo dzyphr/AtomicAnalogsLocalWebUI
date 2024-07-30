@@ -8,10 +8,10 @@
   border-color: transparent;
   font-size: 16px;
   background-color: inherit;
-  border-radius: 100px;
+  border-radius: 50px;
   font-weight: 600;
   color:#32cd32;
-  box-shadow: 0 0 0 2px #32cd32;
+  box-shadow: 0 0 0 1px #32cd32;
   cursor: pointer;
   overflow: hidden;
   transition: all 0.2s cubic-bezier(0.23, 1, 0.32, 1);
@@ -41,7 +41,7 @@
   left: 50%;
   transform: translate(-25%, -25%);
   width: 20px;
-  height: 20px;
+/*  height: 20px;*/
   background-color: #32cd32;
   border-radius: 50%;
   opacity: 0;
@@ -75,14 +75,14 @@
 }
 
 .animated-button:active {
-  scale: 0.95;
+/*  scale: 0.95;*/
   box-shadow: 0 0 0 2px #32cd32;
   border-radius: 100px;
 }
 
 .animated-button:hover .circle {
   width: 220px;
-  height: 220px;
+/*  height: 220px;*/
   opacity: 1;
 }
 

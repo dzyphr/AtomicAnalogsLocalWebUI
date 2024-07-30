@@ -2,52 +2,65 @@
   position: relative;
   padding: 4px 0 0;
   width: 40%;
+  flex-shrink: 0;
+         flex-grow: 0;
+
 }
 
-.form__field {
+.form__field{
+  max-height: 30px;	
+  max-width: 215px;
   font-family: inherit;
   width: 100%;
   border: 0;
   border-bottom: 2px solid #9b9b9b;
   outline: 0;
-  font-size: 1.3rem;
+  font-size: .9rem;
   color: #fff;
-  padding: 7px 0;
+  padding: 10px 10px;
   background: transparent;
   transition: border-color 0.2s;
+  flex-shrink: 0;
+         flex-grow: 0;
+padding-top: 7%;	
 }
 .form__field::placeholder {
   color: transparent;
 }
 .form__field:placeholder-shown ~ .form__label {
-  font-size: 1rem;
+	position: absolute;
+  font-size: .9rem;
   cursor: text;
-  top: 11px;
-  z-index: 1
+  top: 14px;
+  z-index: 1;
+  flex-shrink: 0;
+         flex-grow: 0;
+
 }
 
 .form__label {
   position: absolute;
-  top: 7px;
+  top: 0px;
   display: block;
   transition: 0.2s;
   font-size: .8rem;
   color: #9b9b9b;
+  pointer-events: none;
 }
 
 .form__field:focus {
-  padding-bottom: 9px;
-  font-weight: 700;
+  padding-bottom: 2px;
+  font-weight: 300;
   border-width: 3px;
   border-image: linear-gradient(to right, #11998e, #38ef7d);
   border-image-slice: 1;
 }
 .form__field:focus ~ .form__label {
   position: absolute;
-  top: 4px;
+  top: 0px;
   display: block;
   transition: 0.2s;
-  font-size: 1rem;
+  font-size: .9rem;
   color: #11998e;
   font-weight: 700;
 }

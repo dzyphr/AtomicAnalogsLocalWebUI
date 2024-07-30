@@ -63,13 +63,6 @@
 					autocapitalize="off" spellcheck="false"
 				>
 				<ul class="value-list", class="scrollbar">
-					<li>AtomicAnalogs</li>
-					<li>AtomicAnalogs</li>
-					<li>AtomicAnalogs</li>
-					<li>AtomicAnalogs</li>
-					<li>AtomicAnalogs</li>
-					<li>AtomicAnalogs</li>
-					<li>AtomicAnalogs</li>
 				</ul>
 			</form>
 	      </div>
@@ -95,14 +88,14 @@
 		      <h2>Add new Markets</h2>
 		      <div style="display: flex; flex-direction: row;">
 		      <div class="form__group field">
-                          <input  class="form__field" placeholder=""/>
+                          <input id="addMarketName" class="form__field" placeholder=""/>
                           <label for="name" class="form__label"style="padding-right: 0px;" >MarketName:</label>
                       </div>
-		      <div class="form__group field">
-                          <input  class="form__field" placeholder=""/>
+		      <div  class="form__group field">
+                          <input id="addMarketURL" class="form__field" placeholder=""/>
                           <label for="name" class="form__label"style="padding-right: 0px;" >MarketURL:</label>
                       </div>
-		      <button class="animated-button">
+		      <button class="animated-button" onclick='simpleMarket_addMarket()'>
                                 Add
                       </button>
 		      </div>
@@ -187,7 +180,16 @@
 	</div>
 	<div class="simpleSwapMainDiv" id="simpleSwapMainDiv">
 		<div class="sellBox" id="sellBox">
-			<h1> Sell </h1>
+			<div class="titleAndAccountSelectorDiv", id="titleAndAccountSelectorDiv">
+				<div class="simpleSellTitle">
+					<h1> Sell</h1>
+				</div>
+				<div class="CoinA_AccountSelectorDiv">
+					<button class="CoinA_AccountSelectorButton">
+						<h1>AccountA</h1>
+					</button>
+				</div>
+			</div>
 			<div class="inputAndCoinSelectorDiv", id="inputAndCoinSelectorDiv">
 				<input value="0.0" type="number" class="sellAmountInput" id="sellAmountInput" 
 					oninput="estimateReturnSellToBuy('TestnetErgo', 'Sepolia')"
@@ -229,7 +231,13 @@
 		</div>
 	</div>
 	<div class="swapButtonDiv" id="swapButtonDiv">
-		<button class="swapButton" id="swapButton">
+		<button class="swapButton" id="swapButton" 
+			onclick="simpleMarket_start_claimSwap(
+				document.getElementById('sellAmountInput').value, 
+				'TestnetErgo', 'Sepolia', 
+				true
+			)"
+		>
 			<h1>Swap</h1>
 		</button>
 	</div>
