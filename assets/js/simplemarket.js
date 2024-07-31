@@ -9,6 +9,7 @@ window.addEventListener("DOMContentLoaded", (event) => {
 			this.classList.remove('open');
 		}
 	});
+	simpleMarket_populateMarketExistingAccounts("Sepolia", "TestnetErgo")
 });
 
 function estimateReturnSellToBuy(CoinA, CoinB) {
@@ -148,7 +149,7 @@ function refreshChooseMarketsList()
 		newListItem.textContent = marketname;
 		// Append the new <li> to the <ul>
 		valueList.appendChild(newListItem)
-		setList() //resets the list element group so that the new li element is included in its functionality
+		setStyledAndFilterableDropDownLists() //resets the list element group so that the new li element is included in its functionality
 		//might need more specific naming
 		//TODO: also need to check for duplicate market name and or url in addMarket() not just here
 	}
@@ -198,30 +199,54 @@ function simpleMarket_addMarket()
 
 function simpleMarket_start_claimSwap(coinAmount, CoinA, CoinB, useLocalStorageSelectedMarket)
 {
-	orderType, coinAmount, CoinA_Price, CoinB_Price =
-		findFittingOrderType(coinAmount, CoinA, CoinB, useLocalStorageSelectedMarket)
-	localAccount = document.getElementById('')
+	estimateReturnSellToBuy(CoinA, CoinB)
+	CoinA_Amount = document.getElementById("buyAmountInput");
+	try
+	{
+		const [ orderType, CoinA_Price, CoinB_Price ] =
+			findFittingOrderType(CoinA_Amount, CoinA, CoinB, useLocalStorageSelectedMarket)
+	}
+	catch(error)
+	{
+		console.log("no fitting order types!")
+	}
+	crossAccount = localStorage.getItem('CoinA_Account')
+	localAccount = localStorage.getItem('CoinB_Account')
 	simpleMarket_claimSwap(OrderTypeUUID, coinAmount, CoinA_Price, CoinB_Price, localAccount, crossAccount)
+}
+
+function isLocalStorageKeyEmpty(key) {
+  const value = localStorage.getItem(key);
+  return value === null || value.trim() === '';
 }
 
 function findFittingOrderType(coinAmount, CoinA, CoinB, useLocalStorageSelectedMarket)
 {
+	//Coin amount will be the servers Coin A per their Order Type
 	if (useLocalStorageSelectedMarket == true)
 	{
-		selectedMarket = localStorage.getItem('selectedmarket')
-		getJSON(selectedMarket, getBottomPrivateClientRESTAPIKeyFromLocalStorage()).then((jsonData) => {
-                	var jsonobj = JSON.parse(jsonData);
-			for (orderType in jsonobj)
-			{
-				if ((coinAmount >= jsonobj[orderType]["MinVolCoinA"] 
-					&& coinAmount <= jsonobj[orderType]["MaxVolCoinA"]))
+		if (!isLocalStorageKeyEmpty('selectedmarket'))
+		{
+			selectedMarket = localStorage.getItem('selectedmarket')
+			getJSON(selectedMarket, getBottomPrivateClientRESTAPIKeyFromLocalStorage()).then((jsonData) => {
+				var jsonobj = JSON.parse(jsonData);
+				for (orderType in jsonobj)
 				{
-					return orderType, coinAmount, 
-						jsonobj[orderType]["CoinA_Price"], 
-						jsonobj[orderType]["CoinB_Price"] 
+					if ((coinAmount >= jsonobj[orderType]["MinVolCoinA"] 
+						&& coinAmount <= jsonobj[orderType]["MaxVolCoinA"]))
+					{
+						return  [ orderType, 
+							jsonobj[orderType]["CoinA_Price"], 
+							jsonobj[orderType]["CoinB_Price"] ];
+					}
 				}
-			}
-		});
+				console.log("no match");
+			});
+		}
+		else
+		{
+			console.log("No Market Selected!")
+		}
 	}
 }
 
@@ -297,5 +322,79 @@ function simpleMarket_claimSwap(OrderTypeUUID, coinAmount, CoinA_Price, CoinB_Pr
                         }
                 });
         }
+}
+
+function simpleMarket_populateMarketExistingAccounts(localChain, crossChain)
+{
+	CoinA_AccountSelectorDiv = document.getElementById("CoinA_AccountSelectorDiv");
+        getAllChainAccountsJSON().then( function(result)
+        {
+                accountObj =  JSON.parse(result)
+                for (let key in accountObj) {
+                    if (localChain == "Sepolia")
+                    {
+                            //TODO: keep track of logged in accounts in localStorage
+                                //check if account is .env.encrypted here and make sure its logged in before populating
+                            //TODO if only one acc exists per chain auto select that acc
+                            //TODO if no acc exists per chain link to create account for that chain page
+                            if (key.includes("Atomicity"))
+                            {
+				var valueList = document.querySelector('.CoinB_AccountSelectorDiv .value-list');
+
+                                var newListItem = document.createElement('li');
+                                newListItem.addEventListener('click', function(e) {
+                                        localStorage.setItem('CoinB_Account', accountObj[key])
+                                });
+                                var items = valueList.getElementsByTagName('li');
+                                var repeat = false;
+                                for (var i = 0; i < items.length; i++) {
+                                        if (items[i].textContent === accountObj[key]) {
+                                                repeat = true;
+                                                break; // Exit li checking the for loop if item is found
+                                        }
+                                }
+                                if (repeat === true)
+                                {
+                                        break//Exit the accounts for loop
+                                }
+                                newListItem.textContent = accountObj[key];
+                                // Append the new <li> to the <ul>
+                                valueList.appendChild(newListItem)
+                                setStyledAndFilterableDropDownLists() 
+				    //resets the list element group so that the new li element is included in its function
+
+                            }
+                    }
+                    if (crossChain == "TestnetErgo")
+                    {
+                            if (key.includes("SigmaParticle"))
+                            {
+				var valueList = document.querySelector('.CoinA_AccountSelectorDiv .value-list');
+
+                                var newListItem = document.createElement('li');
+                                newListItem.addEventListener('click', function(e) {
+                                        localStorage.setItem('CoinA_Account', accountObj[key])
+                                });
+                                var items = valueList.getElementsByTagName('li');
+                                var repeat = false;
+                                for (var i = 0; i < items.length; i++) {
+                                        if (items[i].textContent === accountObj[key]) {
+                                                repeat = true;
+                                                break; // Exit li checking the for loop if item is found
+                                        }
+                                }
+                                if (repeat === true)
+                                {
+                                        break//Exit the accounts for loop
+                                }
+                                newListItem.textContent = accountObj[key];
+                                // Append the new <li> to the <ul>
+                                valueList.appendChild(newListItem)
+                                setStyledAndFilterableDropDownLists() 
+				    //resets the list element group so that the new li element is included in its function
+                            }
+                    }
+                }
+        })
 }
 

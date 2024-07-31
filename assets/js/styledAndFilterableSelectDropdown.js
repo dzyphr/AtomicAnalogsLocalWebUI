@@ -1,62 +1,61 @@
 
 window.addEventListener("DOMContentLoaded", (event) => {
-	setList()
+	setStyledAndFilterableDropDownLists()
 });
-function setList() {
-	const inputField = document.querySelector('.chosen-value');
-	const dropdown = document.querySelector('.value-list');
-	const dropdownArray = [... document.querySelectorAll('li')];
-	console.log(typeof dropdownArray)
-	dropdown.classList.add('open');
-	let valueArray = [];
-	dropdownArray.forEach(item => {
-	  valueArray.push(item.textContent);
-	});
+function setStyledAndFilterableDropDownLists() {
+    // Get all input fields and dropdowns
+    const inputFields = document.querySelectorAll('.chosen-value');
+    const dropdowns = document.querySelectorAll('.value-list');
 
-	const closeDropdown = () => {
-	  dropdown.classList.remove('open');
-	}
+    inputFields.forEach((inputField, index) => {
+        const dropdown = dropdowns[index];
+        const dropdownArray = [...dropdown.querySelectorAll('li')];
 
-	inputField.addEventListener('input', () => {
-	  dropdown.classList.add('open');
-	  let inputValue = inputField.value.toLowerCase();
-	  let valueSubstring;
-	  if (inputValue.length > 0) {
-	    for (let j = 0; j < valueArray.length; j++) {
-	      if (!(inputValue.substring(0, inputValue.length) === valueArray[j].substring(0, inputValue.length).toLowerCase())) {
-		dropdownArray[j].classList.add('closed');
-	      } else {
-		dropdownArray[j].classList.remove('closed');
-	      }
-	    }
-	  } else {
-	    for (let i = 0; i < dropdownArray.length; i++) {
-	      dropdownArray[i].classList.remove('closed');
-	    }
-	  }
-	});
+        let valueArray = dropdownArray.map(item => item.textContent);
 
-	dropdownArray.forEach(item => {
-	  item.addEventListener('click', (evt) => {
-	    inputField.value = item.textContent;
-	    dropdownArray.forEach(dropdown => {
-	      dropdown.classList.add('closed');
-	    });
-	  });
-	})
+        const closeDropdown = () => {
+            dropdown.classList.remove('open');
+        };
 
-	inputField.addEventListener('focus', () => {
-	   dropdown.classList.add('open');
-	   dropdownArray.forEach(dropdown => {
-	     dropdown.classList.remove('closed');
-	   });
-	});
+        inputField.addEventListener('input', () => {
+            dropdown.classList.add('open');
+            let inputValue = inputField.value.toLowerCase();
+            dropdownArray.forEach((item, j) => {
+                if (inputValue.length > 0) {
+                    if (!(inputValue.substring(0, inputValue.length) === valueArray[j].substring(0, inputValue.length).toLowerCase())) {
+                        item.classList.add('closed');
+                    } else {
+                        item.classList.remove('closed');
+                    }
+                } else {
+                    item.classList.remove('closed');
+                }
+            });
+        });
 
-	document.addEventListener('click', (evt) => {
-	  const isDropdown = dropdown.contains(evt.target);
-	  const isInput = inputField.contains(evt.target);
-	  if (!isDropdown && !isInput) {
-	    dropdown.classList.remove('open');
-	  }
-	});
+        dropdownArray.forEach(item => {
+            item.addEventListener('click', () => {
+                inputField.value = item.textContent;
+                dropdownArray.forEach(dropdownItem => {
+                    dropdownItem.classList.add('closed');
+                });
+                closeDropdown();
+            });
+        });
+
+        inputField.addEventListener('focus', () => {
+            dropdown.classList.add('open');
+            dropdownArray.forEach(dropdownItem => {
+                dropdownItem.classList.remove('closed');
+            });
+        });
+
+        document.addEventListener('click', (evt) => {
+            const isDropdown = dropdown.contains(evt.target);
+            const isInput = inputField.contains(evt.target);
+            if (!isDropdown && !isInput) {
+                closeDropdown();
+            }
+        });
+    });
 }

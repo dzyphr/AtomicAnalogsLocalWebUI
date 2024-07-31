@@ -181,13 +181,20 @@
 	<div class="simpleSwapMainDiv" id="simpleSwapMainDiv">
 		<div class="sellBox" id="sellBox">
 			<div class="titleAndAccountSelectorDiv", id="titleAndAccountSelectorDiv">
-				<div class="simpleSellTitle">
+				<div class="simpleBuySellTitle">
 					<h1> Sell</h1>
 				</div>
-				<div class="CoinA_AccountSelectorDiv">
-					<button class="CoinA_AccountSelectorButton">
-						<h1>AccountA</h1>
-					</button>
+				<div class="CoinB_AccountSelectorDiv" id="CoinB_AccountSelectorDiv">
+					<form class="selectAccount">
+						<input
+							class="chosen-value" type="text"
+							value="" placeholder="SelectAccount"
+							autocomplete="off" autocorrect="off"
+							autocapitalize="off" spellcheck="false"
+						>
+						<ul class="value-list"  class="scrollbar">
+						</ul>
+					</form>
 				</div>
 			</div>
 			<div class="inputAndCoinSelectorDiv", id="inputAndCoinSelectorDiv">
@@ -216,7 +223,23 @@
 			</button>
 		</div>
 		<div class="buyBox" id="buyBox">
-			<h1> Buy </h1>
+			<div class="titleAndAccountSelectorDiv", id="titleAndAccountSelectorDiv">
+				<div class="simpleBuySellTitle">
+				<h1> Buy </h1>
+				</div>
+				<div class="CoinA_AccountSelectorDiv" id="CoinA_AccountSelectorDiv">
+                                        <form class="selectAccount">
+                                                <input
+                                                        class="chosen-value" type="text"
+                                                        value="" placeholder="SelectAccount"
+                                                        autocomplete="off" autocorrect="off"
+                                                        autocapitalize="off" spellcheck="false"
+                                                >
+                                                <ul class="value-list"  class="scrollbar">
+                                                </ul>
+                                        </form>
+                                </div>
+			</div>
 			<div class="inputAndCoinSelectorDiv", id="inputAndCoinSelectorDiv">
 				<input value="0.0" type="number" class="buyAmountInput" id="buyAmountInput" 
 					oninput="estimateReturnBuyToSell('TestnetErgo', 'Sepolia')"

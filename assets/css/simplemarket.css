@@ -226,15 +226,34 @@ h1.title {
 	background-color: var(--darker-night);
 }
 
-.simpleSellTitle{
-	margin-right: 65%;
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active{
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: #ffffff;
+    /*makes the background of autofill suggestions transparent instead of default white which interferes w dark theme*/
+}
+
+.simpleBuySellTitle{
+	margin-right: 62%;
 }
 .CoinA_AccountSelectorButton{
 	background-color: transparent;
 	border: transparent;
 	border-radius: 1;
 }
-
+form.selectAccount{
+	width: 9rem;
+}
+form.selectAccount input{
+	border-radius: 10px;
+	background-color: transparent;
+}
+form.selectAccount li{
+	z-index: 1;
+	border-radius: 6px;
+}
 .titleAndAccountSelectorDiv{
 	display: flex;
         flex-direction: row;
