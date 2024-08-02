@@ -212,6 +212,7 @@ function simpleMarket_start_claimSwap(coinAmount, CoinA, CoinB, useLocalStorageS
 	}
 	crossAccount = localStorage.getItem('CoinA_Account')
 	localAccount = localStorage.getItem('CoinB_Account')
+	incrementOngoingSwaps()
 	simpleMarket_claimSwap(OrderTypeUUID, coinAmount, CoinA_Price, CoinB_Price, localAccount, crossAccount)
 }
 
@@ -308,12 +309,12 @@ function simpleMarket_claimSwap(OrderTypeUUID, coinAmount, CoinA_Price, CoinB_Pr
                                                 console.log(JSON.parse(cleanresp))
                                                 respJSON = JSON.parse(cleanresp)
                                                 const swapTicketID = respJSON["SwapTicketID"];
-                                                showStartingOrderIDModal(swapTicketID);
-                                                storeActiveSwapInfo(swapTicketID, "SettingModalFocus", "", [true]);
+                                                //showStartingOrderIDModal(swapTicketID);
+                                                //storeActiveSwapInfo(swapTicketID, "SettingModalFocus", "", [true]);
                                                 const ConversionArray = coinPriceConversion(coinAmount, CoinA_Price, CoinB_Price);
                                                 AmtCoinB = coinAmount; //we are the responder here
                                                 AmtCoinA = ConversionArray[1]; // TODO Hide active swaps if there aren't any
-                                                representActiveSwap(CoinA, CoinB, AmtCoinA, AmtCoinB, swapTicketID)
+                                                //representActiveSwap(CoinA, CoinB, AmtCoinA, AmtCoinB, swapTicketID)
                                                 //TODO  replace swap stage logic with one that uses SwapStateMap async without
                                                 //relying on local storage
                                         });
@@ -398,3 +399,24 @@ function simpleMarket_populateMarketExistingAccounts(localChain, crossChain)
         })
 }
 
+function incrementOngoingSwaps()
+{
+	ongoingSwapsButton = document.getElementById('ongoingSwapsButton');
+	pendingSwapsCounter = document.getElementById('pendingSwapsCounter');
+	if (!isElementVisible(ongoingSwapsButton))
+	{
+		ongoingSwapsButton.style.visibility = 'visible';
+	}
+	if (pendingSwapsCounter.textContent.trim() === '') //check for empty
+	{
+		pendingSwapsCounter.textContent = '1'
+		return
+	}
+	index = Number(pendingSwapsCounter.textContent);
+	index += 1;
+	pendingSwapsCounter.textContent = index;
+}
+
+function isElementVisible(element) {
+    return window.getComputedStyle(element).visibility !== 'hidden';
+}

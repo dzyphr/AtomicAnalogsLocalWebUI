@@ -1,4 +1,6 @@
 <head>
+{{ $htmlSpinnerstyles := resources.Get "css/htmlSpinner.css" | minify }}
+<link rel="stylesheet" type="text/css" href="{{ $htmlSpinnerstyles.Permalink }}" media="screen"/>	
 {{ $modernButtonstyles := resources.Get "css/modernButton.css" | minify }}
 <link rel="stylesheet" type="text/css" href="{{ $modernButtonstyles.Permalink }}" media="screen"/>
 {{ $gradientInputstyles := resources.Get "css/gradientInput.css" | minify }}
@@ -157,6 +159,18 @@
 			</a>
 		</div>
 	</div>
+	<button class="ongoingSwapsButton" id="ongoingSwapsButton" >
+		<div id="html-spinner" style="position: relative; top: 7px; margin-right: 5px;" ></div>
+		<h2 
+			class="pendingSwapsCounter" id="pendingSwapsCounter"
+			style="padding-left:  0; padding-right: 3px;color: var(--super-light-grey); bottom: 8px; position: relative;"
+		></h2>
+		<h2 
+			style="padding-left:  0; padding-right: 2px;color: var(--super-light-grey); bottom: 8px; position: relative;"
+		>
+			Pending
+		</h2>
+	</button>
 <div class="simpleSwapContainerDiv" id="simpleSwapContainerDiv">
 	<h1 class="title" id="title" >{{ .Content }}</h1>
 	<div class="simpleSwapToolBar" id="simpleSwapToolBar">

@@ -76,7 +76,7 @@
 
 .animated-button:active {
 /*  scale: 0.95;*/
-  box-shadow: 0 0 0 2px #32cd32;
+  box-shadow: 0 0 0 2px var(--cambridge-blue);
   border-radius: 100px;
 }
 
