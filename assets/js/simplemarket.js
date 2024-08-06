@@ -241,8 +241,8 @@ function findFittingOrderType(coinAmount, CoinA, CoinB, useLocalStorageSelectedM
 							jsonobj[orderType]["CoinB_Price"] ];
 					}
 				}
-				console.log("no match");
 			});
+			console.log("no match");
 		}
 		else
 		{
@@ -257,7 +257,7 @@ function simpleMarket_claimSwap(OrderTypeUUID, coinAmount, CoinA_Price, CoinB_Pr
         const existingMarketLists = JSON.parse(localStorage.getItem(marketlistKey)) || [];
         for (market in existingMarketLists)
         {
-                getJSON(existingMarketLists[market].marketurl, getBottomPrivateClientRESTAPIKeyFromLocalStorage()).then((jsonData) => {
+                return getJSON(existingMarketLists[market].marketurl, getBottomPrivateClientRESTAPIKeyFromLocalStorage()).then((jsonData) => {
                         var jsonobj = JSON.parse(jsonData);
                         for (key in jsonobj)
                         {
@@ -401,11 +401,11 @@ function simpleMarket_populateMarketExistingAccounts(localChain, crossChain)
 
 function incrementOngoingSwaps()
 {
-	ongoingSwapsButton = document.getElementById('ongoingSwapsButton');
+	ongoingSwapsPanel = document.getElementById('ongoingSwapsPanel');
 	pendingSwapsCounter = document.getElementById('pendingSwapsCounter');
-	if (!isElementVisible(ongoingSwapsButton))
+	if (!isElementVisible(ongoingSwapsPanel))
 	{
-		ongoingSwapsButton.style.visibility = 'visible';
+		ongoingSwapsPanel.style.visibility = 'visible';
 	}
 	if (pendingSwapsCounter.textContent.trim() === '') //check for empty
 	{
