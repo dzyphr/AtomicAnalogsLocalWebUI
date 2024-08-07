@@ -160,7 +160,7 @@
 		</div>
 	</div>
 	<div class="ongoingSwapsPanel" id="ongoingSwapsPanel">
-	<button class="ongoingSwapsButton" id="ongoingSwapsButton" >
+	<button class="ongoingSwapsButton" id="ongoingSwapsButton" onclick='showOngoingSwaps()'>
 		<div id="html-spinner" style="position: relative; top: 7px; margin-right: 5px;" ></div>
 		<h2 
 			class="pendingSwapsCounter" id="pendingSwapsCounter"
@@ -171,11 +171,31 @@
 		>
 			Pending
 		</h2>
+
 	</button>
-	<button class="ongoingSwap" id="ongoingSwap">
-		<h2>Status</h2>
-		<h3>0.0015 ETH to 5.3759 ERG</h2>
-	</button>
+	<div class="ongoingSwapsList" id="ongoingSwapsList" class="scrollbar">
+        </div>
+	<!-- button class="ongoingSwap" id="ongoingSwap">
+		<div class="ongoingSwapTop" id="ongoingSwapTop" style="">
+			{{ $sepolia := resources.Get "images/Sepolia-Ethereum-Logo-PNG-tranparentBG.png" }}
+			<img src="{{ $sepolia.Permalink }}" class="sepoliaCheckboxImage" id="sepoliaCheckboxImage" 
+			style="">
+			<h2>Status</h2>
+			{{ $ergo := resources.Get "images/ErgoTestnetTransparentWhite.png" }}
+			<img src="{{ $ergo.Permalink }}" class="ergoTestnetCheckboxImage">
+		</div>
+		<div class="ongoingSwapBottom" id="ongoingSwapBottom" >
+			<h3>0.0015 ETH </h3>
+			<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" 
+				class="bi bi-arrows" viewBox="0 0 16 16" style="position: relative; bottom: 8px;">
+			  <path d="M1.146 8.354a.5.5 0 0 1 0-.708l2-2a.5.5 0 1 1 .708.708L2.707 7.5h10.586l-1.147-1.146a.5.5 
+			  0 0 1 .708-.708l2 2a.5.5 0 0 1 0 .708l-2 2a.5.5 0 0 1-.708-.708L13.293 8.5H2.707l1.147 
+			  1.146a.5.5 0 0 1-.708.708z"
+			  />
+			</svg>
+			<h3> 5.3759 ERG</h2>
+		</div>
+	</button-->
 	</div>
 <div class="simpleSwapContainerDiv" id="simpleSwapContainerDiv">
 	<h1 class="title" id="title" >{{ .Content }}</h1>

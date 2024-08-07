@@ -37,13 +37,15 @@ div{
 #swap-settings-overlay-menu {
 	position: fixed;
 	width: 100%;
-	height: 100%;
+	height: 120%;
 	background-color: rgba(0, 0, 0, 0.6); /* semi-transparent black overlay */
-	backdrop-filter: blur(1.5px);
+	backdrop-filter: blur(.5px);
 	display: none; /* Initially hidden */
 	z-index: 1000; /* Ensure it's on top of other content */
+}
+#swap-settings-overlay-menu	.overlay-content{
 
-	
+	top: 40%;
 }
 #swap-settings-overlay-menu h1, h2, h3{
 	text-align: left;
@@ -184,50 +186,65 @@ input::-webkit-inner-spin-button {
 /* makes sure number type inputs dont have a scroll/spin button*/
 
 .ongoingSwapsPanel{
-/* visibility: hidden;*/
-        margin-left: auto; margin-right: 5%;    border-radius: 16px;
-            padding-right: 5px;
-            position: relative;
-            top: 5%;
-            height: 45px;
-            display: flex;
-	    flex-direction: column;
-            justify-content: center;
-	display: flex;
-	align-items: center;
+ visibility: hidden;
+    position: relative;
+    margin-left: auto;
+    top: 100;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 400px;
 }
 
+.hidden{
+	visibility: hidden;
+}
+
+.visibile{
+	visibility: visible;
+}
 
 .ongoingSwap{
-margin-left: auto; margin-right: 5%;    border-radius: 16px;
+	border-radius: 16px;
             padding-right: 5px;
             position: relative;
-            height: 45px;
+            height: 60px;
             display: flex;
             flex-direction: column;
             background-color: var(--slightly-darker-night);
             justify-content: center;
         display: flex;
 	border: 1px solid var(--dark-grey);
-	width: 110%;
+	width: 80%;
 	align-items: center;
-
+	visibility: hidden;
 }
 .ongoingSwap h2{
 	font-size: 1rem;
 	padding-left:  0; padding-right: 3px;color: var(--super-light-grey); top: 15px; position: relative;
-	padding: 2px;
+	padding: 7px;
 }
 .ongoingSwap h3{
 	font-size: .8rem;
 	padding: 2px;
 	padding-left:  0; padding-right: 2px;color: var(--super-light-grey); bottom: 12px; position: relative;
 }
+.ongoingSwapBottom svg{
+	color: var(--super-light-grey);
+}
+.ongoingSwapTop, .ongoingSwapBottom{
+	display: flex; flex-direction: row;
+}
+.ongoingSwapTop .sepoliaCheckboxImage{
+	position: relative; top: 27px; right: 15%;
+}
+.ongoingSwapTop .ergoTestnetCheckboxImage{
+	position: relative; top: 27px; left: 15%; width: 25px;
+}
 .ongoingSwapsButton{
-	margin-left: auto; margin-right: 5%;    border-radius: 16px;
+	border-radius: 16px;
             border: 1px solid var(--dark-grey);
-            padding-right: 5px;
-            position: relative;
             top: 2%;
             height: 45px;
             display: flex;
@@ -235,13 +252,54 @@ margin-left: auto; margin-right: 5%;    border-radius: 16px;
             justify-content: center;
 }
 .ongoingSwapsButton:hover{
-	background-color: var(--lighter-grey);
+	background-color: var(--night);
+}
+.ongoingSwapsButton:active{
+	background-color: var(--dark-grey);
+}
+.ongoingSwapsList {
+    position: relative;
+    height: 200px; /* Fixed height for the container */
+    overflow-x: auto;
+overflow-y: auto;
+width: 100%;
+	border-radius: 60px;
+	display: flex;
+	flex-direction: column;
+	align-content: center;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
 }
 .simpleSwapContainerDiv{
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 }
+.ongoingSwapsList{
+ &::-webkit-scrollbar {
+    width: 0px; /* width of the scrollbar */
+    left: 5px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent; /* color of the track */
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: transparent; /* color of the thumb */
+    border-radius: 5px; /* roundness of the thumb */
+    border: none; /* border around the thumb */
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: transparent; /* color of the thumb on hover */
+  }
+}
+
+
 h1.title {
 	text-align: left;
         font-size: 70;

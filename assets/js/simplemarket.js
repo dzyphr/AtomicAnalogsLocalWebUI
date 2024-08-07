@@ -283,6 +283,10 @@ function simpleMarket_claimSwap(OrderTypeUUID, coinAmount, CoinA_Price, CoinB_Pr
                                         QGPubMatchStorageKey = marketurl + "_QGPubMatch" + "_" + getElGamalKey(marketurl);
                                         QGPubMatchElGMarketServerKey = localStorage.getItem(QGPubMatchStorageKey);
                                         ServerElGamalKey = QGPubMatchElGMarketServerKey
+					const ConversionArray = coinPriceConversion(coinAmount, CoinA_Price, CoinB_Price);
+					CoinB_Amount = coinAmount; //we are the responder here
+					CoinA_Amount = ConversionArray[1]; // TODO Hide active swaps if there aren't any
+					representOngoingSwap(CoinA, CoinB, CoinA_Amount, CoinB_Amount)
                                         let startSwapFromUIData = {
                                                 "id": uuidv4(),
                                                 "request_type": "startSwapFromUI",
@@ -312,8 +316,8 @@ function simpleMarket_claimSwap(OrderTypeUUID, coinAmount, CoinA_Price, CoinB_Pr
                                                 //showStartingOrderIDModal(swapTicketID);
                                                 //storeActiveSwapInfo(swapTicketID, "SettingModalFocus", "", [true]);
                                                 const ConversionArray = coinPriceConversion(coinAmount, CoinA_Price, CoinB_Price);
-                                                AmtCoinB = coinAmount; //we are the responder here
-                                                AmtCoinA = ConversionArray[1]; // TODO Hide active swaps if there aren't any
+                                                CoinB_Amount = coinAmount; //we are the responder here
+                                                CoinA_Amount = ConversionArray[1]; // TODO Hide active swaps if there aren't any
                                                 //representActiveSwap(CoinA, CoinB, AmtCoinA, AmtCoinB, swapTicketID)
                                                 //TODO  replace swap stage logic with one that uses SwapStateMap async without
                                                 //relying on local storage
@@ -399,6 +403,35 @@ function simpleMarket_populateMarketExistingAccounts(localChain, crossChain)
         })
 }
 
+function checkVisibility(className){
+	elements = document.getElementsByClassName('ongoingSwap');
+	if (elements.length !== 0)
+	{
+		visibility = elements[0].style.visibility
+		return visibility
+	}
+	else
+	{
+		return 'hidden'
+	}
+}
+
+function toggleVisibility(className) {
+    document.querySelectorAll(`.${className}`).forEach(element => {
+        const currentVisibility = window.getComputedStyle(element).visibility;
+        if (currentVisibility === 'hidden') {
+            element.style.visibility = 'visible';
+        } else {
+            element.style.visibility = 'hidden';
+        }
+    });
+}
+
+function showOngoingSwaps()
+{
+	toggleVisibility('ongoingSwap')
+}
+
 function incrementOngoingSwaps()
 {
 	ongoingSwapsPanel = document.getElementById('ongoingSwapsPanel');
@@ -415,6 +448,68 @@ function incrementOngoingSwaps()
 	index = Number(pendingSwapsCounter.textContent);
 	index += 1;
 	pendingSwapsCounter.textContent = index;
+}
+
+function representOngoingSwap(CoinA, CoinB, CoinA_Amount, CoinB_Amount)
+{
+	newongoingSwap = document.createElement('button');
+	newongoingSwap.className = 'ongoingSwap'
+
+	ongoingSwapTop = document.createElement('div');
+	ongoingSwapTop.className = 'ongoingSwapTop'
+	sepoliaIMG = document.createElement('img')
+	sepoliaIMG.className = 'sepoliaCheckboxImage'
+	sepoliaIMG.src = "../img/Sepolia-Ethereum-Logo-PNG-tranparentBG.png"
+	statusText = document.createElement('h2');
+	statusText.textContent = 'Pending';
+	ergoTestnetIMG = document.createElement('img')
+	ergoTestnetIMG.className = 'ergoTestnetCheckboxImage'
+	ergoTestnetIMG.src = "../img/ErgoTestnetTransparentWhite.png"
+
+	ongoingSwapBottom =  document.createElement('div');
+	ongoingSwapBottom.className = 'ongoingSwapBottom';
+	CoinB_Text = document.createElement('h3');
+	CoinB_Text.textContent = `${CoinB_Amount} ${CoinB}`;
+
+	const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+	svg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+	svg.setAttribute("width", "25");
+	svg.setAttribute("height", "36");
+	svg.setAttribute("fill", "currentColor");
+	svg.setAttribute("class", "bi bi-arrows");
+	svg.setAttribute("viewBox", "0 0 16 16");
+	svg.style.paddingRight = '5px'
+	svg.style.paddingLeft = '5px'
+	svg.style.position = "relative";
+	svg.style.bottom = "8px";
+	const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+	path.setAttribute("d", "M1.146 8.354a.5.5 0 0 1 0-.708l2-2a.5.5 0 1 1 .708.708L2.707 7.5h10.586l-1.147-1.146a.5.5 0 0 1 .708-.708l2 2a.5.5 0 0 1 0 .708l-2 2a.5.5 0 0 1-.708-.708L13.293 8.5H2.707l1.147 1.146a.5.5 0 0 1-.708.708z");
+	svg.appendChild(path);
+
+	CoinA_Text = document.createElement('h3');
+	CoinA_Text.textContent = `${CoinA_Amount} ${CoinA}`
+
+	ongoingSwapTop.appendChild(sepoliaIMG)
+	ongoingSwapTop.appendChild(statusText)
+	ongoingSwapTop.appendChild(ergoTestnetIMG)
+
+	ongoingSwapBottom.appendChild(CoinB_Text)
+	ongoingSwapBottom.appendChild(svg)
+	ongoingSwapBottom.appendChild(CoinA_Text)
+
+	newongoingSwap.appendChild(ongoingSwapTop)
+	newongoingSwap.appendChild(ongoingSwapBottom)
+	console.log(checkVisibility('ongoingSwap'))
+	if(checkVisibility('ongoingSwap') === 'visible')
+	{
+		newongoingSwap.style.visibility = 'visible';
+	}
+	if(checkVisibility('ongoingSwap') === 'hidden')
+	{
+		newongoingSwap.style.visibility = 'hidden';
+	}
+	ongoingSwapsList = document.getElementById('ongoingSwapsList')
+	ongoingSwapsList.appendChild(newongoingSwap)
 }
 
 function isElementVisible(element) {
