@@ -23,15 +23,76 @@ body{
 	margin: 0;
 	display: flex;
 	flex-direction: column;
-        background-color: black;
+  background-color: black;
 	font-family: Arial;	
 }
 
 
 div{
-        padding: 0 auto;
-        margin: 0.5%;
+  padding: 0 auto;
+/*  margin: 0.5%;*/
 }
+
+#activeSwapDataModal{
+  position: fixed;
+  width: 100%;
+  height: 120%;
+  background-color: rgba(0, 0, 0, 0.6); /* semi-transparent black overlay */
+  backdrop-filter: blur(5px);
+  display: none; /* Initially hidden */
+  z-index: 1000; /* Ensure it's on top of other content */
+}
+#activeSwapDataModal .overlay-content{
+  top: 40%;
+  border-radius: 9px;
+/*  border: 1px solid black;
+  background-color: var(--night);*/
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  margin: 0;
+  padding: 0;
+  align-items: center;
+  justify-content: center;
+}
+#activeSwapDataModal h1, h2, h3{
+  text-align: center;
+  color: var(--super-light-grey);
+  padding-left: 5;
+  padding-right: 5;
+}
+#activeSwapDataModal.open {
+  display: flex;
+  animation: fadeIn 0.1s ease forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.ActiveSwapModalTitle, .ActiveSwapModalStatus, .ActiveSwapModalLocalContract, .ActiveSwapModalRemoteContract{
+  border-radius: 17px;
+  border: 1px solid black;
+  background-color: var(--night);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  width: fit-content;
+  margin: 0;
+  padding: 5px;
+  align-items: center;
+  justify-content: center;
+}
+.ActiveSwapModalLocalContract, .ActiveSwapModalRemoteContract{
+  display: none;
+}
+
+
 
 /* Styles for the overlay menu */
 #swap-settings-overlay-menu {
@@ -39,12 +100,11 @@ div{
 	width: 100%;
 	height: 120%;
 	background-color: rgba(0, 0, 0, 0.6); /* semi-transparent black overlay */
-	backdrop-filter: blur(.5px);
+	backdrop-filter: blur(5px);
 	display: none; /* Initially hidden */
 	z-index: 1000; /* Ensure it's on top of other content */
 }
 #swap-settings-overlay-menu	.overlay-content{
-
 	top: 40%;
 }
 #swap-settings-overlay-menu h1, h2, h3{
@@ -101,7 +161,7 @@ div{
 	font-size: .8em;
 }
 .checkboxholder{
-        display: flex;
+  display: flex;
 }
 
 .autoClaimCheckbox{
@@ -140,14 +200,14 @@ div{
 }
 .navright a{
 	float: right;
-        height: 100%;
-        display: block;
-        color: white;
-        text-align: center;
-        margin: 0;
-        padding: auto auto ;
-        text-decoration: none;
-        font-size: 22px;
+  height: 100%;
+  display: block;
+  color: white;
+  text-align: center;
+  margin: 0;
+  padding: auto auto ;
+  text-decoration: none;
+  font-size: 22px;
 }
 
 a.ergodiscord svg{
@@ -169,12 +229,12 @@ body{
 }
 
 .ergoTestnetCheckboxImage{
-        width: 25;
-        height:27;
+  width: 25;
+  height:27;
 }
 .sepoliaCheckboxImage{
-        width: 25;
-        height:27;
+  width: 25;
+  height:27;
 }
 
 
@@ -185,16 +245,22 @@ input::-webkit-inner-spin-button {
 }
 /* makes sure number type inputs dont have a scroll/spin button*/
 
+
+.simpleSwapOuterWidgets{
+  display: grid;
+  grid-template-columns: repeat(3, 3fr);
+}
+
 .ongoingSwapsPanel{
  visibility: hidden;
-    position: relative;
-    margin-left: auto;
-    top: 100;
-    height: auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 400px;
+  position: relative;
+  margin-left: auto;
+  top: 100;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 400px;
 }
 
 .hidden{
@@ -207,18 +273,24 @@ input::-webkit-inner-spin-button {
 
 .ongoingSwap{
 	border-radius: 16px;
-            padding-right: 5px;
-            position: relative;
-            height: 60px;
-            display: flex;
-            flex-direction: column;
-            background-color: var(--slightly-darker-night);
-            justify-content: center;
-        display: flex;
+  padding-right: 5px;
+  position: relative;
+  height: 60px;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--slightly-darker-night);
+  justify-content: center;
+  display: flex;
 	border: 1px solid var(--dark-grey);
 	width: 80%;
 	align-items: center;
-	visibility: hidden;
+/*	visibility: hidden;*/
+}
+.ongoingSwap:hover{
+  background-color: var(--night);
+}
+.ongoingSwap:active{
+  background-color: var(--dark-grey);
 }
 .ongoingSwap h2{
 	font-size: 1rem;
@@ -243,13 +315,13 @@ input::-webkit-inner-spin-button {
 	position: relative; top: 27px; left: 15%; width: 25px;
 }
 .ongoingSwapsButton{
-	border-radius: 16px;
-            border: 1px solid var(--dark-grey);
-            top: 2%;
-            height: 45px;
-            display: flex;
-            background-color: var(--slightly-darker-night);
-            justify-content: center;
+  border-radius: 16px;
+  border: 1px solid var(--dark-grey);
+  top: 2%;
+  height: 45px;
+  display: flex;
+  background-color: var(--slightly-darker-night);
+  justify-content: center;
 }
 .ongoingSwapsButton:hover{
 	background-color: var(--night);
@@ -258,20 +330,25 @@ input::-webkit-inner-spin-button {
 	background-color: var(--dark-grey);
 }
 .ongoingSwapsList {
-    position: relative;
-    height: 200px; /* Fixed height for the container */
-    overflow-x: auto;
-overflow-y: auto;
-width: 100%;
-	border-radius: 60px;
-	display: flex;
-	flex-direction: column;
-	align-content: center;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
+  position: relative;
+  height: 200px; /* Fixed height for the container */
+  overflow-x: auto;
+  overflow-y: auto;
+  width: 100%;
+  border-radius: 60px;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-height: 200px;
+  height: 0;
+  transition: height 0.5s ease-in-out;
+}
+.ongoingSwapsList.expanded {
+  height: 100%;
 }
 .simpleSwapContainerDiv{
 	display: flex;
@@ -350,7 +427,7 @@ input:-webkit-autofill:active{
 }
 
 .simpleBuySellTitle{
-	margin-right: 62%;
+	margin-right: auto;
 }
 .CoinA_AccountSelectorButton{
 	background-color: transparent;
@@ -358,7 +435,7 @@ input:-webkit-autofill:active{
 	border-radius: 1;
 }
 form.selectAccount{
-	width: 9rem;
+	width: 7rem;
 }
 form.selectAccount input{
 	border-radius: 10px;
@@ -390,14 +467,12 @@ form.selectAccount li{
 .inputAndCoinSelectorDiv{
 	display: flex;
 	flex-direction: row;
-	
 }
 
 .sellAmountInput{
 	color: var(--super-light-grey);
-	width: 85%;
+	width: auto;
 	text-align: left;
-	margin: 0;
 	padding: 5px;
 	font-size: 2em;
 }
@@ -452,50 +527,50 @@ form.selectAccount li{
 .buyBox{
 	background-color: var(--night);
 	border-radius: 8px;
-        padding: 1px; /* Adjust as needed */
-        display: grid;
+  padding: 1px; /* Adjust as needed */
+  display: grid;
 }
 .buyBox h1{
 	color: var(--super-light-grey);
 	text-align: left;
-        margin: 1px;
+  margin: 1px;
 	height: auto;
-        font-size:.9em;
-        padding: 3px;
+  font-size:.9em;
+  padding: 3px;
 }
 
 .buyAmountInput{
 	color: var(--super-light-grey);
-        text-align: left;
-        margin: 0;
-        padding: 5px;
-        font-size: 2em;
-	width: 85%;
+  text-align: left;
+  margin: 0;
+  padding: 5px;
+  font-size: 2em;
+	width: auto;
 }
 
 .buyCoinSelector{
-        border-radius: 16px;
-        border: 1px solid var(--dark-grey);
-        padding: 7px;
-        height: fit-content;
+  border-radius: 16px;
+  border: 1px solid var(--dark-grey);
+  padding: 7px;
+  height: fit-content;
 	display: flex;
 	background-color: var(--slightly-darker-night);
 }
 .buyCoinSelector h1{
-        color: var(--super-light-grey);
-        font-size: 1.15em;
+  color: var(--super-light-grey);
+  font-size: 1.15em;
 }
 .buyCoinSelector:hover{
-        background-color: var(--dark-grey);
+  background-color: var(--dark-grey);
 }
 .buyCoinSelector:active{
-        background-color: var(--lighter-grey);
+ background-color: var(--lighter-grey);
 }
 
 .swapButton{
 	border-radius: 9px;
-        border: 1px solid var(--lighter-grey);
-	background-color: var(--space-cadet);
+  border: 1px solid var(--lighter-grey);
+  background-color: var(--space-cadet);
 	padding-left: 150;
 	padding-right: 150;
 }
@@ -508,6 +583,6 @@ form.selectAccount li{
 	border: 1px solid var(--dark-grey);
 }
 .swapButton:active{
-        background-color: var(--delft-blue);
+  background-color: var(--delft-blue);
 	border: 1px solid var(--night);
 }
